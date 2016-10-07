@@ -1,0 +1,8 @@
+symbol: #13 symbolValue: [import at: (3,1) value:  -1 ]
+symbol: #10 symbolValue: [int at: (5,1) value:  -1 ]
+symbol: #47 symbolValue: [abc at: (5,5) value:  -1 ]
+symbol: #34 symbolValue: [; at: (5,8) value:  -1 ]
+symbol: #26 symbolValue: [static at: (7,1) value:  -1 ]
+symbol: #28 symbolValue: [void at: (7,8) value:  -1 ]
+symbol: #29 symbolValue: [class at: (7,13) value:  -1 ]
+symbol: #53 symbolValue: [this at: (9,1) value:  -1 ]

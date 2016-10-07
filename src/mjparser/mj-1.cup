@@ -1,0 +1,316 @@
+
+package mjparser;
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import ast.node.*;
+
+
+
+parser code {:
+
+    public PrintWriter out; 
+    
+    public String programName;
+
+    public void unrecovered_syntax_error(Symbol cur_SymbolValue) {
+        report_fatal_error("Fatal syntax error", cur_SymbolValue);
+    }
+    
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        done_parsing();
+        Symbol SymbolValue = (Symbol)info;
+        mjparser.SymbolValue tok = (mjparser.SymbolValue)SymbolValue.value;
+        throw new mjparser.ParseException("Fatal parsing error", 
+                                          tok.line, tok.pos);
+    }
+    
+    public void report_error(String message, Object info) {
+        Symbol SymbolValue = (Symbol)info;
+        mjparser.SymbolValue tok = (mjparser.SymbolValue)SymbolValue.value;
+        System.err.println("[" + tok.line + "," + tok.pos + "] " 
+                               + message + " at " + tok.toString() );
+    }
+            
+:}
+
+/* Notice: all terminals declared here */
+terminal SymbolValue PLUS, MINUS, TIMES, LPAREN, RPAREN;
+terminal SymbolValue LBRACE, RBRACE;
+terminal SymbolValue BOOLEAN, INT;
+terminal SymbolValue BYTE;
+terminal SymbolValue MAIN, IMPORT;
+terminal SymbolValue IF, ELSE;
+terminal SymbolValue LT;
+terminal SymbolValue EQUAL;
+terminal SymbolValue AND, NOT;
+terminal SymbolValue WHILE;
+terminal SymbolValue COMMA, DOT;
+terminal SymbolValue NEW, PUBLIC, RETURN, STATIC;
+terminal SymbolValue STRING, VOID;
+terminal SymbolValue CLASS, EXTENDS;
+terminal SymbolValue LBRACKET, RBRACKET;
+terminal SymbolValue LENGTH;
+terminal SymbolValue SEMI;
+terminal SymbolValue ASSIGN;
+
+terminal SymbolValue MEGGY;
+terminal SymbolValue MEGGYCOLOR;
+terminal SymbolValue MEGGYBUTTON;
+terminal SymbolValue MEGGYTONE;
+terminal SymbolValue MEGGYSETPIXEL;
+terminal SymbolValue MEGGYSETAUXLEDS;
+terminal SymbolValue MEGGYTONESTART;
+terminal SymbolValue MEGGYDELAY;
+terminal SymbolValue MEGGYGETPIXEL;
+terminal SymbolValue MEGGYCHECKBUTTON;
+
+terminal SymbolValue INT_LITERAL, ID;
+terminal SymbolValue TRUE, FALSE;
+terminal SymbolValue COLOR_LITERAL, BUTTON_LITERAL, TONE_LITERAL;
+terminal SymbolValue THIS;
+
+/* bogus terminal for unary precedence declaration */
+terminal UMINUS;
+
+non terminal program;
+non terminal Integer exp;
+non terminal expression;
+non terminal statement;
+non terminal statement_list;
+non terminal main_class;
+non terminal boolExp;
+non terminal ifStatement;
+non terminal operation;
+
+/* Declare precedence and associativity  here declaration
+
+
+precedence left PLUS,MINUS,TIMES,LT,AND;
+precedence right UMINUS,EQUAL;
+precedence nonassoc ELSE;
+precedence nonassoc IF;
+
+/* Meggy Java Grammar */
+start with program;
+
+program ::= 
+    IMPORT MEGGY SEMI main_class
+    ;
+    
+main_class ::=
+        CLASS ID:name         
+            {:  /*java.io.PrintStream sout 
+                    = new java.io.PrintStream(
+                        new java.io.FileOutputStream(name.lexeme+".java.s"));
+                parser.out = new PrintWriter(sout);*/
+                // Check filename is class name, if not exit with error message
+
+
+            :}
+        LBRACE PUBLIC STATIC VOID MAIN 
+        LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
+        LBRACE 
+          {: 
+            System.out.println("Generate prolog using avrH.rtl.s");
+           /* InputStream mainPrologue=null;
+            BufferedReader reader=null;
+            try {
+                // The syntax for loading a text resource file 
+                // from a jar file here:
+                // http://www.rgagnon.com/javadetails/java-0077.html
+                mainPrologue 
+                    = this.getClass().getClassLoader().getResourceAsStream(
+                        "avrH.rtl.s");
+                reader = new BufferedReader(new 
+                    InputStreamReader(mainPrologue));
+
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                  parser.out.println(line);
+                }
+            } catch ( Exception e2) {
+                e2.printStackTrace();
+            }
+            finally{
+                try{
+                    if(mainPrologue!=null) mainPrologue.close();
+                    if(reader!=null) reader.close();
+                }
+                catch (IOException e) {
+                   e.printStackTrace();
+                }
+            } */
+          :}
+        statement_list:list RBRACE
+          {:
+			// end of main method
+          :}	
+        RBRACE 
+          {:
+          // end of class
+          :}
+    ;
+	
+	statement_list ::= statement_list statement:stmt  {: :}
+						|statement:stmt SEMI {: :};
+	
+	
+	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 SEMI
+						{:	
+							Operation a = new Operation(op.line,op.pos,e,null);	
+							Operation b = new Operation(op.line,op.pos,e1,null);	
+							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);	
+
+							RESULT = new MeggySetPixel (op.line,op.pos,a,b,c);
+						:}
+						|MEGGYDELAY:op LPAREN operation:e RPAREN SEMI
+						{:
+							RESULT= new MeggyDelay(op.line,op.pos,e);
+						:}
+						
+						/*|ifStatement:op 
+						{:
+							RESULT= new IfStatement(op.line,op.pos,e,stmt,null);
+						:}*/
+					
+						|WHILE:op LPAREN operation:e RPAREN statement:stmt 
+						{:
+							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
+						:}
+						|SEMI
+						{:
+							/*Comment*/
+						:}
+						/*|error:err
+						{:
+							parser.report_error("Syntax error, skip rest",err);
+						:} */
+						;
+
+					
+					operation ::= INT_LITERAL:e PLUS:op INT_LITERAL:e1
+					{:	
+						IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
+						IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
+						
+						RESULT = new PlusExp(op.line, op.pos, lit1, lit2);
+					:}
+					|INT_LITERAL:e TIMES:op INT_LITERAL:e1
+					{:
+						IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
+						IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
+						
+						RESULT = new MulExp(op.line, op.pos, lit1, lit2);
+					:}
+					|INT_LITERAL:e MINUS:op INT_LITERAL:e1
+					{:
+						IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
+						IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
+						
+						RESULT = new MinusExp(op.line, op.pos, lit1, lit2);
+					:}
+					|INT_LITERAL:e LT:op INT_LITERAL:e1
+					{:
+						IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
+						IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
+						
+						RESULT = new LtExp(op.line, op.pos, lit1, lit2);
+					:}
+					
+					| LPAREN BYTE:op RPAREN exp:e
+					{:
+						//RESULT = new ByteCast(op.line, op.pos,e); // change this ...
+					:}
+					|INT_LITERAL:e
+					{: RESULT= new IntLiteral(e.line,e.pos,e.lexeme,e.value);
+					:};
+
+					expression ::=
+					
+					/* boolExp:op
+					{:
+					:} */
+				
+					|MEGGYCHECKBUTTON:op LPAREN operation:e RPAREN 
+					{:
+						RESULT = new MeggyCheckButton(op.line,op.pos,e);
+					:}
+					|BUTTON_LITERAL:op
+					{:
+						RESULT= new ButtonLiteral(op.line,op.pos,op.lexeme,op.value);
+					:}
+					|MEGGYGETPIXEL:op LPAREN operation:e COMMA operation:e1 RPAREN
+					{:
+						RESULT= new MeggyGetPixel(op.line,op.pos,e,e1);
+					:}
+					|COLOR_LITERAL:op
+					{:
+						RESULT =new ColorLiteral(op.line,op.pos,op.lexeme,op.value);
+					:}
+					|NOT:op boolExp:e
+					{:
+						RESULT= new NotExp(op.line,op.pos,e);
+					:}
+					|LPAREN operation:e RPAREN
+					{:
+						
+					:}
+					|boolExp:e AND:op boolExp:e1
+					{:
+						RESULT = new AndExp(op.line, op.pos, e, e1);
+					:}
+					|operation:e EQUAL:op operation:e1
+					{:
+						RESULT = new AndExp(op.line, op.pos, e, e1);
+					:}
+					|boolExp:e EQUAL:op boolExp:e1
+					{:
+						RESULT = new EqualExp(op.line, op.pos, e, e1);
+					:}
+					
+					
+					|MINUS:op TRUE:e
+					{:	
+						TrueLiteral s = new TrueLiteral(e.line,e.pos,e.lexeme,e.value);
+						RESULT = new NegExp(op.line, op.pos, s);
+					:}
+					|MINUS:op FALSE:e
+					{:	
+						FalseLiteral s = new FalseLiteral(e.line,e.pos,e.lexeme,e.value);
+						RESULT = new NegExp(op.line, op.pos, s);
+					:}
+					
+					|ID:op
+					{:
+						RESULT = new IdLiteral(op.line,op.pos,op.lexeme);
+					:}
+					|INT_LITERAL:op
+					;
+					
+	 				boolExp ::= TRUE:op
+					{:
+						RESULT = new TrueLiteral(op.line,op.pos,op.lexeme,op.value);
+					:}
+					|FALSE:op
+					{:
+						RESULT = new FalseLiteral(op.line,op.pos,op.lexeme,op.value);
+					:};
+
+/*
+ifStatement ::= IF LPAREN statement RPAREN statement {: System.out.printf("cond -> if booleanExp then stmt\n"); :} | IF LPAREN statement RPAREN ELSE statement {: System.out.printf("cond -> if booleanExp then stmt else stmt\n"); :};
+
+
+	ifStatement::= matched |unmatched;
+	matched   ::= IF LPAREN statement RPAREN matched ELSE matched
+        	  | statement ;
+
+unmatched ::= IF LPAREN statement RPAREN ifStatement; */

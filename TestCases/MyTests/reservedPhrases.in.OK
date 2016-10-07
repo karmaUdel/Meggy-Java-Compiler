@@ -1,0 +1,6 @@
+symbol: #40 symbolValue: [Meggy.setPixel at: (3,1) value:  -1 ]
+symbol: #42 symbolValue: [Meggy.toneStart at: (5,1) value:  -1 ]
+symbol: #50 symbolValue: [Meggy.Color.VIOLET at: (7,1) value:  6 ]
+symbol: #51 symbolValue: [Meggy.Button.Up at: (9,1) value:  4 ]
+symbol: #52 symbolValue: [Meggy.Tone.E3 at: (11,1) value:  48541 ]
+symbol: #39 symbolValue: [Meggy.Tone at: (13,1) value:  -1 ]

@@ -1,0 +1,6 @@
+symbol: #37 symbolValue: [Meggy.Color at: (3,1) value:  -1 ]
+symbol: #22 symbolValue: [. at: (3,12) value:  -1 ]
+symbol: #47 symbolValue: [Dark at: (3,13) value:  -1 ]
+Illegal character: $
+symbol: #44 symbolValue: [Meggy.getPixel at: (5,2) value:  -1 ]
+symbol: #47 symbolValue: [s at: (5,16) value:  -1 ]
