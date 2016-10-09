@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import mjparser.*;
 import mjparser.mj;
 import ast_visitors.*;
-
+import ast.node.*;
 public class MJDriver {
 
       private static void usage() {
@@ -47,10 +47,21 @@ public class MJDriver {
           System.out.println("Driver finds input filename: " + parser.programName);
 
           // and parse
-          parser.parse();
-          
-                
+         Node ast_root =(Node) parser.parse().value;
+	//System.out.println(parser.dump_stack()+"");
 
+          // print ast to file
+	//parser.parse();
+	parser.dump_stack();
+	//parser.debug_parse();
+          java.io.PrintStream astout =
+            new java.io.PrintStream(
+                new java.io.FileOutputStream(filename + ".ast.dot"));
+     ast_root.accept(new DotVisitor(new PrintWriter(astout)));
+          System.out.println("Printing AST to " + filename + ".ast.dot");
+
+                
+/*
           // print ast to file
           java.io.PrintStream astout =
             new java.io.PrintStream(
@@ -99,7 +110,7 @@ public class MJDriver {
           ast_root.accept(new AVRgenVisitor(new PrintWriter(avrsout),globalST));
           System.out.println("Printing Atmel assembly to " + filename + ".s");
           
-
+*/
         } catch(exceptions.SemanticException e) {
             System.err.println(e.getMessage());
             System.exit(1);

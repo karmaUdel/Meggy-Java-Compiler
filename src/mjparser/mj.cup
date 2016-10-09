@@ -19,6 +19,7 @@ parser code {:
     public PrintWriter out; 
     
     public String programName;
+	
 
     public void unrecovered_syntax_error(Symbol cur_SymbolValue) {
         report_fatal_error("Fatal syntax error", cur_SymbolValue);
@@ -86,12 +87,13 @@ non terminal Integer exp;
 non terminal expression;
 non terminal IStatement statement;
 non terminal IStatement statement_list;
-non terminal main_class;
+non terminal MainClass main_class;
 non terminal IExp boolExp;
 non terminal ifStatement;
 non terminal IExp operation;
 non terminal IExp boolVal;
 non terminal IExp rightSide;
+non terminal TopClassDecl topDeclaration;
 /* Declare precedence and associativity  here declaration
 
 
@@ -109,32 +111,44 @@ precedence nonassoc IF;
 start with program;
 
 program ::= 
-    IMPORT MEGGY SEMI main_class
+    IMPORT:op1 MEGGY SEMI main_class:op topDeclaration:op2 {: LinkedList<IClassDecl> _classDecls_ = new LinkedList<IClassDecl>() ;
+					_classDecls_.add(op2);  RESULT = new Program(op1.line,op1.pos,op,_classDecls_);:}
     ;
     
 main_class ::=
-        CLASS ID:name         
+        CLASS:op ID:name         
             {:  
                 // Check filename is class name, if not exit with error message
+		if(!parser.programName.equals(name+".java"))
+		{	System.out.println(parser.programName +  " " + name+".java");
+
+			System.exit(0);}
+
+	
 
   
             :}
-        LBRACE PUBLIC STATIC VOID MAIN 
+         LBRACE PUBLIC STATIC VOID MAIN:op1
         LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
-        LBRACE 
-          {: 
+        LBRACE   
+          {:
+
             System.out.println("Generate prolog using avrH.rtl.s");
-          
+
+
+
           :}
 
-        statement_list:list RBRACE
-          {:
-			// end of main method
-          :}	
-        RBRACE 
+      
+                   
+          statement_list:list  RBRACE
           {:
           // end of class
+          RESULT = new MainClass(op1.line,op1.pos,name+"",param+"",list);
+		System.out.println("End of Main");
           :}
+	RBRACE
+	{:		System.out.println("End of Class"); :}
     ;
 	
 	statement_list ::= statement statement_list
@@ -163,7 +177,7 @@ main_class ::=
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
 						:}
-						
+
 						/*|error:err
 						{:
 							parser.report_error("Syntax error, skip rest",err);
