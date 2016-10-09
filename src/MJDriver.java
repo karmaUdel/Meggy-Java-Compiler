@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 
 import mjparser.*;
 import mjparser.mj;
-//import ast_visitors.*;
+import ast_visitors.*;
 
 public class MJDriver {
 
@@ -50,7 +50,7 @@ public class MJDriver {
           parser.parse();
           
                 
-/*
+
           // print ast to file
           java.io.PrintStream astout =
             new java.io.PrintStream(
@@ -99,7 +99,7 @@ public class MJDriver {
           ast_root.accept(new AVRgenVisitor(new PrintWriter(avrsout),globalST));
           System.out.println("Printing Atmel assembly to " + filename + ".s");
           
-*/
+
         } catch(exceptions.SemanticException e) {
             System.err.println(e.getMessage());
             System.exit(1);
