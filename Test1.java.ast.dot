@@ -1,0 +1,3 @@
+digraph ASTGraph {
+0 [ label="Program" ];
+}

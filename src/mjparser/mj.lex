@@ -131,8 +131,21 @@ Comment=(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)
 {Comment}    {/*ignore comments*/}
 
 
-{EOL} {/*reset pos to -1, if 0, otherwise line 1 starts at 0, rest start at 1 */ yychar=-1;}
+
+{EOL} {
+/*reset pos to -1, if 0, otherwise line 1 starts at 0, rest start at 1 */ yychar=-1;
+}
 [ \t\r\n\f] { /* ignore white space. */ }
 . { System.err.println("Illegal character: "+yytext()); }
+
+
+
+
+
+
+
+
+
+
 
 

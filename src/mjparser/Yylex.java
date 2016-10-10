@@ -719,7 +719,9 @@ public class Yylex implements java_cup.runtime.Scanner {
 					case -20:
 						break;
 					case 20:
-						{/*reset pos to -1, if 0, otherwise line 1 starts at 0, rest start at 1 */ yychar=-1;}
+						{
+/*reset pos to -1, if 0, otherwise line 1 starts at 0, rest start at 1 */ yychar=-1;
+}
 					case -21:
 						break;
 					case 21:
@@ -971,7 +973,9 @@ public class Yylex implements java_cup.runtime.Scanner {
 					case -83:
 						break;
 					case 84:
-						{/*reset pos to -1, if 0, otherwise line 1 starts at 0, rest start at 1 */ yychar=-1;}
+						{
+/*reset pos to -1, if 0, otherwise line 1 starts at 0, rest start at 1 */ yychar=-1;
+}
 					case -84:
 						break;
 					case 85:
