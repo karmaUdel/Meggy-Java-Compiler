@@ -8,12 +8,8 @@ digraph ASTGraph {
 2 -> 3
 4 [ label="ByteCast" ];
 3 -> 4
-5 [ label="IntLiteral\n1" ];
-4 -> 5
-6 [ label="ByteCast" ];
+5 [ label="ByteCast" ];
+3 -> 5
+6 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
 3 -> 6
-7 [ label="IntLiteral\n0" ];
-6 -> 7
-8 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
-3 -> 8
 }

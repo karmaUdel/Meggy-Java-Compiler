@@ -118,6 +118,7 @@ program ::=
 
 					LinkedList<IClassDecl> _classDecls_ = new LinkedList<IClassDecl>() ;
 					 RESULT = new Program(op1.line,op1.pos,op,_classDecls_);
+					System.out.println("program");
 :}
     ;
     
@@ -132,48 +133,54 @@ main_class ::=
 		{	System.out.println(parser.programName +  " " + name+".java");
 
 			System.exit(0);}
-
-
-	
-  
             :}
 
-	 expression:op MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
-        LBRACE block_statement
+	 expression MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
+        LBRACE block_statement:op
           {:
-
-            System.out.println("Generate prolog using avrH.rtl.s");
 
 	System.out.println("End of Main");
   	RESULT = new MainClass(op1.line,op1.pos,name+"",param+"",op); 
-          :}
-;
-                   
-         block_statement::= statement_list:list RBRACE:ex RBRACE
+
+          :};
+	
+
+/* 		
+	statement_list:list RBRACE:ex RBRACE {:
+				List stList = new ArrayList<IStatement>();
+				stList.add(list);
+				RESULT = new BlockStatement(ex.line,ex.pos,stList);
+			
+					:};
+                   */
+
+        block_statement::= statement:list RBRACE:ex RBRACE
           {:
           // end of class
-   		System.out.println("end of class");
+
+   		System.out.println(list+ " end of class");
 
 		 List stList = new ArrayList<IStatement>();
    		stList.add(list);
-	 	RESULT = new BlockStatement(ex.line,ex.pos,stList);
+		RESULT = new BlockStatement(ex.line,ex.pos,stList);
 
 
 
           :}
-;
+; 
 
 	expression ::= LBRACE PUBLIC STATIC VOID ;
 
 	statement_list ::= statement:lst SEMI:ex1 statement_list {:	
-							System.out.println("st list with Semi 1");
+							
    							 :}
 
 						|statement:op SEMI:ex {:
+						
 							System.out.println("st list with Semi");	
 							 :};
 	
-					statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN
+					statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI statement
 						{:	
 							System.out.println("SetPix");
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
@@ -181,7 +188,7 @@ main_class ::=
 							RESULT = new MeggySetPixel (op.line,op.pos,e,e1,c);
 					
 						:}
-						|MEGGYDELAY:op LPAREN operation:e RPAREN SEMI
+						|MEGGYDELAY:op LPAREN operation:e RPAREN SEMI statement
 						{:	System.out.println("delay");
 							RESULT= new MeggyDelay(op.line,op.pos,e);
 						:}
@@ -195,7 +202,7 @@ main_class ::=
 						|WHILE:op LPAREN boolExp:e RPAREN LBRACE statement_list:stmt RBRACE 
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
-						:} 
+						:} | {://do nothing:}
 						;
 
 					
@@ -313,10 +320,10 @@ main_class ::=
 						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
 						//RESULT = new NegExp(op.line,op.pos,e);		
 					:} %prec UMINUS
-					|rightSide | LPAREN rightSide RPAREN
+					|rightSide | LPAREN rightSide RPAREN  //INT_LITERAL:ex {: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :} 
 					;
 
-					rightSide ::= INT_LITERAL:ex {: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :} | MINUS rightSide  %prec UMINUS;
+					rightSide ::=INT_LITERAL | MINUS rightSide  %prec UMINUS;
 
 					boolExp ::=boolExp:e AND:op boolVal:e1
 					{:
