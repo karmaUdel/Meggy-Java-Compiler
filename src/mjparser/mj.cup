@@ -97,7 +97,7 @@ non terminal IExp operation;
 non terminal IExp boolVal;
 non terminal IExp rightSide;
 
-/* Declare precedence and associativity  here declaration
+/* Declare precedence and associativity  here declaration */
 
 
 precedence right NOT;
@@ -145,14 +145,6 @@ main_class ::=
           :};
 	
 
-/* 		
-	statement_list:list RBRACE:ex RBRACE {:
-				List stList = new ArrayList<IStatement>();
-				stList.add(list);
-				RESULT = new BlockStatement(ex.line,ex.pos,stList);
-			
-					:};
-                   */
 
         block_statement::= statement:list RBRACE:ex RBRACE
           {:
@@ -160,7 +152,7 @@ main_class ::=
 
    		System.out.println(list+ " end of class");
 
-		 List stList = new ArrayList<IStatement>();
+		 List stList = new LinkedList<IStatement>();
    		stList.add(list);
 		RESULT = new BlockStatement(ex.line,ex.pos,stList);
 
@@ -171,26 +163,44 @@ main_class ::=
 
 	expression ::= LBRACE PUBLIC STATIC VOID ;
 
-	statement_list ::= statement:lst SEMI:ex1 statement_list {:	
+	statement_list ::= statement:lst SEMI:ex1 statement_list 
+			   {:	
 							
-   							 :}
+   			   :}
 
-						|statement:op SEMI:ex {:
+  			   |statement:op SEMI:ex {:
 						
 							System.out.println("st list with Semi");	
-							 :};
+			   :}
+			; 
 	
-					statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI statement
+	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI statement:lst
 						{:	
+							List list = new LinkedList<IStatement>();
+							System.out.println("Setpixel "+ lst);
+							if(lst!=null){						
+								list.add(0,lst);	
+							}
 							System.out.println("SetPix");
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
-	
-							RESULT = new MeggySetPixel (op.line,op.pos,e,e1,c);
+							IStatement stmnt = new MeggySetPixel(op.line,op.pos,e,e1,c);
+							list.add(stmnt);				
+							RESULT = new BlockStatement (op.line,op.pos,list);
+							 
 					
 						:}
-						|MEGGYDELAY:op LPAREN operation:e RPAREN SEMI statement
+						|MEGGYDELAY:op LPAREN operation:e RPAREN SEMI statement:lst
 						{:	System.out.println("delay");
-							RESULT= new MeggyDelay(op.line,op.pos,e);
+							System.out.println("delay" +lst);
+							List list = new LinkedList<IStatement>();
+							if(lst!=null){						
+								list.add(0,lst);	
+							}
+							IStatement stmnt = new MeggyDelay(op.line,op.pos,e);
+							list.add(stmnt);
+									
+							RESULT = new BlockStatement (op.line,op.pos,list);
+
 						:}
 
 						|ifStatement:op 
@@ -202,7 +212,7 @@ main_class ::=
 						|WHILE:op LPAREN boolExp:e RPAREN LBRACE statement_list:stmt RBRACE 
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
-						:} | {://do nothing:}
+						:} | {://do nothing System.out.println("Do nothing");:}
 						;
 
 					

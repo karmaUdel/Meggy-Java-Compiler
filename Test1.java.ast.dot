@@ -4,12 +4,74 @@ digraph ASTGraph {
 0 -> 1
 2 [ label="BlockStatement" ];
 1 -> 2
-3 [ label="MeggySetPixel" ];
+3 [ label="BlockStatement" ];
 2 -> 3
-4 [ label="ByteCast" ];
+4 [ label="BlockStatement" ];
 3 -> 4
-5 [ label="ByteCast" ];
-3 -> 5
-6 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
-3 -> 6
+5 [ label="BlockStatement" ];
+4 -> 5
+6 [ label="BlockStatement" ];
+5 -> 6
+7 [ label="BlockStatement" ];
+6 -> 7
+8 [ label="BlockStatement" ];
+7 -> 8
+9 [ label="BlockStatement" ];
+8 -> 9
+10 [ label="BlockStatement" ];
+9 -> 10
+11 [ label="BlockStatement" ];
+10 -> 11
+12 [ label="BlockStatement" ];
+11 -> 12
+13 [ label="MeggyDelay" ];
+12 -> 13
+14 [ label="MeggySetPixel" ];
+11 -> 14
+15 [ label="ByteCast" ];
+14 -> 15
+16 [ label="ByteCast" ];
+14 -> 16
+17 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
+14 -> 17
+18 [ label="MeggyDelay" ];
+10 -> 18
+19 [ label="MeggySetPixel" ];
+9 -> 19
+20 [ label="ByteCast" ];
+19 -> 20
+21 [ label="ByteCast" ];
+19 -> 21
+22 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
+19 -> 22
+23 [ label="MeggyDelay" ];
+8 -> 23
+24 [ label="MeggySetPixel" ];
+7 -> 24
+25 [ label="ByteCast" ];
+24 -> 25
+26 [ label="ByteCast" ];
+24 -> 26
+27 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
+24 -> 27
+28 [ label="MeggyDelay" ];
+6 -> 28
+29 [ label="MeggySetPixel" ];
+5 -> 29
+30 [ label="ByteCast" ];
+29 -> 30
+31 [ label="ByteCast" ];
+29 -> 31
+32 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
+29 -> 32
+33 [ label="MeggyDelay" ];
+4 -> 33
+34 [ label="MeggySetPixel" ];
+3 -> 34
+35 [ label="ByteCast" ];
+34 -> 35
+36 [ label="ByteCast" ];
+34 -> 36
+37 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
+34 -> 37
 }
