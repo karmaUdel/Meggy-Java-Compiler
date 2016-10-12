@@ -136,7 +136,7 @@ main_class ::=
             :}
 
 	 expression MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
-        LBRACE block_statement:op
+        LBRACE statement_list:op RBRACE RBRACE
           {:
 
 	System.out.println("End of Main");
@@ -146,7 +146,7 @@ main_class ::=
 	
 
 
-        block_statement::= statement:list RBRACE:ex RBRACE
+      /*  block_statement::= statement_list:list RBRACE:ex RBRACE
           {:
           // end of class
 
@@ -159,25 +159,35 @@ main_class ::=
 
 
           :}
-; 
+; */
 
 	expression ::= LBRACE PUBLIC STATIC VOID ;
 
-	statement_list ::= statement:lst SEMI:ex1 statement_list 
+	statement_list ::= statement_list:op1 statement:lst 
 			   {:	
-							
-   			   :}
+					System.out.println("st: "+lst + op1);
+ 		List stList = new LinkedList<IStatement>();
 
-  			   |statement:op SEMI:ex {:
-						
-							System.out.println("st list with Semi");	
+   		stList.add(lst);
+		stList.add(op1);
+		RESULT = new BlockStatement(0,0,stList);						
+			   :}
+
+  			   |statement:op  {:
+						 List stList = new LinkedList<IStatement>();
+   					stList.add(op);
+					RESULT = new BlockStatement(0,0,stList);
+					System.out.println("st list with Semi: "+op);	
 			   :}
 			; 
 	
-	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI statement:lst
-						{:	
-							List list = new LinkedList<IStatement>();
-							System.out.println("Setpixel "+ lst);
+	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI
+						{:	System.out.println("Setpixel ");
+							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
+							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
+
+							/*List list = new LinkedList<IStatement>();
+
 							if(lst!=null){						
 								list.add(0,lst);	
 							}
@@ -185,12 +195,14 @@ main_class ::=
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
 							IStatement stmnt = new MeggySetPixel(op.line,op.pos,e,e1,c);
 							list.add(stmnt);				
-							RESULT = new BlockStatement (op.line,op.pos,list);
+							RESULT = new BlockStatement (op.line,op.pos,list);*/
 							 
 					
 						:}
-						|MEGGYDELAY:op LPAREN operation:e RPAREN SEMI statement:lst
+						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI
 						{:	System.out.println("delay");
+							RESULT = new MeggyDelay(op.line,op.pos,e);
+						/*
 							System.out.println("delay" +lst);
 							List list = new LinkedList<IStatement>();
 							if(lst!=null){						
@@ -199,7 +211,7 @@ main_class ::=
 							IStatement stmnt = new MeggyDelay(op.line,op.pos,e);
 							list.add(stmnt);
 									
-							RESULT = new BlockStatement (op.line,op.pos,list);
+							RESULT = new BlockStatement (op.line,op.pos,list);*/
 
 						:}
 
@@ -212,7 +224,8 @@ main_class ::=
 						|WHILE:op LPAREN boolExp:e RPAREN LBRACE statement_list:stmt RBRACE 
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
-						:} | {://do nothing System.out.println("Do nothing");:}
+						:} /*| {://do nothing 
+							System.out.println("Do nothing");:}*/
 						;
 
 					
@@ -345,28 +358,25 @@ main_class ::=
 					{:
 						System.out.println("equal");
 						RESULT = new AndExp(op.line, op.pos, e, e1);
-					:}|NOT:op boolVal:e
+					:}|NOT:op LPAREN boolExp:e RPAREN
 					{:
 						System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
 					:}| MEGGYCHECKBUTTON LPAREN BUTTON_LITERAL RPAREN
-						|MEGGYGETPIXEL:op LPAREN operation:e COMMA operation:e1 RPAREN 
+
+						|MEGGYGETPIXEL:op LPAREN operation:e COMMA operation:e1 RPAREN
 						{:	System.out.println("getPixel");
 							RESULT= new MeggyGetPixel(op.line,op.pos,e,e1);
 						:}	
 					|boolVal
 					;
 					
-					boolVal::=  LPAREN boolExp RPAREN | TRUE | FALSE | COLOR_LITERAL;
+					boolVal::=  LPAREN boolExp RPAREN | TRUE | FALSE | COLOR_LITERAL {: System.out.println("Color literal");:};
 
 				ifStatement ::= IF:op LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
 						System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-					|IF:op LPAREN boolExp:e RPAREN statement:e1 
-					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
-					:} 
  
 					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE statement_list:e2 RBRACE 
 					{: 
