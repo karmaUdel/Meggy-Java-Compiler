@@ -86,13 +86,11 @@ terminal UMINUS;
 
 non terminal program;
 non terminal Integer exp;
-non terminal IStatement expression;
 non terminal IStatement statement;
 non terminal IStatement statement_list;
 non terminal MainClass main_class;
 non terminal BlockStatement block_statement;
 non terminal IExp boolExp;
-non terminal ifStatement;
 non terminal IExp operation;
 non terminal IExp boolVal;
 non terminal IExp rightSide;
@@ -135,7 +133,7 @@ main_class ::=
 			System.exit(0);}
             :}
 
-	 expression MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
+	 LBRACE PUBLIC STATIC VOID MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
         LBRACE statement_list:op RBRACE RBRACE
           {:
 
@@ -161,7 +159,7 @@ main_class ::=
           :}
 ; */
 
-	expression ::= LBRACE PUBLIC STATIC VOID ;
+
 
 	statement_list ::= statement_list:op1 statement:lst 
 			   {:	
@@ -202,6 +200,7 @@ main_class ::=
 						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI
 						{:	System.out.println("delay");
 							RESULT = new MeggyDelay(op.line,op.pos,e);
+
 						/*
 							System.out.println("delay" +lst);
 							List list = new LinkedList<IStatement>();
@@ -215,18 +214,48 @@ main_class ::=
 
 						:}
 
-						|ifStatement:op 
-						{:
-						System.out.println("general if");
-						  //RESULT= new IfStatement(op.line,op.pos,e,stmt,null);
-						:}
 					
 						|WHILE:op LPAREN boolExp:e RPAREN LBRACE statement_list:stmt RBRACE 
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
-						:} /*| {://do nothing 
-							System.out.println("Do nothing");:}*/
-						;
+						:} 
+						|IF:op LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE
+					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
+						System.out.printf("cond -> if booleanExp then stmt\n"); 
+					:}
+ 
+					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE statement_list:e2 RBRACE 
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
+
+					:}
+					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE statement:e2  
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
+
+					:}	
+					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE LBRACE statement_list:e2 RBRACE 
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,null,e2);
+
+					:}| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE RBRACE 
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
+
+					:}
+					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE LBRACE RBRACE 
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,null,null);
+
+					:};
+
+
+					
 
 					
 					operation ::= operation:e PLUS:op rightSide:e1
@@ -322,7 +351,7 @@ main_class ::=
 					{:
 						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
 						//IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
-												System.out.println("lt");
+						System.out.println("lt");
 						RESULT = new LtExp(op.line, op.pos, e, e1);
 					:}
 					
@@ -333,22 +362,24 @@ main_class ::=
 					| LPAREN BYTE:op RPAREN rightSide:e 
 					{:		
 						System.out.println("int to byte");
-						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);			
+
 						RESULT = new ByteCast(op.line, op.pos,e); // change this ...
 					:}
 					
 					| MINUS:op LPAREN operation:e RPAREN 
 					{: 
 						System.out.println("umin byte");	
-						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
-						//RESULT = new NegExp(op.line,op.pos,e);		
+						RESULT = new NegExp(op.line,op.pos,e);
+		
 					:} %prec UMINUS
-					|rightSide | LPAREN rightSide RPAREN  //INT_LITERAL:ex {: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :} 
+					|rightSide | LPAREN rightSide RPAREN 
 					;
 
-					rightSide ::=INT_LITERAL | MINUS rightSide  %prec UMINUS;
+					rightSide ::=INT_LITERAL:ex 
+							{: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
+							| MINUS rightSide {: System.out.println("Unary minus");:} %prec UMINUS;
 
-					boolExp ::=boolExp:e AND:op boolVal:e1
+					boolExp ::=boolExp:e AND:op boolExp:e1
 					{:
 						System.out.println("and");
 
@@ -358,7 +389,7 @@ main_class ::=
 					{:
 						System.out.println("equal");
 						RESULT = new AndExp(op.line, op.pos, e, e1);
-					:}|NOT:op LPAREN boolExp:e RPAREN
+					:}|NOT:op boolExp:e
 					{:
 						System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
@@ -371,41 +402,10 @@ main_class ::=
 					|boolVal
 					;
 					
-					boolVal::=  LPAREN boolExp RPAREN | TRUE | FALSE | COLOR_LITERAL {: System.out.println("Color literal");:};
-
-				ifStatement ::= IF:op LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE
-					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
-					:}
- 
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE statement_list:e2 RBRACE 
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
-
-					:}
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE statement:e2  
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
-
-					:}	
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE LBRACE statement_list:e2 RBRACE 
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,null,e2);
-
-					:}| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE RBRACE 
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
-
-					:}
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE LBRACE RBRACE 
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,null,null);
-
-					:};
-
+					boolVal::=  LPAREN boolExp RPAREN 
+						| TRUE:op1 {: RESULT = new TrueLiteral(op1.line,op1.pos,op1.lexeme,op1.value);:}
+						 | FALSE:op2  {: RESULT = new FalseLiteral(op2.line,op2.pos,op2.lexeme,op2.value);:}
+						| COLOR_LITERAL:op {: RESULT = new ColorLiteral(op.line,op.pos,op.lexeme,op.value);
+								System.out.println("Color literal");
+								:};
 
