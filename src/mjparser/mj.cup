@@ -276,8 +276,9 @@ main_class ::=
 					 | LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN 
 					{:      System.out.println("op to byte");
 						RESULT = new ByteCast(op.line, op.pos,e); 
-					:}
- 					;
+					:} |LPAREN operation RPAREN |MINUS operation {: System.out.println("Unary minus");:} %prec UMINUS
+					; 
+ 					
 
 					
 				
@@ -396,7 +397,9 @@ main_class ::=
 
 					rightSide ::=INT_LITERAL:ex 
 							{: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
-							| MINUS rightSide {: System.out.println("Unary minus");:} %prec UMINUS; */
+							| MINUS rightSide {: System.out.println("Unary minus");:} %prec UMINUS; 
+
+					*/
 
 
 					boolExp ::=boolExp:e AND:op boolExp:e1
