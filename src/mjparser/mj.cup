@@ -95,6 +95,7 @@ non terminal IExp operation;
 non terminal IExp boolVal;
 non terminal IExp rightSide;
 non terminal IExp op2;
+non terminal IStatement ifType;
 
 /* Declare precedence and associativity  here declaration */
 
@@ -215,6 +216,8 @@ main_class ::=
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
 						:} 
+
+
 						|IF:op LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
 						System.out.printf("cond -> if booleanExp then stmt\n"); 
@@ -248,6 +251,21 @@ main_class ::=
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,null,null);
 
+					:}| IF:op1 LPAREN boolExp:e RPAREN statement:e1
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
+
+					:}| IF:op1 LPAREN boolExp:e RPAREN statement:e1 ELSE statement:e2
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
+
+					:}| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE statement:e1
+					{: 
+						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
+						RESULT = new IfStatement(op1.line,op1.pos,e,null,e1);
+
 					:};
 
 
@@ -265,7 +283,8 @@ main_class ::=
 					:}
 
 					|INT_LITERAL:ex 
-					{: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
+					{: System.out.println("int");
+					RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
 					| LPAREN BYTE:op RPAREN INT_LITERAL:e
 					{:      System.out.println("op to byte");
 
@@ -281,7 +300,7 @@ main_class ::=
  					
 
 					
-				
+
 					 
 
 
@@ -402,17 +421,17 @@ main_class ::=
 					*/
 
 
-					boolExp ::=boolExp:e AND:op boolExp:e1
+					boolExp ::=operation:e AND:op operation:e1
 					{:
 						System.out.println("and");
 
 						RESULT = new AndExp(op.line, op.pos, e, e1);
 					:}
-					| boolExp:e EQUAL:op boolVal:e1
+					| operation:e EQUAL:op operation:e1
 					{:
 						System.out.println("equal");
 						RESULT = new AndExp(op.line, op.pos, e, e1);
-					:}|NOT:op boolExp:e
+					:}|NOT:op operation:e
 					{:
 						System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
@@ -425,8 +444,7 @@ main_class ::=
 					|boolVal
 					;
 					
-					boolVal::=  LPAREN boolExp RPAREN 
-						| TRUE:op1 {: RESULT = new TrueLiteral(op1.line,op1.pos,op1.lexeme,op1.value);:}
+					boolVal::= TRUE:op1 {: RESULT = new TrueLiteral(op1.line,op1.pos,op1.lexeme,op1.value);:}
 						 | FALSE:op2  {: RESULT = new FalseLiteral(op2.line,op2.pos,op2.lexeme,op2.value);:}
 						| COLOR_LITERAL:op {: RESULT = new ColorLiteral(op.line,op.pos,op.lexeme,op.value);
 								System.out.println("Color literal");
