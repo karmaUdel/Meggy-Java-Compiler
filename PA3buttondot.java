@@ -17,7 +17,7 @@ class PA3buttondot {
 
             // infinite loop that checks for button presses every half second
             while (true) {
-	            Meggy.setPixel( (byte)7, (byte)7, Meggy.Color.ORANGE );
+	            Meggy.setPixel( (byte)7, (byte)(7*7), Meggy.Color.ORANGE );
 
                 }
 

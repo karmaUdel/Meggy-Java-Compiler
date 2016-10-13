@@ -94,6 +94,7 @@ non terminal IExp boolExp;
 non terminal IExp operation;
 non terminal IExp boolVal;
 non terminal IExp rightSide;
+non terminal IExp op2;
 
 /* Declare precedence and associativity  here declaration */
 
@@ -182,18 +183,13 @@ main_class ::=
 	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI
 						{:	System.out.println("Setpixel ");
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
-							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
+							//RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
 
-							/*List list = new LinkedList<IStatement>();
+							List list = new LinkedList<IStatement>();
 
-							if(lst!=null){						
-								list.add(0,lst);	
-							}
-							System.out.println("SetPix");
-							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
 							IStatement stmnt = new MeggySetPixel(op.line,op.pos,e,e1,c);
 							list.add(stmnt);				
-							RESULT = new BlockStatement (op.line,op.pos,list);*/
+							RESULT = new BlockStatement (op.line,op.pos,list);
 							 
 					
 						:}
@@ -255,13 +251,42 @@ main_class ::=
 					:};
 
 
+					operation ::= operation:e PLUS:op operation:e1 {:	
+						System.out.println("plus");
+						RESULT = new PlusExp(op.line, op.pos, e, e1);
+
+					:} | operation:e MINUS:op operation:e1 {:
+						System.out.println("min");
+						RESULT = new MinusExp(op.line, op.pos, e, e1);
+
+					:}| operation:e TIMES:op operation:e1 {:
+						System.out.println("Times");
+						RESULT = new MulExp(op.line, op.pos, e, e1);
+					:}
+
+					|INT_LITERAL:ex 
+					{: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
+					| LPAREN BYTE:op RPAREN INT_LITERAL:e
+					{:      System.out.println("op to byte");
+
+						IntLiteral lit1 = new IntLiteral(op.line,op.pos,e.lexeme,e.value);
+						RESULT = new ByteCast(op.line, op.pos,lit1);
+					:}
 					
+					 | LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN 
+					{:      System.out.println("op to byte");
+						RESULT = new ByteCast(op.line, op.pos,e); 
+					:}
+ 					;
 
 					
-					operation ::= operation:e PLUS:op rightSide:e1
+				
+					 
+
+
+					
+				/*	operation ::= rightSide:e PLUS:op rightSide:e1
 					{:	
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e.lexeme,e.value);
-						//IntLiteral lit2 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);
 						System.out.println("plus");
 						RESULT = new PlusExp(op.line, op.pos, e, e1);
 					:}
@@ -269,9 +294,7 @@ main_class ::=
 					
 					|operation:e PLUS:op LPAREN BYTE RPAREN rightSide:e1
 					{:	
-
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);
-										
+						
 						System.out.println("plus Byte");
 						RESULT = new PlusExp(op.line, op.pos, e,e1);
 					:}
@@ -293,9 +316,7 @@ main_class ::=
 
 					|operation:e TIMES:op rightSide:e1
 					{:
-						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
-						//IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
-												System.out.println("mult");
+					
 						RESULT = new MulExp(op.line, op.pos, e, e1);
 					:}
 					|operation:e TIMES:op LPAREN BYTE RPAREN rightSide:e1
@@ -320,9 +341,7 @@ main_class ::=
 					:}
 					|operation:e MINUS:op rightSide:e1
 					{:
-						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
-						//IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
-												System.out.println("min");
+						System.out.println("min");
 						RESULT = new MinusExp(op.line, op.pos, e, e1);
 					:}
 					|operation:e MINUS:op LPAREN BYTE RPAREN rightSide:e1
@@ -377,7 +396,8 @@ main_class ::=
 
 					rightSide ::=INT_LITERAL:ex 
 							{: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
-							| MINUS rightSide {: System.out.println("Unary minus");:} %prec UMINUS;
+							| MINUS rightSide {: System.out.println("Unary minus");:} %prec UMINUS; */
+
 
 					boolExp ::=boolExp:e AND:op boolExp:e1
 					{:
