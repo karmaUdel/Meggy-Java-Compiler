@@ -151,7 +151,7 @@ main_class ::=
 	
 
 
-        block_statement::= LBRACE:ex statement_list:list RBRACE
+        block_statement::= LBRACE:ex statement_list:list RBRACE 
           {:
           // end of class
 
@@ -160,7 +160,7 @@ main_class ::=
 		RESULT = new BlockStatement(ex.line,ex.pos,list);
    		System.out.println(" end of class2" + list);
 
-          :} |{::}; 
+          :} ; 
 
 		statement_list ::=  statement:op1{:List list = new LinkedList<IStatement>();
 							
@@ -224,36 +224,31 @@ main_class ::=
 						System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
 
-					/*
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE statement_list:e2 RBRACE 
+
+					| IF:op1 LPAREN boolExp:e RPAREN block_statement:e1 ELSE block_statement:e2
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
 
 					:}
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE statement:e2  
+					| IF:op1 LPAREN boolExp:e RPAREN block_statement:e1 ELSE statement:e2  
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
 
 					:}	
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE LBRACE statement_list:e2 RBRACE 
+					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE block_statement:e2
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,null,e2);
 
-					:}| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE RBRACE 
+					:}| IF:op1 LPAREN boolExp:e RPAREN block_statement:e1 ELSE LBRACE RBRACE 
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
 
 					:}
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE LBRACE RBRACE 
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,null,null);
-
-					:}| IF:op1 LPAREN boolExp:e RPAREN statement:e1
+					| IF:op1 LPAREN boolExp:e RPAREN statement:e1
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
@@ -268,7 +263,7 @@ main_class ::=
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,null,e1);
  
-					:} */
+					:} 
  
 					 ;
 
@@ -303,126 +298,7 @@ main_class ::=
 					; 
  					
 
-					
-
-					 
-
-
-					
-				/*	operation ::= rightSide:e PLUS:op rightSide:e1
-					{:	
-						System.out.println("plus");
-						RESULT = new PlusExp(op.line, op.pos, e, e1);
-					:}
-				
-					
-					|operation:e PLUS:op LPAREN BYTE RPAREN rightSide:e1
-					{:	
-						
-						System.out.println("plus Byte");
-						RESULT = new PlusExp(op.line, op.pos, e,e1);
-					:}
-
-					|operation:e PLUS:op LPAREN BYTE RPAREN LPAREN rightSide:e1 RPAREN
-					{:	
-
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);
-										
-						System.out.println("plus Byte");
-						RESULT = new PlusExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e PLUS:op LPAREN operation:e1 RPAREN
-					{:	
-						
-						System.out.println("plus operation");
-						RESULT = new PlusExp(op.line, op.pos, e,e1);
-					:}
-
-					|operation:e TIMES:op rightSide:e1
-					{:
-					
-						RESULT = new MulExp(op.line, op.pos, e, e1);
-					:}
-					|operation:e TIMES:op LPAREN BYTE RPAREN rightSide:e1
-					{:	
-
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);				
-						System.out.println("Times byte");
-						RESULT = new MulExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e TIMES:op LPAREN BYTE RPAREN LPAREN rightSide:e1 RPAREN
-					{:	
-
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);				
-						System.out.println("Times byte");
-						RESULT = new MulExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e TIMES:op LPAREN operation:e1 RPAREN
-					{:	
-
-						System.out.println("Times operation");
-						RESULT = new MulExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e MINUS:op rightSide:e1
-					{:
-						System.out.println("min");
-						RESULT = new MinusExp(op.line, op.pos, e, e1);
-					:}
-					|operation:e MINUS:op LPAREN BYTE RPAREN rightSide:e1
-					{:	
-
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);
-											
-						System.out.println("minus Byte");
-						RESULT = new MinusExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e MINUS:op LPAREN BYTE RPAREN LPAREN rightSide:e1 RPAREN
-					{:	
-
-						//IntLiteral lit1 = new IntLiteral(op.line,op.pos,e1.lexeme,e1.value);
-											
-						System.out.println("minus Byte");
-						RESULT = new MinusExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e MINUS:op LPAREN operation:e1 RPAREN
-					{:	
-
-						System.out.println("minus operation");
-						RESULT = new MinusExp(op.line, op.pos, e,e1);
-					:}
-					|operation:e LT:op rightSide:e1
-					{:
-						//IntLiteral lit1 = new IntLiteral(e.line,e.pos,e.lexeme,e.value);
-						//IntLiteral lit2 = new IntLiteral(e1.line,e1.pos,e1.lexeme,e1.value);
-						System.out.println("lt");
-						RESULT = new LtExp(op.line, op.pos, e, e1);
-					:}
-					
-					| LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN
-					{:      System.out.println("op to byte");
-						RESULT = new ByteCast(op.line, op.pos,e); // change this ...
-					:}
-					| LPAREN BYTE:op RPAREN rightSide:e 
-					{:		
-						System.out.println("int to byte");
-
-						RESULT = new ByteCast(op.line, op.pos,e); // change this ...
-					:}
-					
-					| MINUS:op LPAREN operation:e RPAREN 
-					{: 
-						System.out.println("umin byte");	
-						RESULT = new NegExp(op.line,op.pos,e);
-		
-					:} %prec UMINUS
-					|rightSide | LPAREN rightSide RPAREN 
-					;
-
-					rightSide ::=INT_LITERAL:ex 
-							{: RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
-							| MINUS rightSide {: System.out.println("Unary minus");:} %prec UMINUS; 
-
-					*/
+	
 
 
 					boolExp ::=operation:e AND:op operation:e1
@@ -434,7 +310,7 @@ main_class ::=
 					| operation:e EQUAL:op operation:e1
 					{:
 						System.out.println("equal");
-						RESULT = new AndExp(op.line, op.pos, e, e1);
+						RESULT = new EqualExp(op.line, op.pos, e, e1);
 					:}|NOT:op operation:e
 					{:
 						System.out.println("not");
