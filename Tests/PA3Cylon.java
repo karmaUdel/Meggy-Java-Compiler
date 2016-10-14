@@ -39,7 +39,7 @@ class PA3Cylon {
         
 
             // Initialize the red LED location to col 0, row 0
-            //Meggy.setPixel( (byte)((byte)0*(byte)0+0-0), (byte)(4-3-1), Meggy.Color.RED );
+            Meggy.setPixel( (byte)((byte)0*(byte)0+0-0), (byte)(4-3-1), Meggy.Color.RED );
 
             // Infinite loop that uses button presses to determine
             // which row to do cycle the LED light through or
@@ -49,66 +49,32 @@ class PA3Cylon {
             while (true) {
                 // up indicates row 7
                 if (Meggy.checkButton(Meggy.Button.Up)
-                        && (!( Meggy.checkButton(Meggy.Button.Right)) ))
+                        && ! Meggy.checkButton(Meggy.Button.Right) )
                 {
-                    Meggy.setPixel((byte)0, (byte)0, Meggy.Color.DARK);
-                   
+
+
+                    Meggy.setPixel((byte)0, (byte)7, Meggy.Color.RED);
                     Meggy.delay(256);
+                 
                 } else {
                     // up and right indicates row 4
                     if (Meggy.checkButton(Meggy.Button.Up)
-                            && (Meggy.checkButton(Meggy.Button.Right))) 
+                            && Meggy.checkButton(Meggy.Button.Right)) 
                     {
-                        Meggy.setPixel((byte)0, (byte)0, Meggy.Color.DARK);
-                        
+                  
+                        Meggy.setPixel((byte)0, (byte)4, Meggy.Color.RED);
                         Meggy.delay(256);
-                    } else {
-                        // down indicates row 
-                        if (Meggy.checkButton(Meggy.Button.Down)) 
-                        {
-                            Meggy.setPixel((byte)0, (byte)4, Meggy.Color.DARK);
-                            
-                            Meggy.delay(256);
-                        } else {
-                            // None of button patterns we are looking
-                            // for where pressed.  Find lit LED in column
-                            // 0 of row 7, 4, or 0 and continue pattern.
+                       
+                    } 
+                                }
+                            }     
+           Meggy.delay(1000);
+                        
+                
 
-                            // row 0 if <0,0> is red
-                            if ((Meggy.getPixel((byte)0, (byte)0))==(Meggy.Color.RED)) 
-                            {
-                                Meggy.setPixel((byte)0, (byte)0, 
-                                        Meggy.Color.RED);
-                                Meggy.delay(256);
-                               
-                            } else {
-                                // row 4 if <0,4> is red
-                                if ((Meggy.getPixel((byte)0, (byte)4))
-                                        ==(Meggy.Color.RED)) 
-                                {
-                                    Meggy.setPixel((byte)0, (byte)4, 
-                                            Meggy.Color.RED);
-                                    Meggy.delay(256);
-                                   
-                                } else {
-                                    // row 7 if <0,7> is red
-                                    if ((Meggy.getPixel((byte)0, (byte)7))
-                                            ==(Meggy.Color.RED)) 
-                                    {
-                                        Meggy.setPixel((byte)0, (byte)7, 
-                                                Meggy.Color.RED);
-                                        Meggy.delay(256);
-                                       
-                                    } else{}
-                            }
-                        }
-                    }
-                }
 
-                Meggy.delay(1000);
             } // end while
-        }
+        
     } // end of method
     
-}
 

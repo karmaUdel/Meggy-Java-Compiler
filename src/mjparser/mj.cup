@@ -158,7 +158,7 @@ main_class ::=
    		System.out.println(" end of class1");
 						
 		RESULT = new BlockStatement(ex.line,ex.pos,list);
-   		System.out.println(" end of class2" + list);
+
 
           :} ; 
 
