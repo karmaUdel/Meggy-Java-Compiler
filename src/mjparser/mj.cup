@@ -87,7 +87,7 @@ terminal UMINUS;
 non terminal program;
 non terminal Integer exp;
 non terminal IStatement statement;
-non terminal IStatement statement_list;
+non terminal List statement_list;
 non terminal MainClass main_class;
 non terminal BlockStatement block_statement;
 non terminal IExp boolExp;
@@ -136,7 +136,7 @@ main_class ::=
             :}
 
 	 LBRACE PUBLIC STATIC VOID MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
-        LBRACE statement_list:op RBRACE RBRACE
+         block_statement:op RBRACE
           {:
 
 	System.out.println("End of Main");
@@ -146,55 +146,56 @@ main_class ::=
 	
 
 
-      /*  block_statement::= statement_list:list RBRACE:ex RBRACE
+
+	
+	
+
+
+        block_statement::= LBRACE:ex statement_list:list RBRACE
           {:
           // end of class
 
-   		System.out.println(list+ " end of class");
+   		System.out.println(" end of class1");
+						
+		RESULT = new BlockStatement(ex.line,ex.pos,list);
+   		System.out.println(" end of class2" + list);
 
-		 List stList = new LinkedList<IStatement>();
-   		stList.add(list);
-		RESULT = new BlockStatement(ex.line,ex.pos,stList);
+          :} |{::}; 
+
+		statement_list ::=  statement:op1{:List list = new LinkedList<IStatement>();
+							
+								list.add(op1);
+								RESULT = list;
+
+								:} 
+				| statement_list:lst1 statement:op2 
+						{:
+						List list = new LinkedList<IStatement>();
+
+								if(lst1!=null){						
+								list.addAll(lst1);	
+								}
+
+								list.add(op2);
 
 
 
-          :}
-; */
+							RESULT = list;
+								:} ; 
 
-
-
-	statement_list ::= statement_list:op1 statement:lst 
-			   {:	
-					System.out.println("st: "+lst + op1);
- 		List stList = new LinkedList<IStatement>();
-
-   		stList.add(lst);
-		stList.add(op1);
-		RESULT = new BlockStatement(0,0,stList);						
-			   :}
-
-  			   |statement:op  {:
-						 List stList = new LinkedList<IStatement>();
-   					stList.add(op);
-					RESULT = new BlockStatement(0,0,stList);
-					System.out.println("st list with Semi: "+op);	
-			   :}
-			; 
 	
-	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI
+	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI 
 						{:	System.out.println("Setpixel ");
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
 							//RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
 
-							List list = new LinkedList<IStatement>();
 
-							IStatement stmnt = new MeggySetPixel(op.line,op.pos,e,e1,c);
-							list.add(stmnt);				
-							RESULT = new BlockStatement (op.line,op.pos,list);
+							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
+						
 							 
 					
 						:}
-						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI
+						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI 
 						{:	System.out.println("delay");
 							RESULT = new MeggyDelay(op.line,op.pos,e);
 
@@ -212,17 +213,18 @@ main_class ::=
 						:}
 
 					
-						|WHILE:op LPAREN boolExp:e RPAREN LBRACE statement_list:stmt RBRACE 
+						|WHILE:op LPAREN boolExp:e RPAREN block_statement:stmt
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
 						:} 
 
 
-						|IF:op LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE
+						|IF:op LPAREN boolExp:e RPAREN block_statement:e1
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
 						System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
- 
+
+					/*
 					| IF:op1 LPAREN boolExp:e RPAREN LBRACE statement_list:e1 RBRACE ELSE LBRACE statement_list:e2 RBRACE 
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
@@ -265,8 +267,10 @@ main_class ::=
 					{: 
 						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
 						RESULT = new IfStatement(op1.line,op1.pos,e,null,e1);
-
-					:};
+ 
+					:} */
+ 
+					 ;
 
 
 					operation ::= operation:e PLUS:op operation:e1 {:	
