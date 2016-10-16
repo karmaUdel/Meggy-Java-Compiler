@@ -44,7 +44,9 @@ public class DotVisitorWithMap extends DepthFirstVisitor {
    public void defaultIn(Node node) {
        if (nodeStack.empty()) {
            out.println("digraph ASTGraph {");
+		System.out.println("nodestack empty");
        }
+
 
        nodeDotOutput(node);
        

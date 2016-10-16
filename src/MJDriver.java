@@ -16,6 +16,7 @@ import mjparser.*;
 import mjparser.mj;
 import ast_visitors.*;
 import ast.node.*;
+import symtable.*;
 public class MJDriver {
 
       private static void usage() {
@@ -51,7 +52,6 @@ public class MJDriver {
 	//System.out.println(parser.dump_stack()+"");
 
           // print ast to file
-	//parser.parse();
 	parser.dump_stack();
 	//parser.debug_parse();
           java.io.PrintStream astout =
@@ -59,6 +59,19 @@ public class MJDriver {
                 new java.io.FileOutputStream(filename + ".ast.dot"));
      ast_root.accept(new DotVisitor(new PrintWriter(astout)));
           System.out.println("Printing AST to " + filename + ".ast.dot");
+
+   // create the symbol table
+          BuildSymTable stVisitor = new BuildSymTable();
+          ast_root.accept(stVisitor);
+          SymTable globalST = stVisitor.getSymTable();
+
+  java.io.PrintStream STout =
+            new java.io.PrintStream(
+                new java.io.FileOutputStream(filename + ".ST.dot"));
+          System.out.println("Printing symbol table to " + filename + ".ST.dot");
+
+          globalST.outputDot(new PrintWriter(STout));
+
 
                 
 /*

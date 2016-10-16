@@ -11,6 +11,7 @@ public class Visitor
 {
     public void defaultVisit(@SuppressWarnings("unused") Node node)
     {
+	System.out.println("defaultVisit");
         // do nothing
     }
 

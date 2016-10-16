@@ -1,6 +1,7 @@
 package symtable;
 import java.util.*;
 import ast.node.*;
+import ast_visitors.*;
 
 import exceptions.InternalException;
 
@@ -15,7 +16,7 @@ import exceptions.InternalException;
  * WB: Simplified to only expression types
  */
 public class SymTable {
-    private final HashMap<Node,Type> mExpType = new HashMap<Node,Type>();
+    private final HashMap<Node,String> mExpType = new HashMap<Node,String>();
 
     public SymTable() {
     }
@@ -23,13 +24,28 @@ public class SymTable {
     
     public void setExpType(Node exp, Type t)
     {
-    	this.mExpType.put(exp, t);
+    	this.mExpType.put(exp, t.toString());
     }
     
-    public Type getExpType(Node exp)
+    public String getExpType(Node exp)
     {
     	return this.mExpType.get(exp);
     }
+	
+	public void outputDot(java.io.PrintWriter ps)
+	{ 	
+		DotVisitorWithMap visitor = new DotVisitorWithMap(ps,this.mExpType);
+		for (Node name: mExpType.keySet()){
+
+			    String key =name.toString();
+			    String value = mExpType.get(name).toString();  
+			    System.out.println(key + " " + value);  
+			visitor.defaultIn(name);
+		} 
+	ps.flush();
+
+
+	}
    
 /*
  */

@@ -1,0 +1,8 @@
+digraph ASTGraph {
+0 [ label="IntLiteral\nINT\n2" ];
+1 [ label="IntLiteral\nINT\n3" ];
+0 -> 1
+2 [ label="IntLiteral\nINT\n4" ];
+1 -> 2
+3 [ label="IntLiteral\nINT\n1" ];
+2 -> 3

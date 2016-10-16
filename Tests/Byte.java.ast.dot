@@ -1,0 +1,23 @@
+digraph ASTGraph {
+0 [ label="Program" ];
+1 [ label="MainClass" ];
+0 -> 1
+2 [ label="BlockStatement" ];
+1 -> 2
+3 [ label="MeggySetPixel" ];
+2 -> 3
+4 [ label="PlusExp" ];
+3 -> 4
+5 [ label="IntLiteral\n1" ];
+4 -> 5
+6 [ label="IntLiteral\n2" ];
+4 -> 6
+7 [ label="PlusExp" ];
+3 -> 7
+8 [ label="IntLiteral\n3" ];
+7 -> 8
+9 [ label="IntLiteral\n4" ];
+7 -> 9
+10 [ label="ColorLiteral\nMeggy.Color.WHITE" ];
+3 -> 10
+}
