@@ -1,0 +1,44 @@
+digraph ASTGraph {
+0 [ label="IntLiteral\nINT\n0" ];
+1 [ label="IntLiteral\nINT\n1000" ];
+0 -> 1
+2 [ label="IntLiteral\nINT\n4" ];
+1 -> 2
+3 [ label="IntLiteral\nINT\n3" ];
+2 -> 3
+4 [ label="IntLiteral\nINT\n0" ];
+3 -> 4
+5 [ label="IntLiteral\nINT\n0" ];
+4 -> 5
+6 [ label="IntLiteral\nINT\n0" ];
+5 -> 6
+7 [ label="IntLiteral\nINT\n244" ];
+6 -> 7
+8 [ label="IntLiteral\nINT\n444" ];
+7 -> 8
+9 [ label="IntLiteral\nINT\n256" ];
+8 -> 9
+10 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+9 -> 10
+11 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+10 -> 11
+12 [ label="TrueLiteral\nBOOL\ntrue" ];
+11 -> 12
+13 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+12 -> 13
+14 [ label="IntLiteral\nINT\n7" ];
+13 -> 14
+15 [ label="IntLiteral\nINT\n544" ];
+14 -> 15
+16 [ label="IntLiteral\nINT\n0" ];
+15 -> 16
+17 [ label="IntLiteral\nINT\n4" ];
+16 -> 17
+18 [ label="IntLiteral\nINT\n644" ];
+17 -> 18
+19 [ label="IntLiteral\nINT\n1" ];
+18 -> 19
+20 [ label="IntLiteral\nINT\n0" ];
+19 -> 20
+21 [ label="IntLiteral\nINT\n256" ];
+20 -> 21

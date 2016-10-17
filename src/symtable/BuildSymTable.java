@@ -52,7 +52,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
    public void inAndExp(AndExp node)
     {
 	System.out.println("and exp");
-
+	
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
     }
@@ -60,6 +60,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
   @Override 
    public void inLtExp(LtExp node)
     {
+	
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
 	System.out.println("lt exp");
@@ -108,6 +109,11 @@ public class BuildSymTable extends DepthFirstVisitor   {
         checkExp(node);
     }
 
+   public void inByteCast(ByteCast node)
+    {
+        checkExp(node.getExp());
+    }
+
 
    public SymTable getSymTable()
 	{
@@ -133,6 +139,10 @@ public class BuildSymTable extends DepthFirstVisitor   {
 
 		case "ColorLiteral":
 		symTable.setExpType(exp, COLOR);
+		break;
+
+		case "ByteCast":
+		symTable.setExpType(exp,BYTE);
 		break;
 
 		default: 

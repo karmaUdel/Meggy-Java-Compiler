@@ -275,7 +275,9 @@ main_class ::=
 						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
 					
-					| MINUS operation {: System.out.println("Unary minus");:} %prec UMINUS
+					| MINUS:ex operation:op {:
+					RESULT = new NegExp(ex.line,ex.pos,op);
+					 System.out.println("Unary minus");:} %prec UMINUS
 
 					|INT_LITERAL:ex 
 					{: System.out.println("int");
@@ -305,7 +307,15 @@ main_class ::=
 					{:
 						System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
-					:}| MEGGYCHECKBUTTON LPAREN BUTTON_LITERAL RPAREN
+					:}|NOT:op LPAREN boolExp:e RPAREN
+					{:
+						System.out.println("not");
+						RESULT= new NotExp(op.line,op.pos,e);
+					:}| MEGGYCHECKBUTTON:ex LPAREN BUTTON_LITERAL:op RPAREN 
+						{:
+						ButtonLiteral b= new ButtonLiteral(ex.line,ex.pos,op.lexeme,op.value);
+						RESULT = new MeggyCheckButton(ex.line,ex.pos,b);
+						:}
 
 						|MEGGYGETPIXEL:op LPAREN operation:e COMMA operation:e1 RPAREN
 						{:	System.out.println("getPixel");
@@ -318,7 +328,10 @@ main_class ::=
 
 						| COLOR_LITERAL:op {: RESULT = new ColorLiteral(op.line,op.pos,op.lexeme,op.value);
 								System.out.println("Color literal");
-								:} ; 
+								:} 
+								| operation:e1 LT:ex operation:e2 {:
+									RESULT = new LtExp(ex.line,ex.pos,e1,e2);
+									:} ; 
 					
 	
 

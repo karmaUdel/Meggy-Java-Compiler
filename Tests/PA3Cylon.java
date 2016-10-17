@@ -58,8 +58,7 @@ class PA3Cylon {
                  
                 } else {
                     // up and right indicates row 4
-                    if (Meggy.checkButton(Meggy.Button.Up)
-                            && Meggy.checkButton(Meggy.Button.Right)) 
+                    if (244+444<544*644)
                     {
                   
                         Meggy.setPixel((byte)0, (byte)4, Meggy.Color.RED);

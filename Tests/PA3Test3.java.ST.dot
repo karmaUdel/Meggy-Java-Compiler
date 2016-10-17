@@ -1,0 +1,358 @@
+digraph ASTGraph {
+0 [ label="IntLiteral\nINT\n5" ];
+1 [ label="IntLiteral\nINT\n4" ];
+0 -> 1
+2 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+1 -> 2
+3 [ label="IntLiteral\nINT\n3" ];
+2 -> 3
+4 [ label="IntLiteral\nINT\n3" ];
+3 -> 4
+5 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+4 -> 5
+6 [ label="IntLiteral\nINT\n1" ];
+5 -> 6
+7 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+6 -> 7
+8 [ label="IntLiteral\nINT\n1" ];
+7 -> 8
+9 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+8 -> 9
+10 [ label="IntLiteral\nINT\n6" ];
+9 -> 10
+11 [ label="IntLiteral\nINT\n3" ];
+10 -> 11
+12 [ label="IntLiteral\nINT\n1" ];
+11 -> 12
+13 [ label="IntLiteral\nINT\n0" ];
+12 -> 13
+14 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+13 -> 14
+15 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+14 -> 15
+16 [ label="IntLiteral\nINT\n3" ];
+15 -> 16
+17 [ label="IntLiteral\nINT\n5" ];
+16 -> 17
+18 [ label="IntLiteral\nINT\n2" ];
+17 -> 18
+19 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+18 -> 19
+20 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+19 -> 20
+21 [ label="IntLiteral\nINT\n1000" ];
+20 -> 21
+22 [ label="IntLiteral\nINT\n4" ];
+21 -> 22
+23 [ label="IntLiteral\nINT\n2" ];
+22 -> 23
+24 [ label="IntLiteral\nINT\n5" ];
+23 -> 24
+25 [ label="IntLiteral\nINT\n4" ];
+24 -> 25
+26 [ label="IntLiteral\nINT\n5" ];
+25 -> 26
+27 [ label="IntLiteral\nINT\n6" ];
+26 -> 27
+28 [ label="IntLiteral\nINT\n2" ];
+27 -> 28
+29 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+28 -> 29
+30 [ label="IntLiteral\nINT\n5" ];
+29 -> 30
+31 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+30 -> 31
+32 [ label="IntLiteral\nINT\n3" ];
+31 -> 32
+33 [ label="IntLiteral\nINT\n3" ];
+32 -> 33
+34 [ label="IntLiteral\nINT\n2" ];
+33 -> 34
+35 [ label="IntLiteral\nINT\n4" ];
+34 -> 35
+36 [ label="IntLiteral\nINT\n7" ];
+35 -> 36
+37 [ label="IntLiteral\nINT\n6" ];
+36 -> 37
+38 [ label="IntLiteral\nINT\n4" ];
+37 -> 38
+39 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+38 -> 39
+40 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+39 -> 40
+41 [ label="IntLiteral\nINT\n0" ];
+40 -> 41
+42 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+41 -> 42
+43 [ label="IntLiteral\nINT\n4" ];
+42 -> 43
+44 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+43 -> 44
+45 [ label="IntLiteral\nINT\n2" ];
+44 -> 45
+46 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+45 -> 46
+47 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+46 -> 47
+48 [ label="IntLiteral\nINT\n1" ];
+47 -> 48
+49 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+48 -> 49
+50 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+49 -> 50
+51 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+50 -> 51
+52 [ label="IntLiteral\nINT\n0" ];
+51 -> 52
+53 [ label="IntLiteral\nINT\n5" ];
+52 -> 53
+54 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+53 -> 54
+55 [ label="IntLiteral\nINT\n5" ];
+54 -> 55
+56 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+55 -> 56
+57 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+56 -> 57
+58 [ label="IntLiteral\nINT\n3" ];
+57 -> 58
+59 [ label="IntLiteral\nINT\n6" ];
+58 -> 59
+60 [ label="IntLiteral\nINT\n4" ];
+59 -> 60
+61 [ label="IntLiteral\nINT\n1" ];
+60 -> 61
+62 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+61 -> 62
+63 [ label="IntLiteral\nINT\n2" ];
+62 -> 63
+64 [ label="IntLiteral\nINT\n4" ];
+63 -> 64
+65 [ label="IntLiteral\nINT\n5" ];
+64 -> 65
+66 [ label="IntLiteral\nINT\n2" ];
+65 -> 66
+67 [ label="IntLiteral\nINT\n4" ];
+66 -> 67
+68 [ label="IntLiteral\nINT\n5" ];
+67 -> 68
+69 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+68 -> 69
+70 [ label="IntLiteral\nINT\n4" ];
+69 -> 70
+71 [ label="IntLiteral\nINT\n0" ];
+70 -> 71
+72 [ label="IntLiteral\nINT\n2" ];
+71 -> 72
+73 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+72 -> 73
+74 [ label="IntLiteral\nINT\n5" ];
+73 -> 74
+75 [ label="IntLiteral\nINT\n3" ];
+74 -> 75
+76 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+75 -> 76
+77 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+76 -> 77
+78 [ label="IntLiteral\nINT\n5" ];
+77 -> 78
+79 [ label="IntLiteral\nINT\n4" ];
+78 -> 79
+80 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+79 -> 80
+81 [ label="IntLiteral\nINT\n6" ];
+80 -> 81
+82 [ label="IntLiteral\nINT\n2" ];
+81 -> 82
+83 [ label="IntLiteral\nINT\n4" ];
+82 -> 83
+84 [ label="IntLiteral\nINT\n0" ];
+83 -> 84
+85 [ label="IntLiteral\nINT\n2" ];
+84 -> 85
+86 [ label="IntLiteral\nINT\n5" ];
+85 -> 86
+87 [ label="IntLiteral\nINT\n2" ];
+86 -> 87
+88 [ label="IntLiteral\nINT\n5" ];
+87 -> 88
+89 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+88 -> 89
+90 [ label="IntLiteral\nINT\n3" ];
+89 -> 90
+91 [ label="ColorLiteral\nCOLOR\nMeggy.Color.DARK" ];
+90 -> 91
+92 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+91 -> 92
+93 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+92 -> 93
+94 [ label="IntLiteral\nINT\n2" ];
+93 -> 94
+95 [ label="IntLiteral\nINT\n1" ];
+94 -> 95
+96 [ label="IntLiteral\nINT\n3" ];
+95 -> 96
+97 [ label="IntLiteral\nINT\n7" ];
+96 -> 97
+98 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+97 -> 98
+99 [ label="IntLiteral\nINT\n6" ];
+98 -> 99
+100 [ label="IntLiteral\nINT\n6" ];
+99 -> 100
+101 [ label="IntLiteral\nINT\n3" ];
+100 -> 101
+102 [ label="IntLiteral\nINT\n7" ];
+101 -> 102
+103 [ label="IntLiteral\nINT\n3" ];
+102 -> 103
+104 [ label="IntLiteral\nINT\n5" ];
+103 -> 104
+105 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+104 -> 105
+106 [ label="IntLiteral\nINT\n5" ];
+105 -> 106
+107 [ label="IntLiteral\nINT\n1" ];
+106 -> 107
+108 [ label="IntLiteral\nINT\n5" ];
+107 -> 108
+109 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+108 -> 109
+110 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+109 -> 110
+111 [ label="IntLiteral\nINT\n3" ];
+110 -> 111
+112 [ label="IntLiteral\nINT\n4" ];
+111 -> 112
+113 [ label="IntLiteral\nINT\n1" ];
+112 -> 113
+114 [ label="IntLiteral\nINT\n2" ];
+113 -> 114
+115 [ label="IntLiteral\nINT\n4" ];
+114 -> 115
+116 [ label="IntLiteral\nINT\n3" ];
+115 -> 116
+117 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+116 -> 117
+118 [ label="IntLiteral\nINT\n0" ];
+117 -> 118
+119 [ label="IntLiteral\nINT\n3" ];
+118 -> 119
+120 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+119 -> 120
+121 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+120 -> 121
+122 [ label="IntLiteral\nINT\n2" ];
+121 -> 122
+123 [ label="IntLiteral\nINT\n4" ];
+122 -> 123
+124 [ label="IntLiteral\nINT\n4" ];
+123 -> 124
+125 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+124 -> 125
+126 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+125 -> 126
+127 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+126 -> 127
+128 [ label="IntLiteral\nINT\n2" ];
+127 -> 128
+129 [ label="IntLiteral\nINT\n4" ];
+128 -> 129
+130 [ label="IntLiteral\nINT\n2" ];
+129 -> 130
+131 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+130 -> 131
+132 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+131 -> 132
+133 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+132 -> 133
+134 [ label="IntLiteral\nINT\n3" ];
+133 -> 134
+135 [ label="IntLiteral\nINT\n4" ];
+134 -> 135
+136 [ label="IntLiteral\nINT\n0" ];
+135 -> 136
+137 [ label="IntLiteral\nINT\n6" ];
+136 -> 137
+138 [ label="IntLiteral\nINT\n5" ];
+137 -> 138
+139 [ label="IntLiteral\nINT\n6" ];
+138 -> 139
+140 [ label="IntLiteral\nINT\n0" ];
+139 -> 140
+141 [ label="IntLiteral\nINT\n5" ];
+140 -> 141
+142 [ label="IntLiteral\nINT\n4" ];
+141 -> 142
+143 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+142 -> 143
+144 [ label="IntLiteral\nINT\n5" ];
+143 -> 144
+145 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+144 -> 145
+146 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+145 -> 146
+147 [ label="IntLiteral\nINT\n2" ];
+146 -> 147
+148 [ label="IntLiteral\nINT\n6" ];
+147 -> 148
+149 [ label="IntLiteral\nINT\n3" ];
+148 -> 149
+150 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+149 -> 150
+151 [ label="IntLiteral\nINT\n2" ];
+150 -> 151
+152 [ label="IntLiteral\nINT\n4" ];
+151 -> 152
+153 [ label="IntLiteral\nINT\n4" ];
+152 -> 153
+154 [ label="IntLiteral\nINT\n4" ];
+153 -> 154
+155 [ label="IntLiteral\nINT\n5" ];
+154 -> 155
+156 [ label="IntLiteral\nINT\n2" ];
+155 -> 156
+157 [ label="IntLiteral\nINT\n4" ];
+156 -> 157
+158 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+157 -> 158
+159 [ label="IntLiteral\nINT\n2" ];
+158 -> 159
+160 [ label="IntLiteral\nINT\n2" ];
+159 -> 160
+161 [ label="IntLiteral\nINT\n2" ];
+160 -> 161
+162 [ label="IntLiteral\nINT\n2" ];
+161 -> 162
+163 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+162 -> 163
+164 [ label="IntLiteral\nINT\n1000" ];
+163 -> 164
+165 [ label="IntLiteral\nINT\n7" ];
+164 -> 165
+166 [ label="IntLiteral\nINT\n3" ];
+165 -> 166
+167 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+166 -> 167
+168 [ label="IntLiteral\nINT\n2" ];
+167 -> 168
+169 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+168 -> 169
+170 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+169 -> 170
+171 [ label="IntLiteral\nINT\n3" ];
+170 -> 171
+172 [ label="IntLiteral\nINT\n5" ];
+171 -> 172
+173 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+172 -> 173
+174 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+173 -> 174
+175 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+174 -> 175
+176 [ label="ColorLiteral\nCOLOR\nMeggy.Color.GREEN" ];
+175 -> 176
+177 [ label="IntLiteral\nINT\n5" ];
+176 -> 177
+178 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+177 -> 178

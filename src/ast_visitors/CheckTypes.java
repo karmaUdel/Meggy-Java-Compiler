@@ -43,13 +43,13 @@ public class CheckTypes extends DepthFirstVisitor
    
    public void outAndExp(AndExp node)
    {
-     if(this.mCurrentST.getExpType(node.getLExp()) != Type.BOOL) {
+     if(this.mCurrentST.getExpType(node.getLExp()) != Type.BOOL.toString()) {
        throw new SemanticException(
          "Invalid left operand type for operator &&",
          node.getLExp().getLine(), node.getLExp().getPos());
      }
 
-     if(this.mCurrentST.getExpType(node.getRExp()) != Type.BOOL) {
+     if(this.mCurrentST.getExpType(node.getRExp()) != Type.BOOL.toString()) {
        throw new SemanticException(
          "Invalid right operand type for operator &&",
          node.getRExp().getLine(), node.getRExp().getPos());
@@ -60,12 +60,13 @@ public class CheckTypes extends DepthFirstVisitor
   
    public void outPlusExp(PlusExp node)
    {
-       Type lexpType = this.mCurrentST.getExpType(node.getLExp());
-       Type rexpType = this.mCurrentST.getExpType(node.getRExp());
-       if ((lexpType==Type.INT  || lexpType==Type.BYTE) &&
-           (rexpType==Type.INT  || rexpType==Type.BYTE)
+       String lexpType = this.mCurrentST.getExpType(node.getLExp());
+       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
+           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
+	System.out.println("+ is correct");
        } else {
            throw new SemanticException(
                    "Operands to + operator must be INT or BYTE",
