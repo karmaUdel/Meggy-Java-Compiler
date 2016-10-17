@@ -23,11 +23,6 @@ public class BuildSymTable extends DepthFirstVisitor   {
 
     }
 
-	@Override
-	public void inAndExp(AndExp node)
-    {
-        System.out.println("and exp");
-    }
     
   @Override 
    public void inPlusExp(PlusExp node)
@@ -37,12 +32,91 @@ public class BuildSymTable extends DepthFirstVisitor   {
 	System.out.println("plus exp");
     }
 
+  @Override 
+   public void inMinusExp(MinusExp node)
+    {
+	checkExp(node.getLExp());
+	checkExp(node.getRExp());
+	System.out.println("minus exp");
+    }
 
-public SymTable getSymTable()
+  @Override 
+   public void inMulExp(MulExp node)
+    {
+	checkExp(node.getLExp());
+	checkExp(node.getRExp());
+	System.out.println("mul exp");
+    }
+
+  @Override 
+   public void inAndExp(AndExp node)
+    {
+	System.out.println("and exp");
+
+	checkExp(node.getLExp());
+	checkExp(node.getRExp());
+    }
+
+  @Override 
+   public void inLtExp(LtExp node)
+    {
+	checkExp(node.getLExp());
+	checkExp(node.getRExp());
+	System.out.println("lt exp");
+    }
+
+  @Override 
+   public void inNotExp(NotExp node)
+    {
+	
+	checkExp(node.getExp());
+	System.out.println("not exp");
+    }
+
+
+ @Override 
+   public void inTrueExp(TrueLiteral node)
+    {
+	
+	checkExp(node);
+	System.out.println("true exp");
+    }
+
+ @Override 
+   public void inFalseExp(FalseLiteral node)
+    {
+	
+	checkExp(node);
+	System.out.println("false exp");
+    }
+
+ @Override
+  public void inMeggyCheckButton(MeggyCheckButton node)
+    {
+        checkExp(node);
+    }
+
+ @Override
+  public void inColorExp(ColorLiteral node)
+    {
+        checkExp(node);
+    }
+
+ @Override
+  public void inIntegerExp(IntLiteral node)
+    {
+        checkExp(node);
+    }
+
+
+   public SymTable getSymTable()
 	{
 	return this.symTable;
 	}
+
+
    public void checkExp(IExp exp){
+
 	switch(exp.getClass().getSimpleName()){ 
 
 		case "IntLiteral":
@@ -53,8 +127,16 @@ public SymTable getSymTable()
 		symTable.setExpType(exp, BUTTON);
 		break;
 
+		case "TrueLiteral": case "FalseLiteral":
+		symTable.setExpType(exp, BOOL);
+		break;
+
+		case "ColorLiteral":
+		symTable.setExpType(exp, COLOR);
+		break;
+
 		default: 
-		symTable.setExpType(exp, VOID);
+		System.out.println("none");
 	}
    
 	}

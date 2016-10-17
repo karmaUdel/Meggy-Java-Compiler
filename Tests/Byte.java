@@ -8,13 +8,15 @@ import meggy.Meggy;
 class Byte {
 	public static void main(String[] whatever){
 	        // Byte multiplication
-	        Meggy.setPixel(1+2, 3+4,
+
+		if(11 == 6)
+	        Meggy.setPixel(1+2*3, 4-5,
 	                         Meggy.Color.WHITE);
-		/*
+		
 	        // Byte casts Byte
-	        Meggy.setPixel( (byte)((byte)3),
-	                        (byte)((byte)(5-(byte)2*(byte)2)),
+	        Meggy.setPixel( (byte)((byte)7),
+	                        (byte)((byte)(8-(byte)9*(byte)10)),
 	                        Meggy.Color.ORANGE);
-		*/
+		
     }
 }

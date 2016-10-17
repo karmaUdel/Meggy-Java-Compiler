@@ -7,12 +7,12 @@ import meggy.Meggy;
 
 class IfStmt {
     public static void main(String[] whatever){
-	    if ((byte)1+1  == 2)
+if ((byte)1+1  == 2)
 	    		Meggy.setPixel( (byte)0, (byte)1, Meggy.Color.GREEN );
 	    	else
 	    		Meggy.setPixel( (byte)0, (byte)1, Meggy.Color.RED );
 	    
-	    if (-2  == (1-3))
+if (-2  == (1-3))
 	    	if ( (byte)2*(byte)3 == 6)
 	    		Meggy.setPixel( (byte)0, (byte)2, Meggy.Color.GREEN );
 

@@ -185,30 +185,16 @@ main_class ::=
 
 	
 	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI 
-						{:	System.out.println("Setpixel ");
+						{:	
+							System.out.println("Setpixel ");
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
-							//RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
-
-
 							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
-						
-							 
 					
 						:}
 						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI 
-						{:	System.out.println("delay");
+						{:	
+							System.out.println("delay");
 							RESULT = new MeggyDelay(op.line,op.pos,e);
-
-						/*
-							System.out.println("delay" +lst);
-							List list = new LinkedList<IStatement>();
-							if(lst!=null){						
-								list.add(0,lst);	
-							}
-							IStatement stmnt = new MeggyDelay(op.line,op.pos,e);
-							list.add(stmnt);
-									
-							RESULT = new BlockStatement (op.line,op.pos,list);*/
 
 						:}
 
@@ -281,27 +267,24 @@ main_class ::=
 						RESULT = new MulExp(op.line, op.pos, e, e1);
 					:}
 
-					|INT_LITERAL:ex 
-					{: System.out.println("int");
-					RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}  
-					| LPAREN BYTE:op RPAREN INT_LITERAL:e
+
+					| LPAREN BYTE:op RPAREN operation:e
 					{:      System.out.println("op to byte");
 
-						IntLiteral lit1 = new IntLiteral(op.line,op.pos,e.lexeme,e.value);
-						RESULT = new ByteCast(op.line, op.pos,lit1);
+
+						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
 					
-					 | LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN 
-					{:      System.out.println("op to byte");
-						RESULT = new ByteCast(op.line, op.pos,e); 
-					:} |LPAREN operation RPAREN |MINUS operation {: System.out.println("Unary minus");:} %prec UMINUS
-					; 
- 					
+					| MINUS operation {: System.out.println("Unary minus");:} %prec UMINUS
 
+					|INT_LITERAL:ex 
+					{: System.out.println("int");
+					RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}
+					|LPAREN operation:e RPAREN{: RESULT =e; :} ; 
 	
 
 
-					boolExp ::=operation:e AND:op operation:e1
+				         boolExp ::=boolExp:e AND:op boolExp:e1
 					{:
 						System.out.println("and");
 
@@ -311,7 +294,14 @@ main_class ::=
 					{:
 						System.out.println("equal");
 						RESULT = new EqualExp(op.line, op.pos, e, e1);
-					:}|NOT:op operation:e
+
+					:}| boolExp:e EQUAL:op boolExp:e1
+					{:
+						System.out.println("equal");
+						RESULT = new EqualExp(op.line, op.pos, e, e1);
+					:}
+
+					|NOT:op boolExp:e
 					{:
 						System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
@@ -321,13 +311,15 @@ main_class ::=
 						{:	System.out.println("getPixel");
 							RESULT= new MeggyGetPixel(op.line,op.pos,e,e1);
 						:}	
-					|boolVal
-					;
 					
-					boolVal::= TRUE:op1 {: RESULT = new TrueLiteral(op1.line,op1.pos,op1.lexeme,op1.value);:}
+					| TRUE:op1 {: RESULT = new TrueLiteral(op1.line,op1.pos,op1.lexeme,op1.value);:}
+
 						 | FALSE:op2  {: RESULT = new FalseLiteral(op2.line,op2.pos,op2.lexeme,op2.value);:}
+
 						| COLOR_LITERAL:op {: RESULT = new ColorLiteral(op.line,op.pos,op.lexeme,op.value);
 								System.out.println("Color literal");
-								:};
+								:} ; 
+					
+	
 
 
