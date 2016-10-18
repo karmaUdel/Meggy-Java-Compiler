@@ -11,7 +11,7 @@ class PA3Expressions {
 	        // Integer addition
 Meggy.setPixel((byte)3,(byte)(0+3),Meggy.Color.VIOLET );
 	        
-
+      
 	        // Integer subtraction
 	        Meggy.setPixel( (byte)((byte)7+(byte)1), (byte)(9-5), Meggy.Color.BLUE);
 
@@ -25,7 +25,7 @@ Meggy.setPixel( (byte)((byte)((byte)3+2)+1),
 	                        (byte)((byte)((byte)0-(byte)7)+(byte)7),
 	                        Meggy.Color.YELLOW);
 
-     /*           // Unary Minus
+          // Unary Minus
 	        Meggy.setPixel( (byte)(-2+1+8), (byte)(10+-5), Meggy.Color.DARK);
                 // watch it! spaces significant
 	        Meggy.setPixel( (byte)( (byte)(555 - - -666) * (byte)(-1)), (byte)(10+-5), Meggy.Color.ORANGE);
@@ -35,7 +35,7 @@ Meggy.setPixel( (byte)((byte)((byte)3+2)+1),
 
 
 	        // Only Byte multiplication
-	        Meggy.setPixel( (byte)((byte)3*(byte)2), (byte)(5), Meggy.Color.WHITE); */
+	        Meggy.setPixel( (byte)((byte)3*(byte)2), (byte)(5), Meggy.Color.WHITE);/* */
 	    
     }
 }

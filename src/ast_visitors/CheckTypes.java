@@ -75,6 +75,94 @@ public class CheckTypes extends DepthFirstVisitor
        }
 
    }
+
+   public void outMinusExp(MinusExp node)
+   {
+       String lexpType = this.mCurrentST.getExpType(node.getLExp());
+       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
+           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.INT);
+	System.out.println("- is correct");
+       } else {
+           throw new SemanticException(
+                   "Operands to - operator must be INT or BYTE",
+                   node.getLExp().getLine(),
+                   node.getLExp().getPos());
+       }
+
+   }
+
+   public void outMulExp(MulExp node)
+   {
+       String lexpType = this.mCurrentST.getExpType(node.getLExp());
+       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
+           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.INT);
+	System.out.println("* is correct");
+       } else {
+           throw new SemanticException(
+                   "Operands to * operator must be INT or BYTE",
+                   node.getLExp().getLine(),
+                   node.getLExp().getPos());
+       }
+
+   }
+
+
+    public void outNegExp(NegExp node)
+   {
+       String expType = this.mCurrentST.getExpType(node.getExp());
+
+       if ((expType==Type.INT.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.INT);
+	System.out.println("UMin is correct");
+       } else {
+           throw new SemanticException(
+                   "Operands to UMin operator must be INT",
+                   node.getExp().getLine(),
+                   node.getExp().getPos());
+       }
+  }
+
+
+   public void outByteCast(ByteCast node)
+   {
+       String expType = this.mCurrentST.getExpType(node.getExp());
+
+       if ((expType==Type.INT.toString()  || expType==Type.BYTE.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.BYTE);
+	System.out.println("Byte is correct");
+       } else {
+           throw new SemanticException(
+                   "Operands to Byte operator must be INT or BYTE",
+                   node.getExp().getLine(),
+                   node.getExp().getPos());
+       }
+
+   }
+
+  public void outNotExp(NotExp node)
+   {
+       String expType = this.mCurrentST.getExpType(node.getExp());
+
+       if ((expType==Type.BOOL.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.BOOL);
+	System.out.println("NOT is correct");
+       } else {
+           throw new SemanticException(
+                   "Operands to NOT operator must be BOOL",
+                   node.getExp().getLine(),
+                   node.getExp().getPos());
+       }
+ }
+
    public void outMeggySetPixel(MeggySetPixel node)
    {
        String lexpType = this.mCurrentST.getExpType(node.getXExp());
@@ -86,7 +174,7 @@ public class CheckTypes extends DepthFirstVisitor
 	   (colorexpType == Type.COLOR.toString())
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	System.out.println("+ is correct");
+	System.out.println("SetPixel is correct");
        } else {
            throw new SemanticException(
                    "Operands to MeggySetPixel operator must be INT or BYTE,INT or BYTE & MeggyColor",
