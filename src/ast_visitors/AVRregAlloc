@@ -15,12 +15,58 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		this.out=out;
 	}
 	public void visitAndExp(AndExp andExp) {
+		if(andExp.LExp()!=null){
+		andExp.LExp().accept((Visitor)this);
+		}
+		if(andExp.RExp()!=null){
+		andExp.RExp().accept((Visitor)this);
+		}
     }
 	public void visitEqualExp(EqualExp equalExp) {
-    }
+		if(equalExp.LExp()!=null){
+		equalExp.LExp().accept((Visitor)this);
+		}
+		if(equalExp.RExp()!=null){
+		equalExp.RExp().accept((Visitor)this);
+		}
+	}
+	
 	public void visitNotExp(NotExp notExp) {
+		if(notExp.getExp()!=null){
+		notExp.getExp().accept((Visitor)this);
+		}
     }
-	public void visitMeggySetPixelStatement(MeggySetPixel meggySetPixel) {
+	
+	public void visitPlusExp(PlusExp plusExp) {
+		if(plusExp.LExp()!=null){
+		plusExp.LExp().accept((Visitor)this);
+		}
+		if(plusExp.RExp()!=null){
+		plusExp.RExp().accept((Visitor)this);
+		}
+	}
+	public void visitMinusExp(MinusExp minusExp) {
+		if(minusExp.LExp()!=null){
+		minusExp.LExp().accept((Visitor)this);
+		}
+		if(minusExp.RExp()!=null){
+		minusExp.RExp().accept((Visitor)this);
+		}
+	}
+	public void visitNegExp(NegExp negExp) {
+		if(negExp.getExp()!=null){
+		negExp.getExp().accept((Visitor)this);
+		}
+    }
+	public void visitMulExp(MulExp mulExp) {
+		if(mulExp.LExp()!=null){
+		mulExp.LExp().accept((Visitor)this);
+		}
+		if(mulExp.RExp()!=null){
+		mulExp.RExp().accept((Visitor)this);
+		}
+	}
+	public void visitMeggySetPixel(MeggySetPixel meggySetPixel) {
 		if(meggySetPixel.getXExp()!=null){
 		meggySetPixel.getXExp().accept((Visitor)this);
 		}
@@ -36,9 +82,9 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		out.println("call   _Z6DrawPxhhh");
 		out.println("call   _Z12DisplaySlatev");
 	}
-	public void visitMeggyDelayExp(MeggyDelay meggyDelay) {
+	public void visitMeggyDelay(MeggyDelay meggyDelay) {
     }
-	public void visitMeggygetPixelExp(MeggyGetPixel meggyGetPixel) {
+	public void visitMeggyGetPixel(MeggyGetPixel meggyGetPixel) {
     }
 	public void visitIfStatement(IfStatement ifstatement){
 	    //some code
