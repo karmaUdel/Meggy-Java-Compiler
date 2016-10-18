@@ -1,0 +1,95 @@
+package ast_visitors;
+
+import ast.node.*;
+import ast.visitor.*;
+import java.io.PrintWriter;
+import java.util.*;
+import symtable.*;
+
+public class AVRregAlloc extends DepthFirstVisitor {
+    private final SymTable mCurrentST; // symbol table
+	private final PrintWriter out; // PrintWriter
+	
+	public AVRregAlloc(PrintWriter out,SymTable symTable) {
+        this.mCurrentST = symTable;
+		this.out=out;
+	}
+	public void visitAndExp(AndExp andExp) {
+    }
+	public void visitEqualExp(EqualExp equalExp) {
+    }
+	public void visitNotExp(NotExp notExp) {
+    }
+	public void visitMeggySetPixelStatement(MeggySetPixel meggySetPixel) {
+		if(meggySetPixel.getXExp()!=null){
+		meggySetPixel.getXExp().accept((Visitor)this);
+		}
+		if(meggySetPixel.getYExp()!=null){
+		meggySetPixel.getYExp().accept((Visitor)this);
+		}
+		if(meggySetPixel.getColor()!=null){
+		meggySetPixel.getColor().accept((Visitor)this);
+		}
+	    out.println("pop    r20");
+		out.println("pop    r22");
+		out.println("pop    r24");
+		out.println("call   _Z6DrawPxhhh");
+		out.println("call   _Z12DisplaySlatev");
+	}
+	public void visitMeggyDelayExp(MeggyDelay meggyDelay) {
+    }
+	public void visitMeggygetPixelExp(MeggyGetPixel meggyGetPixel) {
+    }
+	public void visitIfStatement(IfStatement ifstatement){
+	    //some code
+		if (ifStatement.getExp() != null) {
+            ifStatement.getExp().accept((Visitor)this);
+        }
+		//some code
+        if (ifStatement.getThenStatement() != null) {
+            ifStatement.getThenStatement().accept((Visitor)this);
+        }
+		//some code
+        if (ifStatement.getElseStatement() != null) {
+            ifStatement.getElseStatement().accept((Visitor)this);
+        }
+	}
+	public void visitWhileStatement(WhileStatement whileStatement){
+		if(whileStatement.getExp()!=null){
+		whileStatement.getExp().accept((Visitor)this);
+		}
+		if(whileStatement.getStatement()!=null){
+		whileStatement.getStatement().accept((Visitor)this);
+		}
+	}
+	public void visitMeggyCheckButton(MeggyCheckButton meggyCheckButton){
+	
+	}
+	public void visitIntLiteral(IntLiteral intLiteral){
+		//int code 
+		//get value from symbol table
+		//left --> right
+		
+		//# Load constant int intLiteral.getIntValue()
+		out.println("ldi    r24,lo8(" +intLiteral.getIntValue()+")");
+		out.println("ldi    r25,hi8("+intLiteral.getIntValue()+")");
+		//# push two byte expression onto stack
+		out.println("push   r25");
+		out.println("push   r24");
+	}
+	public void visitColorLiteral(ColorLiteral colorLiteral){
+		//color code
+		//fetcch value from symbol table 
+		out.println("ldi    r22,"+colorLiteral.getIntValue()); // add color value
+		out.println("push   r22");
+	}
+	public void visitTrueLiteral(TrueLiteral trueLiteral){
+	
+	}
+	public void visitFalseLiteral(FalseLiteral falseLiteral){
+	
+	}
+	public void visitButtonLiteral(ButtonLiteral buttonLiteral){
+	
+	}
+}
