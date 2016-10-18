@@ -35,7 +35,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
             reader = new BufferedReader(new InputStreamReader(mainPrologue));
 			String line = null;
             while ((line = reader.readLine()) != null) {
-                parser.out.println(line);
+                this.out.println(line);
             }
         } catch ( Exception e2) {
             e2.printStackTrace();
@@ -61,7 +61,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
             reader = new BufferedReader(new InputStreamReader(mainPrologue));
 			String line = null;
             while ((line = reader.readLine()) != null) {
-                parser.out.println(line);
+                this.out.println(line);
             }
         } catch ( Exception e2) {
             e2.printStackTrace();
@@ -139,11 +139,11 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(meggySetPixel.getColor()!=null){
 		meggySetPixel.getColor().accept((Visitor)this);
 		}
-	    out.println("pop    r20");
-		out.println("pop    r22");
-		out.println("pop    r24");
-		out.println("call   _Z6DrawPxhhh");
-		out.println("call   _Z12DisplaySlatev");
+	    this.out.println("pop    r20");
+		this.out.println("pop    r22");
+		this.out.println("pop    r24");
+		this.out.println("call   _Z6DrawPxhhh");
+		this.out.println("call   _Z12DisplaySlatev");
 	}
 	public void visitMeggyDelay(MeggyDelay meggyDelay) {
     }
@@ -180,17 +180,17 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		//left --> right
 		
 		//# Load constant int intLiteral.getIntValue()
-		out.println("ldi    r24,lo8(" +intLiteral.getIntValue()+")");
-		out.println("ldi    r25,hi8("+intLiteral.getIntValue()+")");
+		this.out.println("ldi    r24,lo8(" +intLiteral.getIntValue()+")");
+		this.out.println("ldi    r25,hi8("+intLiteral.getIntValue()+")");
 		//# push two byte expression onto stack
-		out.println("push   r25");
-		out.println("push   r24");
+		this.out.println("push   r25");
+		this.out.println("push   r24");
 	}
 	public void visitColorLiteral(ColorLiteral colorLiteral){
 		//color code
 		//fetcch value from symbol table 
-		out.println("ldi    r22,"+colorLiteral.getIntValue()); // add color value
-		out.println("push   r22");
+		this.out.println("ldi    r22,"+colorLiteral.getIntValue()); // add color value
+		this.out.println("push   r22");
 	}
 	public void visitTrueLiteral(TrueLiteral trueLiteral){
 	
