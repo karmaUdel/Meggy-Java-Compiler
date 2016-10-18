@@ -2,7 +2,7 @@ package ast_visitors;
 
 import ast.node.*;
 import ast.visitor.*;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 import symtable.*;
 
@@ -14,6 +14,69 @@ public class AVRregAlloc extends DepthFirstVisitor {
         this.mCurrentST = symTable;
 		this.out=out;
 	}
+	
+	
+	public void visitProgram(Program program){
+		if(program.getMainClass()!null){
+		program.getMainClass().accept((Visitor)this);
+		}
+	}
+	public void visitMainClass(MainClass mainClass){
+		if(mainClass.getStatement()!null){
+		mainClass.getStatement().accept((Visitor)this);
+		}
+	}
+	public void visitBlockStatement(BlockStatement blockStatement){
+		//before iterating through block write head 
+		InputStream mainPrologue=null;
+        BufferedReader reader=null;
+        try {
+            mainPrologue = this.getClass().getClassLoader().getResourceAsStream("avrH.rtl.s");
+            reader = new BufferedReader(new InputStreamReader(mainPrologue));
+			String line = null;
+            while ((line = reader.readLine()) != null) {
+                parser.out.println(line);
+            }
+        } catch ( Exception e2) {
+            e2.printStackTrace();
+        }
+        finally{
+            try{
+                if(mainPrologue!=null) mainPrologue.close();
+                if(reader!=null) reader.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }		
+		if(blockStatement.getStatements()!=null){ // list will returned iterate through list one by one
+			ListIterator<IStatement> listIterator = blockStatement.getStatements().listIterator();
+			while (listIterator.hasNext()) {
+				listIterator.next().accept((Visitor)this); //iterate through all statements
+			}
+		}
+		// after iterating through bock add tail
+        try {
+            mainPrologue = this.getClass().getClassLoader().getResourceAsStream("avrF.rtl.s");
+            reader = new BufferedReader(new InputStreamReader(mainPrologue));
+			String line = null;
+            while ((line = reader.readLine()) != null) {
+                parser.out.println(line);
+            }
+        } catch ( Exception e2) {
+            e2.printStackTrace();
+        }
+        finally{
+            try{
+                if(mainPrologue!=null) mainPrologue.close();
+                if(reader!=null) reader.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }	
+	}
+	
 	public void visitAndExp(AndExp andExp) {
 		if(andExp.LExp()!=null){
 		andExp.LExp().accept((Visitor)this);
