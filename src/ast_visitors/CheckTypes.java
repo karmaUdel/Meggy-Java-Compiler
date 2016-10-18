@@ -75,6 +75,26 @@ public class CheckTypes extends DepthFirstVisitor
        }
 
    }
+   public void outMeggySetPixel(MeggySetPixel node)
+   {
+       String lexpType = this.mCurrentST.getExpType(node.getXExp());
+       String rexpType = this.mCurrentST.getExpType(node.getYExp());
+       String colorexpType = this.mCurrentST.getExpType(node.getColor());
+
+       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
+           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString()) &&
+	   (colorexpType == Type.COLOR.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.VOID);
+	System.out.println("+ is correct");
+       } else {
+           throw new SemanticException(
+                   "Operands to MeggySetPixel operator must be INT or BYTE,INT or BYTE & MeggyColor",
+                   node.getXExp().getLine(),
+                   node.getXExp().getPos());
+       }
+
+   }
   
 
 }

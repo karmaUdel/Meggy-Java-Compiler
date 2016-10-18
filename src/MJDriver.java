@@ -71,7 +71,21 @@ public class MJDriver {
           System.out.println("Printing symbol table to " + filename + ".ST.dot");
 
           globalST.outputDot(new PrintWriter(STout));
+          
+	  try{
+	  // perform type checking 
           ast_root.accept(new CheckTypes(globalST));
+          }catch(Exception e){
+		System.out.println(e.getMessage());//print message and continue 
+		//added for testing AVR generation	  	
+	  }
+          
+          // generate AVR code that evaluates the program
+          java.io.PrintStream avrsout =
+              new java.io.PrintStream(
+                      new java.io.FileOutputStream(filename + ".s"));
+          ast_root.accept(new AVRregAlloc(new PrintWriter(avrsout),globalST));
+          System.out.println("Printing Atmel assembly to " + filename + ".s");
 
 
                 
