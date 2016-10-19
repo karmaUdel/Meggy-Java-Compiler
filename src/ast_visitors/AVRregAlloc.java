@@ -160,7 +160,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		this.out.println("");
 		this.out.println("# Do MUL sub operation");
     		this.out.println("MUL    r24, r18");
-    		this.out.println("sbc    r25, r19");
+    		this.out.println("MUL    r25, r19");
     		this.out.println("# push hi order byte first");
     		this.out.println("# push two byte expression onto stack");
     		this.out.println("push   r25");
