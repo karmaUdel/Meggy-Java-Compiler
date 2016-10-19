@@ -162,7 +162,7 @@ main_class ::=
 
           :} ; 
 
-		statement_list ::=  statement:op1{:List list = new LinkedList<IStatement>();
+		statement_list ::= statement:op1{:List list = new LinkedList<IStatement>();
 							
 								list.add(op1);
 								RESULT = list;
@@ -199,58 +199,31 @@ main_class ::=
 						:}
 
 					
-						|WHILE:op LPAREN boolExp:e RPAREN block_statement:stmt
+						|WHILE:op LPAREN operation:e RPAREN block_statement:stmt
 						{:	System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
-						:} 
-
-
-						|IF:op LPAREN boolExp:e RPAREN block_statement:e1
+						:}
+					|IF:op LPAREN operation:e RPAREN block_statement:e1
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
 						System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-
-
-					| IF:op1 LPAREN boolExp:e RPAREN block_statement:e1 ELSE block_statement:e2
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
-
+					|IF:op LPAREN operation:e RPAREN statement:e1
+					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
+						System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-					| IF:op1 LPAREN boolExp:e RPAREN block_statement:e1 ELSE statement:e2  
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
-
-					:}	
-					| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE block_statement:e2
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,null,e2);
-
-					:}| IF:op1 LPAREN boolExp:e RPAREN block_statement:e1 ELSE LBRACE RBRACE 
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
-
+					|IF:op LPAREN operation:e RPAREN statement:e1 ELSE statement:e2
+					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
+						System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-					| IF:op1 LPAREN boolExp:e RPAREN statement:e1
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,null);
+					|IF:op LPAREN operation:e RPAREN block_statement:e1 ELSE block_statement:e2
+					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
+						System.out.printf("cond -> if booleanExp then stmt\n"); 
+					:}
+					|IF:op LPAREN operation:e RPAREN block_statement:e1 ELSE statement:e2
+					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
+						System.out.printf("cond -> if booleanExp then stmt\n"); 
+					:}
 
-					:}| IF:op1 LPAREN boolExp:e RPAREN statement:e1 ELSE statement:e2
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,e1,e2);
-
-					:}| IF:op1 LPAREN boolExp:e RPAREN LBRACE RBRACE ELSE statement:e1
-					{: 
-						System.out.printf("cond -> if booleanExp then stmt else stmt\n"); 
-						RESULT = new IfStatement(op1.line,op1.pos,e,null,e1);
- 
-					:} 
- 
 					 ;
 
 
@@ -282,11 +255,10 @@ main_class ::=
 					|INT_LITERAL:ex 
 					{: System.out.println("int");
 					RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}
-					|LPAREN operation:e RPAREN{: RESULT =e; :} ; 
-	
 
+					|LPAREN operation:e RPAREN{: RESULT =e; :}
 
-				         boolExp ::=boolExp:e AND:op boolExp:e1
+					|operation:e AND:op operation:e1
 					{:
 						System.out.println("and");
 
@@ -297,22 +269,15 @@ main_class ::=
 						System.out.println("equal");
 						RESULT = new EqualExp(op.line, op.pos, e, e1);
 
-					:}| boolExp:e EQUAL:op boolExp:e1
-					{:
-						System.out.println("equal");
-						RESULT = new EqualExp(op.line, op.pos, e, e1);
 					:}
 
-					|NOT:op boolExp:e
-					{:
-						System.out.println("not");
-						RESULT= new NotExp(op.line,op.pos,e);
-					:}|NOT:op LPAREN boolExp:e RPAREN
+					|NOT:op operation:e
 					{:
 						System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
 					:}| MEGGYCHECKBUTTON:ex LPAREN BUTTON_LITERAL:op RPAREN 
 						{:
+						System.out.println("CheckButton");
 						ButtonLiteral b= new ButtonLiteral(ex.line,ex.pos,op.lexeme,op.value);
 						RESULT = new MeggyCheckButton(ex.line,ex.pos,b);
 						:}
@@ -331,7 +296,11 @@ main_class ::=
 								:} 
 								| operation:e1 LT:ex operation:e2 {:
 									RESULT = new LtExp(ex.line,ex.pos,e1,e2);
-									:} ; 
+									:};  
+	
+
+
+				        // boolExp ::=
 					
 	
 

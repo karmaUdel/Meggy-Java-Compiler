@@ -1,0 +1,52 @@
+digraph ASTGraph {
+0 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+1 [ label="ButtonLiteral\nBUTTON\nMeggy.Button.Up" ];
+0 -> 1
+2 [ label="IntLiteral\nINT\n444" ];
+1 -> 2
+3 [ label="IntLiteral\nINT\n244" ];
+2 -> 3
+4 [ label="IntLiteral\nINT\n4" ];
+3 -> 4
+5 [ label="IntLiteral\nINT\n0" ];
+4 -> 5
+6 [ label="ByteCast\nBYTE" ];
+5 -> 6
+7 [ label="IntLiteral\nINT\n0" ];
+6 -> 7
+8 [ label="IntLiteral\nINT\n7" ];
+7 -> 8
+9 [ label="ByteCast\nBYTE" ];
+8 -> 9
+10 [ label="IntLiteral\nINT\n4" ];
+9 -> 10
+11 [ label="TrueLiteral\nBOOL\ntrue" ];
+10 -> 11
+12 [ label="IntLiteral\nINT\n256" ];
+11 -> 12
+13 [ label="IntLiteral\nINT\n544" ];
+12 -> 13
+14 [ label="IntLiteral\nINT\n256" ];
+13 -> 14
+15 [ label="IntLiteral\nINT\n0" ];
+14 -> 15
+16 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+15 -> 16
+17 [ label="IntLiteral\nINT\n0" ];
+16 -> 17
+18 [ label="IntLiteral\nINT\n1000" ];
+17 -> 18
+19 [ label="ButtonLiteral\nBUTTON\nMeggy.Button.Right" ];
+18 -> 19
+20 [ label="IntLiteral\nINT\n1" ];
+19 -> 20
+21 [ label="ColorLiteral\nCOLOR\nMeggy.Color.RED" ];
+20 -> 21
+22 [ label="IntLiteral\nINT\n3" ];
+21 -> 22
+23 [ label="IntLiteral\nINT\n0" ];
+22 -> 23
+24 [ label="IntLiteral\nINT\n644" ];
+23 -> 24
+25 [ label="IntLiteral\nINT\n0" ];
+24 -> 25

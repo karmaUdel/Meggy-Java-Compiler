@@ -9,9 +9,9 @@ class Byte {
 	public static void main(String[] whatever){
 	        // Byte multiplication
 
-		if(11 == 6)
+		if(11 == 6){
 	        Meggy.setPixel(1+2*3, 4-5,
-	                         Meggy.Color.WHITE);
+	                         Meggy.Color.WHITE);}
 		
 	        // Byte casts Byte
 	        Meggy.setPixel( (byte)((byte)7),

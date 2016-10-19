@@ -109,6 +109,12 @@ public class BuildSymTable extends DepthFirstVisitor   {
         checkExp(node);
     }
 
+ @Override
+  public void inButtonExp(ButtonLiteral node)
+    {
+        checkExp(node);
+    }
+
    public void inByteCast(ByteCast node)
     {
         checkExp(node.getExp());
@@ -141,9 +147,6 @@ public class BuildSymTable extends DepthFirstVisitor   {
 		symTable.setExpType(exp, COLOR);
 		break;
 
-		case "ByteCast":
-		symTable.setExpType(exp,BYTE);
-		break;
 
 		default: 
 		System.out.println("none");

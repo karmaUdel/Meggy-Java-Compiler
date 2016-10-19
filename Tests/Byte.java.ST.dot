@@ -1,0 +1,34 @@
+digraph ASTGraph {
+0 [ label="ColorLiteral\nCOLOR\nMeggy.Color.ORANGE" ];
+1 [ label="IntLiteral\nINT\n3" ];
+0 -> 1
+2 [ label="IntLiteral\nINT\n10" ];
+1 -> 2
+3 [ label="IntLiteral\nINT\n6" ];
+2 -> 3
+4 [ label="IntLiteral\nINT\n8" ];
+3 -> 4
+5 [ label="ByteCast\nBYTE" ];
+4 -> 5
+6 [ label="IntLiteral\nINT\n4" ];
+5 -> 6
+7 [ label="IntLiteral\nINT\n5" ];
+6 -> 7
+8 [ label="IntLiteral\nINT\n7" ];
+7 -> 8
+9 [ label="ByteCast\nBYTE" ];
+8 -> 9
+10 [ label="IntLiteral\nINT\n9" ];
+9 -> 10
+11 [ label="IntLiteral\nINT\n11" ];
+10 -> 11
+12 [ label="IntLiteral\nINT\n2" ];
+11 -> 12
+13 [ label="ByteCast\nBYTE" ];
+12 -> 13
+14 [ label="IntLiteral\nINT\n1" ];
+13 -> 14
+15 [ label="ColorLiteral\nCOLOR\nMeggy.Color.WHITE" ];
+14 -> 15
+16 [ label="ByteCast\nBYTE" ];
+15 -> 16
