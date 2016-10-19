@@ -92,6 +92,13 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(andExp.getRExp()!=null){
 		andExp.getRExp().accept((Visitor)this);
 		}
+		this.out.println("# And check expression");
+    		this.out.println("# load a one byte expression off stack");
+    		this.out.println("pop    r18");
+   		this.out.println("# load a one byte expression off stack");
+    		this.out.println("pop    r24");
+    		this.out.println("AND    r24, r18");
+
     	}
 	public void visitEqualExp(EqualExp equalExp) {
 		if(equalExp.getLExp()!=null){
@@ -112,6 +119,11 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(notExp.getExp()!=null){
 		notExp.getExp().accept((Visitor)this);
 		}
+    		this.out.println("# Not  expression");
+    		this.out.println("# load a one byte expression off stack");
+    		this.out.println("pop    r24");
+   		this.out.println("com    r24");
+	
     	}
 	
 	public void visitPlusExp(PlusExp plusExp) {
@@ -147,8 +159,13 @@ public class AVRregAlloc extends DepthFirstVisitor {
 	}
 	public void visitNegExp(NegExp negExp) {
 		if(negExp.getExp()!=null){
-		negExp.getExp().accept((Visitor)this);
+			negExp.getExp().accept((Visitor)this);
 		}
+    		this.out.println("# Negate  expression");
+    		this.out.println("# load a one byte expression off stack");
+    		this.out.println("pop    r24");
+   		this.out.println("neg    r24");
+
     	}
 	public void visitMulExp(MulExp mulExp) {
 		if(mulExp.getLExp()!=null){
