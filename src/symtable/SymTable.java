@@ -42,7 +42,7 @@ public class SymTable {
 			    System.out.println(key + " " + value);  
 			visitor.defaultIn(name);
 		} 
-	ps.flush();
+		ps.flush();
 
 
 	}

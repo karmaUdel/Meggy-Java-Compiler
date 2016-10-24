@@ -52,7 +52,7 @@ public class MJDriver {
 	//System.out.println(parser.dump_stack()+"");
 
           // print ast to file
-	parser.dump_stack();
+	//parser.dump_stack();
 	//parser.debug_parse();
           java.io.PrintStream astout =
             new java.io.PrintStream(

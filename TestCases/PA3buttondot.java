@@ -12,7 +12,7 @@ import meggy.Meggy;
 
 class PA3buttondot {
     public static void main(String[] whatever){
-        {
+        
             Meggy.setPixel( (byte)7, (byte)7, Meggy.Color.ORANGE );
 
             // infinite loop that checks for button presses every half second
@@ -39,4 +39,4 @@ class PA3buttondot {
             }
         }
     }
-}
+

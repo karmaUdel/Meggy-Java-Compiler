@@ -29,7 +29,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
     {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("plus exp");
+	//System.out.println("plus exp");
     }
 
   @Override 
@@ -37,7 +37,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
     {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("minus exp");
+	//System.out.println("minus exp");
     }
 
   @Override 
@@ -45,13 +45,13 @@ public class BuildSymTable extends DepthFirstVisitor   {
     {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("mul exp");
+	//System.out.println("mul exp");
     }
 
   @Override 
    public void inAndExp(AndExp node)
     {
-	System.out.println("and exp");
+	//System.out.println("and exp");
 	
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
@@ -63,7 +63,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
 	
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("lt exp");
+	//System.out.println("lt exp");
     }
 
   @Override 
@@ -71,7 +71,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
     {
 	
 	checkExp(node.getExp());
-	System.out.println("not exp");
+	//System.out.println("not exp");
     }
 
 
@@ -80,7 +80,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
     {
 	
 	checkExp(node);
-	System.out.println("true exp");
+	//System.out.println("true exp");
     }
 
  @Override 
@@ -88,7 +88,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
     {
 	
 	checkExp(node);
-	System.out.println("false exp");
+	//System.out.println("false exp");
     }
 
  @Override

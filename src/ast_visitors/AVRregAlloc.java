@@ -400,7 +400,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 			button="Left";
 		if(buttonVal==32)
 			button="Right";
-		System.out.println("Inside catch button:"+button);		
+		//System.out.println("Inside catch button:"+button);		
 		this.out.println("lds    r24,Button_"+button);
 	}
 }

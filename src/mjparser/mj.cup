@@ -118,7 +118,7 @@ program ::=
 
 					LinkedList<IClassDecl> _classDecls_ = new LinkedList<IClassDecl>() ;
 					 RESULT = new Program(op1.line,op1.pos,op,_classDecls_);
-					System.out.println("program");
+					//System.out.println("program");
 :}
     ;
     
@@ -130,7 +130,7 @@ main_class ::=
                 // Check filename is class name, if not exit with error message
 
 		if(!parser.programName.equals(name+".java"))
-		{	System.out.println(parser.programName +  " " + name+".java");
+		{	//System.out.println(parser.programName +  " " + name+".java");
 
 			System.exit(0);}
             :}
@@ -139,7 +139,7 @@ main_class ::=
          block_statement:op RBRACE
           {:
 
-	System.out.println("End of Main");
+	//System.out.println("End of Main");
   	RESULT = new MainClass(op1.line,op1.pos,name+"",param+"",op); 
 
           :};
@@ -155,7 +155,7 @@ main_class ::=
           {:
           // end of class
 
-   		System.out.println(" end of class1");
+   		//System.out.println(" end of class1");
 						
 		RESULT = new BlockStatement(ex.line,ex.pos,list);
 
@@ -186,63 +186,63 @@ main_class ::=
 	
 	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI 
 						{:	
-							System.out.println("Setpixel ");
+							//System.out.println("Setpixel ");
 							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
 							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
 					
 						:}
 						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI 
 						{:	
-							System.out.println("delay");
+							//System.out.println("delay");
 							RESULT = new MeggyDelay(op.line,op.pos,e);
 
 						:}
 
 					
 						|WHILE:op LPAREN operation:e RPAREN block_statement:stmt
-						{:	System.out.println("while");
+						{:	//System.out.println("while");
 							RESULT= new WhileStatement(op.line,op.pos,e,stmt);
 						:}
 					|IF:op LPAREN operation:e RPAREN block_statement:e1
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
+						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
 					|IF:op LPAREN operation:e RPAREN statement:e1
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,null);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
+						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
 					|IF:op LPAREN operation:e RPAREN statement:e1 ELSE statement:e2
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
+						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
 					|IF:op LPAREN operation:e RPAREN block_statement:e1 ELSE block_statement:e2
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
+						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
 					|IF:op LPAREN operation:e RPAREN block_statement:e1 ELSE statement:e2
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
-						System.out.printf("cond -> if booleanExp then stmt\n"); 
+						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
 
 					 ;
 
 
 					operation ::= operation:e PLUS:op operation:e1 {:	
-						System.out.println("plus");
+						//System.out.println("plus");
 						RESULT = new PlusExp(op.line, op.pos, e, e1);
 
 					:} | operation:e MINUS:op operation:e1 {:
-						System.out.println("min");
+						//System.out.println("min");
 						RESULT = new MinusExp(op.line, op.pos, e, e1);
 
 					:}| operation:e TIMES:op operation:e1 {:
-						System.out.println("Times");
+						//System.out.println("Times");
 						RESULT = new MulExp(op.line, op.pos, e, e1);
 					:}
 
 
 					| LPAREN BYTE:op RPAREN operation:e
-					{:      System.out.println("op to byte");
+					{:      //System.out.println("op to byte");
 
 
 						RESULT = new ByteCast(op.line, op.pos,e);
@@ -250,40 +250,40 @@ main_class ::=
 					
 					| MINUS:ex operation:op {:
 					RESULT = new NegExp(ex.line,ex.pos,op);
-					 System.out.println("Unary minus");:} %prec UMINUS
+					 //System.out.println("Unary minus");:} %prec UMINUS
 
 					|INT_LITERAL:ex 
-					{: System.out.println("int");
+					{: //System.out.println("int");
 					RESULT = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); :}
 
 					|LPAREN operation:e RPAREN{: RESULT =e; :}
 
 					|operation:e AND:op operation:e1
 					{:
-						System.out.println("and");
+						//System.out.println("and");
 
 						RESULT = new AndExp(op.line, op.pos, e, e1);
 					:}
 					| operation:e EQUAL:op operation:e1
 					{:
-						System.out.println("equal");
+						//System.out.println("equal");
 						RESULT = new EqualExp(op.line, op.pos, e, e1);
 
 					:}
 
 					|NOT:op operation:e
 					{:
-						System.out.println("not");
+						//System.out.println("not");
 						RESULT= new NotExp(op.line,op.pos,e);
 					:}| MEGGYCHECKBUTTON:ex LPAREN BUTTON_LITERAL:op RPAREN 
 						{:
-						System.out.println("CheckButton");
+						//System.out.println("CheckButton");
 						ButtonLiteral b= new ButtonLiteral(ex.line,ex.pos,op.lexeme,op.value);
 						RESULT = new MeggyCheckButton(ex.line,ex.pos,b);
 						:}
 
 						|MEGGYGETPIXEL:op LPAREN operation:e COMMA operation:e1 RPAREN
-						{:	System.out.println("getPixel");
+						{:	//System.out.println("getPixel");
 							RESULT= new MeggyGetPixel(op.line,op.pos,e,e1);
 						:}	
 					
@@ -292,7 +292,7 @@ main_class ::=
 						 | FALSE:op2  {: RESULT = new FalseLiteral(op2.line,op2.pos,op2.lexeme,op2.value);:}
 
 						| COLOR_LITERAL:op {: RESULT = new ColorLiteral(op.line,op.pos,op.lexeme,op.value);
-								System.out.println("Color literal");
+								//System.out.println("Color literal");
 								:} 
 								| operation:e1 LT:ex operation:e2 {:
 									RESULT = new LtExp(ex.line,ex.pos,e1,e2);
