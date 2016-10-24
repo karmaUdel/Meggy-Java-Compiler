@@ -278,12 +278,13 @@ public class AVRregAlloc extends DepthFirstVisitor {
         	if (ifStatement.getThenStatement() != null) {
         	    ifStatement.getThenStatement().accept((Visitor)this);
         	}
+		this.out.println("");
+		this.out.println("#Else part");
+		this.out.println("MJ_L"+branchElse+":");
+
 		//some code
 		if (ifStatement.getElseStatement() != null) {
-			this.out.println("");
-			this.out.println("#Else part");
-			this.out.println("MJ_L"+branchElse+":");
-            		ifStatement.getElseStatement().accept((Visitor)this);
+			ifStatement.getElseStatement().accept((Visitor)this);
         	}
 		this.out.println("");
 		this.out.println("#Done with if else statement ");
@@ -297,7 +298,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(whileStatement.getExp()!=null){
 			out.println("");
 			out.println("#### while statement");
-			out.println("MJ_L"+branchStart+" :");
+			out.println("MJ_L"+branchStart+":");
 			whileStatement.getExp().accept((Visitor)this); // check for true or false
 			out.println("");
 			out.println(" # if not(condition)");
@@ -310,12 +311,12 @@ public class AVRregAlloc extends DepthFirstVisitor {
     			out.println("jmp    MJ_L"+branchEnd);
 		}
 		if(whileStatement.getStatement()!=null){
-			out.println("MJ_L"+branchThen+" :");
+			out.println("MJ_L"+branchThen+":");
 			whileStatement.getStatement().accept((Visitor)this);
 			out.println("");
     			out.println("# jump to while test");
     			out.println("jmp    MJ_L"+branchStart);  //branch check while cond 
-			out.println("MJ_L"+branchEnd+" :");// branch exit
+			out.println("MJ_L"+branchEnd+":");// branch exit
 		}
 	}
 
@@ -386,9 +387,6 @@ public class AVRregAlloc extends DepthFirstVisitor {
 	}
 	public void visitButtonLiteral(ButtonLiteral buttonLiteral){
 		String button=null;
-		try{
-			button=buttonLiteral.getLexeme().substring(13,buttonLiteral.getLexeme().length()-1);
-		}catch(Exception e){
 		int buttonVal= buttonLiteral.getIntValue();
 		if(buttonVal==1)
 			button="B";
@@ -402,8 +400,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 			button="Left";
 		if(buttonVal==32)
 			button="Right";
-		
-		}
-		this.out.println("lds    r24,button_"+button);
+		System.out.println("Inside catch button:"+button);		
+		this.out.println("lds    r24,Button_"+button);
 	}
 }
