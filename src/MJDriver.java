@@ -71,22 +71,31 @@ public class MJDriver {
           System.out.println("Printing symbol table to " + filename + ".ST.dot");
 
           globalST.outputDot(new PrintWriter(STout));
-          
+    
+	  CheckTypes typeChecker= new CheckTypes(globalST);      
 	  try{
-	  // perform type checking 
-          ast_root.accept(new CheckTypes(globalST));
+	  // perform type checking
+	 System.out.println("Error before typeChecking "+ typeChecker.getError());
+	  ast_root.accept(typeChecker);
+	 System.out.println("Error present ? "+ typeChecker.getError());
           }catch(Exception e){
 		System.out.println(e.getMessage());//print message and continue 
 		//added for testing AVR generation	  	
 	  }
           
           // generate AVR code that evaluates the program
+	  if(!typeChecker.getError()){ //if error is false
           java.io.PrintStream avrsout =
               new java.io.PrintStream(
                       new java.io.FileOutputStream(filename + ".s"));
           ast_root.accept(new AVRregAlloc(new PrintWriter(avrsout),globalST));
           System.out.println("Printing Atmel assembly to " + filename + ".s");
-
+	  }else{
+	     //Printing errors
+	     typeChecker.getErrorMessage();
+    	     System.out.println("Atmel assembly code will not be generated as we've typeError");
+	  
+	  }
 
                 
 /*
