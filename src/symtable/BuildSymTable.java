@@ -148,8 +148,6 @@ public class BuildSymTable extends DepthFirstVisitor   {
 		break;
 
 
-		default: 
-		System.out.println("none");
 	}
    
 	}

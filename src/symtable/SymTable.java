@@ -39,7 +39,7 @@ public class SymTable {
 
 			    String key =name.toString();
 			    String value = mExpType.get(name).toString();  
-			    System.out.println(key + " " + value);  
+			   // System.out.println(key + " " + value);  
 			visitor.defaultIn(name);
 		} 
 		ps.flush();

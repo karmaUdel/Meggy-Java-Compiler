@@ -1,0 +1,14 @@
+2016-10-24 19:44:35,104 [Thread-15] FATAL ui.components.BaseWindow - Fatal Error
+java.lang.ArrayIndexOutOfBoundsException: 36
+	at machine.MachineState.setDisplaySlate(MachineState.java:523)
+	at machine.functions.FuncSetPix.exec(FuncSetPix.java:34)
+	at instructions.InstrCall.execute(InstrCall.java:38)
+	at instructions.Instr.executeWrapper(Instr.java:43)
+	at machine.MachineState.executeInstruction(MachineState.java:321)
+	at ui.components.BaseWindow$SimulateMachineState.executeOne(BaseWindow.java:754)
+	at ui.components.BaseWindow$SimulateMachineState.execute(BaseWindow.java:712)
+	at ui.components.BaseWindow$SimulateMachineState.execute(BaseWindow.java:695)
+	at org.apache.pivot.util.concurrent.Task$ExecuteCallback.run(Task.java:42)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.lang.Thread.run(Thread.java:745)

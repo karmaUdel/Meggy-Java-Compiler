@@ -104,6 +104,7 @@ precedence right NOT;
 precedence nonassoc LT;
 precedence nonassoc EQUAL;
 precedence left AND;
+precedence right BYTE;
 precedence left PLUS,MINUS;
 precedence left TIMES;
 precedence right UMINUS; 
@@ -130,19 +131,20 @@ main_class ::=
                 // Check filename is class name, if not exit with error message
 
 		if(!parser.programName.equals(name+".java"))
-		{	//System.out.println(parser.programName +  " " + name+".java");
+		{	System.out.println("Filename and Classname are different");
 
 			System.exit(0);}
             :}
 
 	 LBRACE PUBLIC STATIC VOID MAIN:op1 LPAREN STRING LBRACKET RBRACKET ID:param RPAREN
+
          block_statement:op RBRACE
           {:
 
 	//System.out.println("End of Main");
   	RESULT = new MainClass(op1.line,op1.pos,name+"",param+"",op); 
 
-          :};
+          :} ;
 	
 
 
@@ -160,7 +162,9 @@ main_class ::=
 		RESULT = new BlockStatement(ex.line,ex.pos,list);
 
 
-          :} ; 
+          :} | LBRACE RBRACE ; 
+
+
 
 		statement_list ::= statement:op1{:List list = new LinkedList<IStatement>();
 							
@@ -177,8 +181,6 @@ main_class ::=
 								}
 
 								list.add(op2);
-
-
 
 							RESULT = list;
 								:} ; 
@@ -241,16 +243,12 @@ main_class ::=
 					:}
 
 
-					| LPAREN BYTE:op RPAREN operation:e
-					{:      //System.out.println("op to byte");
-
-
-						RESULT = new ByteCast(op.line, op.pos,e);
-					:}
+					
 					
 					| MINUS:ex operation:op {:
 					RESULT = new NegExp(ex.line,ex.pos,op);
-					 //System.out.println("Unary minus");:} %prec UMINUS
+					 //System.out.println("Unary minus");
+					:} %prec UMINUS
 
 					|INT_LITERAL:ex 
 					{: //System.out.println("int");
@@ -269,6 +267,19 @@ main_class ::=
 						//System.out.println("equal");
 						RESULT = new EqualExp(op.line, op.pos, e, e1);
 
+					:}
+					| LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN
+ 					{:      //System.out.println("op to byte");
+
+
+						RESULT = new ByteCast(op.line, op.pos,e);
+					:}
+					| LPAREN BYTE:op RPAREN INT_LITERAL:ex
+					{:      //System.out.println("op to byte");
+
+					IntLiteral a = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); 
+
+						RESULT = new ByteCast(op.line, op.pos,a);
 					:}
 
 					|NOT:op operation:e
