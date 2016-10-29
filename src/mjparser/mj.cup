@@ -98,7 +98,7 @@ non terminal IExp rightSide;
 non terminal IExp op2;
 non terminal IStatement ifType;
 non terminal MethodDecl methodDecl;
-non terminal List formal;
+non terminal LinkedList<Formal> formal;
 non terminal IType type;
 /* Declare precedence and associativity  here declaration */
 
@@ -335,9 +335,9 @@ otherClass ::= CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE otherClass
 	       {:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
-		System.out.println("before : methods is "+_methodDecls+"  and statement list is "+methods );
+		System.out.println("before : class is "+_methodDecls+"  and statement list is "+methods );
 		_methodDecls.add(methods);
-		System.out.println("after : methods is "+_methodDecls+"  and statement list is "+methods );		
+		System.out.println("after : class is "+_methodDecls+"  and statement list is "+methods );		
 		RESULT=new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
 		:}
 		| {:
@@ -355,12 +355,12 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		_formals.addAll(param);
      		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();// not required
     		LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
-		System.out.println("before : list is "+_statements+"  and statement list is "+block );
+		System.out.println("before : inside method list is "+_statements+"  and statement list is "+block );
 		_statements.addAll(block);
-		System.out.println("After : list is "+_statements+"  and statement list is "+block );
+		System.out.println("After : inside method list is "+_statements+"  and statement list is "+block );
 		//if (param==null){
 		//param is null
-		System.out.println("param is "+_formals+"  and type is "+typ );
+		System.out.println("inside method param is "+_formals+"  and type is "+typ );
 		RESULT=new MethodDecl(op.line,op.pos,typ,name+"",_formals,_varDecls,_statements);
 		//}else{
 		//		System.out.println("param is not null" + param);
@@ -374,9 +374,9 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		//_formals.addAll(param);
      		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();// not required
     		LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
-		System.out.println("before : list is "+_statements+"  and statement list is ");
+		System.out.println("before : inside method list is "+_statements+"  and statement list is ");
 		//_statements.addAll(block);
-		System.out.println("After : list is "+_statements+"  and statement list is " );
+		System.out.println("After : inside method list is "+_statements+"  and statement list is " );
 
 		RESULT=new MethodDecl(0,0,new VoidType(0,0),"",_formals,_varDecls,_statements);
 		
@@ -384,7 +384,7 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		;					
 formal::=	type:typ ID:name formal:list
 		{:
-		List lst = new LinkedList<Formal>();
+		LinkedList lst = new LinkedList<Formal>();
 		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
 		if (list!=null)
 		{
@@ -392,22 +392,25 @@ formal::=	type:typ ID:name formal:list
 			lst.add(list);
 		}
 		lst.add(formal);
+		System.out.println(" inside parameter list is "+lst+"  and param is " +formal);
+		
 		RESULT=lst;
 		:}
 		| COMMA formal:list
 		{:
-		List lst = new LinkedList<Formal>();
+		LinkedList lst = new LinkedList<Formal>();
 		if (list!=null)
 		{
-			System.out.println(" formal ::"+list); 
+			System.out.println(" COMMA formal ::"+list); 
 			lst.add(list);
 		}
 		//lst.add(formal);
 		RESULT=lst;
 		:}
 		|
-		{:List lst = new LinkedList<Formal>();
-			RESULT=lst;
+		{:LinkedList lst = new LinkedList<Formal>();
+			System.out.println(" inside empty parameter list is "+lst);
+		RESULT=lst;
 		:} 
 		;
 type ::= INT:op {:RESULT = new IntType(op.line,op.pos);:}|BOOLEAN:op{:RESULT = new BoolType(op.line,op.pos);:}|
