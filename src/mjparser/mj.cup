@@ -335,10 +335,17 @@ otherClass ::= CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE otherClass
 	       {:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
+		System.out.println("before : methods is "+_methodDecls+"  and statement list is "+methods );
 		_methodDecls.add(methods);
+		System.out.println("after : methods is "+_methodDecls+"  and statement list is "+methods );		
 		RESULT=new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
 		:}
-		| 
+		| {:
+		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
+		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
+		//_methodDecls.add(methods);
+		RESULT=new TopClassDecl(0,0,"",_varDecls,_methodDecls);
+		:}
 		;
 
 //blockstatment has LBRACE RBRACE in it
@@ -362,7 +369,18 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		//}		
 		:}
                
-		|
+		|{:
+		LinkedList<Formal> _formals = new LinkedList<Formal>();
+		//_formals.addAll(param);
+     		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();// not required
+    		LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
+		System.out.println("before : list is "+_statements+"  and statement list is ");
+		//_statements.addAll(block);
+		System.out.println("After : list is "+_statements+"  and statement list is " );
+
+		RESULT=new MethodDecl(0,0,new VoidType(0,0),"",_formals,_varDecls,_statements);
+		
+		:}
 		;					
 formal::=	type:typ ID:name formal:list
 		{:
