@@ -85,6 +85,7 @@ terminal SymbolValue THIS;
 terminal UMINUS;
 
 non terminal program;
+non terminal TopClassDecl otherClass;
 non terminal Integer exp;
 non terminal IStatement statement;
 non terminal List statement_list;
@@ -96,7 +97,9 @@ non terminal IExp boolVal;
 non terminal IExp rightSide;
 non terminal IExp op2;
 non terminal IStatement ifType;
-
+non terminal MethodDecl methodDecl;
+non terminal Formal formal;
+non terminal IType type;
 /* Declare precedence and associativity  here declaration */
 
 
@@ -115,10 +118,11 @@ precedence nonassoc IF;
 start with program;
 
 program ::= 
-    IMPORT:op1 MEGGY SEMI main_class:op {: 
+    IMPORT:op1 MEGGY SEMI main_class:op otherClass:p {: 
 
-					LinkedList<IClassDecl> _classDecls_ = new LinkedList<IClassDecl>() ;
-					 RESULT = new Program(op1.line,op1.pos,op,_classDecls_);
+					LinkedList<IClassDecl> _classDecls = new LinkedList<IClassDecl>() ;
+					_classDecls.add(p);
+					 RESULT = new Program(op1.line,op1.pos,op,_classDecls);
 					//System.out.println("program");
 :}
     ;
@@ -199,7 +203,12 @@ main_class ::=
 							RESULT = new MeggyDelay(op.line,op.pos,e);
 
 						:}
+						|MEGGYTONESTART:op LPAREN operation:e COMMA operation:e2 RPAREN SEMI 
+						{:	
+							//System.out.println("delay");
+							RESULT = new MeggyToneStart(op.line,op.pos,e,e2);
 
+						:}
 					
 						|WHILE:op LPAREN operation:e RPAREN block_statement:stmt
 						{:	//System.out.println("while");
@@ -225,7 +234,8 @@ main_class ::=
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
 						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-
+					|RETURN statement
+					|operation:e1 DOT ID:name LPAREN operation:e2 RPAREN
 					 ;
 
 
@@ -268,6 +278,13 @@ main_class ::=
 						RESULT = new EqualExp(op.line, op.pos, e, e1);
 
 					:}
+					//|//operation:e LT:op operation:e1
+					//{:
+						//System.out.println("equal");
+					//	RESULT = new LtExp(op.line, op.pos, e, e1);
+
+					//:}
+
 					| LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN
  					{:      //System.out.println("op to byte");
 
@@ -307,12 +324,47 @@ main_class ::=
 								:} 
 								| operation:e1 LT:ex operation:e2 {:
 									RESULT = new LtExp(ex.line,ex.pos,e1,e2);
-									:};  
-	
-
-
-				        // boolExp ::=
+									:}
+						|ID:name {: RESULT = new IdLiteral(name.line,name.pos,name+"");:}
+						|NEW:op ID:name LPAREN RPAREN{:RESULT = new NewExp(op.line,op.pos,name+"");:}
+						|THIS:op {:RESULT= new ThisLiteral(op.line,op.pos,op.lexeme,op.value);:}
+						|TONE_LITERAL:op{:RESULT = new ToneLiteral(op.line,op.pos,op.lexeme,op.value);:}
+						//|operation:e1 DOT ID:name LPAREN operation:e2 RPAREN
+						//|operation:e1 COMMA operation:e2
+						| 
 					
-	
+						;
+/*PA4 grammar starts here*/
 
+otherClass ::= CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE otherClass
+	       {:
+		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
+		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
+		_methodDecls.add(methods);
+		RESULT=new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
+		:}
+		| 
+		;
+
+//blockstatment has LBRACE RBRACE in it
+methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN  statement_list:block  methodDecl
+		{:
+		LinkedList<Formal> _formals = new LinkedList<Formal>();
+		_formals.add(param);
+     		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();// not required
+    		//LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
+
+		RESULT=new MethodDecl(op.line,op.pos,typ,name+"",_formals,_varDecls,block);
+		:}
+               
+		|
+		;					
+formal::=	type ID:name formal
+		| COMMA formal
+		| 
+		;
+type ::= INT:op {:RESULT = new IntType(op.line,op.pos);:}|BOOLEAN:op{:RESULT = new BoolType(op.line,op.pos);:}|
+	BYTE:op{:RESULT = new ByteType(op.line,op.pos);:}|VOID:op{:RESULT = new VoidType(op.line,op.pos);:}|
+	MEGGYCOLOR:op{:RESULT = new ColorType(op.line,op.pos);:}|MEGGYBUTTON:op{:RESULT = new ButtonType(op.line,op.pos);:}
+	|MEGGYTONE:op{:RESULT = new ToneType(op.line,op.pos);:};
 
