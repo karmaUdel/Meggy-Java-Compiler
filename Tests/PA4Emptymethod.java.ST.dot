@@ -1,0 +1,8 @@
+digraph ASTGraph {
+0 [ label="IntLiteral\nINT\n6" ];
+1 [ label="IntLiteral\nINT\n6" ];
+0 -> 1
+2 [ label="ColorLiteral\nCOLOR\nMeggy.Color.BLUE" ];
+1 -> 2
+3 [ label="IntLiteral\nINT\n5" ];
+2 -> 3
