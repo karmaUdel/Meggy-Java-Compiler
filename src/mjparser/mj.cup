@@ -360,7 +360,7 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		System.out.println("After : inside method list is "+_statements+"  and statement list is "+block );
 		//if (param==null){
 		//param is null
-		System.out.println("inside method param is "+_formals+"  and type is "+typ );
+		System.out.println("inside method param is "+_formals+"  and return type is "+typ );
 		RESULT=new MethodDecl(op.line,op.pos,typ,name+"",_formals,_varDecls,_statements);
 		//}else{
 		//		System.out.println("param is not null" + param);
@@ -382,7 +382,7 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		
 		:}
 		;					
-formal::=	type:typ ID:name formal:list
+formal::=	type:typ ID:name COMMA formal:list
 		{:
 		LinkedList lst = new LinkedList<Formal>();
 		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
@@ -396,15 +396,11 @@ formal::=	type:typ ID:name formal:list
 		
 		RESULT=lst;
 		:}
-		| COMMA formal:list
+		|type:typ ID:name
 		{:
 		LinkedList lst = new LinkedList<Formal>();
-		if (list!=null)
-		{
-			System.out.println(" COMMA formal ::"+list); 
-			lst.add(list);
-		}
-		//lst.add(formal);
+		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
+		lst.add(formal);
 		RESULT=lst;
 		:}
 		|
