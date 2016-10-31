@@ -326,10 +326,11 @@ main_class ::=
 						|NEW:op ID:name LPAREN RPAREN{:RESULT = new NewExp(op.line,op.pos,name+"");:}
 						|THIS:op {:RESULT= new ThisLiteral(op.line,op.pos,op.lexeme,op.value);:}
 						|TONE_LITERAL:op{:RESULT = new ToneLiteral(op.line,op.pos,op.lexeme,op.value);:}
-						//|operation:e1 DOT ID:name LPAREN operation:e2 RPAREN
-						//|operation:e1 COMMA operation:e2
-						| COMMA operation:e1
-					
+						|operation:e1 DOT ID:name LPAREN args:_args RPAREN
+						{:
+						RESULT = new CallExp(name.line,name.pos,e1,name.lexeme,_args);
+						:}
+						
 						;
 /*PA4 grammar starts here*/
 
