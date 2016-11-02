@@ -4,11 +4,13 @@ package symtable;
 
 public class ClassSTE extends STE{
 
+
 private boolean mMain;
 
 	public ClassSTE() {
 
 		super();
+
 
 	}
 

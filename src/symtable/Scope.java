@@ -4,10 +4,14 @@ import java.util.*;
 
 public class Scope{
 
+
     public  HashMap<String,STE> mHashMap = new HashMap<String,STE>();
 
-    public STElookup(String name)
+    public boolean STElookup(String name)
     {
+        if(this.mHashMap.containsKey(name))
+            return true;
+        else return false;
     }
 
     public insert (STE ste)

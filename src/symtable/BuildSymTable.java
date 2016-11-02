@@ -20,7 +20,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
 
     public BuildSymTable() {
 	symTable= new SymTable();
-        1
+m
     }
 
     

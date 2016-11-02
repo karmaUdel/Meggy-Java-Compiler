@@ -16,13 +16,15 @@ import exceptions.InternalException;
  * WB: Simplified to only expression types
  */
 public class SymTable {
-    private final HashMap<Node,String> mExpType = new HashMap<Node,String>();
+    private final HashMap<String,Scope> mExpType = new HashMap<String,Scope>();
+	private String mGlobalScope;
 
 
-    public SymTable() {
+	public pushScope(String scope)
+	{
 
-    }
-    
+	}
+
     
     public void setExpType(Node exp, Type t)
     {

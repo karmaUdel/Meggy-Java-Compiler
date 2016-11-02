@@ -4,7 +4,7 @@ package symtable;
 
 public class MethodSTE extends STE{
 
-private List<String> mSignature; //Last item is going to be return type
+public List<String> mSignature; //Last item is going to be return type
 
 
 	public MethodSTE() {
