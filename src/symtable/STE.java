@@ -7,6 +7,7 @@ public class STE{
 private String mName;
 
 	public STE() {
+
 	}
 
 	 public String getName(){

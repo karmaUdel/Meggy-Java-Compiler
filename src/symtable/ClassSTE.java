@@ -7,11 +7,13 @@ public class ClassSTE extends STE{
 private boolean mMain;
 
 	public ClassSTE() {
-	super();
+
+		super();
+
 	}
 
 	 public boolean getMain(){
-	 return this.mMain;	
+	 return this.mMain;
 	}
 
 	 public setMain(boolean main){

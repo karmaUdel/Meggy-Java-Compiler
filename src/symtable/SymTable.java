@@ -18,7 +18,9 @@ import exceptions.InternalException;
 public class SymTable {
     private final HashMap<Node,String> mExpType = new HashMap<Node,String>();
 
+
     public SymTable() {
+
     }
     
     

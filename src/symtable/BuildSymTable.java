@@ -20,7 +20,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
 
     public BuildSymTable() {
 	symTable= new SymTable();
-
+        1
     }
 
     
@@ -30,6 +30,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
 	//System.out.println("plus exp");
+
     }
 
   @Override 
