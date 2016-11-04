@@ -106,14 +106,15 @@ non terminal LinkedList<IExp> args;
 
 precedence right NOT;
 precedence nonassoc LT;
-precedence nonassoc EQUAL;
 precedence left AND;
+precedence nonassoc EQUAL;
 precedence right BYTE;
 precedence left PLUS,MINUS;
 precedence left TIMES;
 precedence right UMINUS; 
 precedence nonassoc ELSE;
 precedence nonassoc IF;
+//precedence left THIS;
 
 /* Meggy Java Grammar */
 start with program;
@@ -178,7 +179,7 @@ main_class ::=
 								if(lst1!=null){						
 								list.addAll(lst1);	
 								}
-
+								System.out.println("statement "+op2);
 								list.add(op2);
 
 							RESULT = list;
@@ -189,7 +190,7 @@ main_class ::=
 								}
 
 								RESULT = list;:}
-								|{:List list = new LinkedList<IStatement>();
+								|{:LinkedList list = new LinkedList<IStatement>();
 									RESULT = list;:}; 
 
 	
@@ -237,7 +238,10 @@ main_class ::=
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
 						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-					|RETURN statement
+					|RETURN operation:op SEMI {:
+					IStatement statement = (IStatement)(Node)op; 
+					RESULT=statement;
+					:}
 					|operation:e1 DOT ID:name LPAREN args:_args RPAREN SEMI
 					{:
 					//LinkedList _args = new LinkedList<IExp>();
@@ -364,7 +368,7 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
 		_formals.addAll(param);
      		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();// not required
     		LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
-		//System.out.println("before : inside method list is "+_statements+"  and statement list is "+block );
+		System.out.println(" method is "+name.lexeme );
 		_statements.addAll(block);
 		//System.out.println("After : inside method list is "+_statements+"  and statement list is "+block );
 		//if (param==null){
@@ -395,7 +399,7 @@ formal::=	type:typ ID:name COMMA formal:list
 		{:
 		LinkedList lst = new LinkedList<Formal>();
 		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
-		System.out.println("type,formal");		
+		//System.out.println("type,formal");		
 		if (list!=null)
 		{
 			//System.out.println(" formal ::"+list); 
@@ -408,7 +412,7 @@ formal::=	type:typ ID:name COMMA formal:list
 		:}
 		|type:typ ID:name
 		{:
-		System.out.println("type");
+		//System.out.println("type");
 		LinkedList lst = new LinkedList<Formal>();
 		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
 		lst.add(formal);
