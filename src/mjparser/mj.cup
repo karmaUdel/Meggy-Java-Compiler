@@ -182,7 +182,14 @@ main_class ::=
 								list.add(op2);
 
 							RESULT = list;
-								:}| {:List list = new LinkedList<IStatement>();
+								:}| LBRACE statement_list:list1 RBRACE
+								 {:List list = new LinkedList<IStatement>();
+								if(list1!=null){						
+								list.addAll(list1);	
+								}
+
+								RESULT = list;:}
+								|{:List list = new LinkedList<IStatement>();
 									RESULT = list;:}; 
 
 	
@@ -237,8 +244,7 @@ main_class ::=
 					//_args.add(0,e2);
 					//System.out.println("method call from method");
 					RESULT = new CallStatement(name.line,name.pos,e1,name.lexeme,_args);
-					:}
-					 ;
+					:};
 
 
 					operation ::= operation:e PLUS:op operation:e1 {:	

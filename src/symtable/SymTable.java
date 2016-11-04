@@ -16,11 +16,13 @@ import exceptions.InternalException;
  * WB: Simplified to only expression types
  */
 public class SymTable {
-    private final HashMap<String,Scope> mExpType = new HashMap<String,Scope>();
+   // private final HashMap<String,Scope> mExpType = new HashMap<String,Scope>();
+	private final HashMap<Node,String> mExpType = new HashMap<Node,String>();
+		
 	private String mGlobalScope;
 
 
-	public pushScope(String scope)
+	public void pushScope(String scope)
 	{
 
 	}
@@ -35,7 +37,9 @@ public class SymTable {
     {
     	return this.mExpType.get(exp);
     }
-	
+	/*public Node getNode(String expression){
+		return this.mExpType.get(expression);
+	}*/
 	public void outputDot(java.io.PrintWriter ps)
 	{ 	
 		DotVisitorWithMap visitor = new DotVisitorWithMap(ps,this.mExpType);

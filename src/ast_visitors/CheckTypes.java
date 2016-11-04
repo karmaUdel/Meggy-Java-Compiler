@@ -78,6 +78,22 @@ public class CheckTypes extends DepthFirstVisitor
      this.mCurrentST.setExpType(node, Type.BOOL);
    }
   
+   public void outLtExp(LtExp node)
+   {
+	String LType = this.mCurrentST.getExpType(node.getLExp());
+	String RType = this.mCurrentST.getExpType(node.getRExp());
+
+     if((LType==Type.INT.toString()  || LType==Type.BYTE.toString()) &&
+           (RType==Type.INT.toString()  || RType==Type.BYTE.toString())
+	) {
+	this.error=true;       
+	//System.out.println(
+         errorMessage+="Different types for operator < ["+
+         node.getLExp().getLine()+" , "+ node.getLExp().getPos()+"]\n";
+     }
+
+     this.mCurrentST.setExpType(node, Type.BOOL);
+   }
    public void outPlusExp(PlusExp node)
    {
        String lexpType = this.mCurrentST.getExpType(node.getLExp());
@@ -97,7 +113,84 @@ public class CheckTypes extends DepthFirstVisitor
        }
 
    }
+   public void outCallExp(CallExp node)
+   {
+       /*String lexpType = this.mCurrentST.getExpType(node.getLExp());
+       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
+           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.INT);
+	//System.out.println("+ is correct");
+       } else {
+	this.error=true;       
+	           
+		//System.out.println(
+                  errorMessage+= "Operands to + operator must be INT or BYTE ["+
+                   node.getLExp().getLine()+" , "+ 
+                   node.getLExp().getPos()+"]\n";
+       }*/
 
+   }
+   public void outCallStatement(CallStatement node)
+   {
+	// look scope
+	// look return parameters --done
+	// match all paramters passed or not -- done
+       
+	boolean breakFlag=false;
+	CallStatement methodDecl = node;//this.mCurrentST.getNode(node.getId());// i want node so that i can check what is method decl is...
+	List<IExp> argsList = methodDecl.getArgs();
+        List<IExp> callParam = node.getArgs();
+	if(argsList.size()!=callParam.size()){
+		this.error=true;       
+	        breakFlag=true;
+		//System.out.println(
+                  errorMessage+= "Required # of Args for methodCall "+node.getId()+" is # "+argsList.size()+
+		   " but found only #"+callParam.size() +" arguements ["+
+                   node.getLine()+" , "+ 
+                   node.getPos()+"]\n";
+	}
+	Iterator<IExp> args=argsList.iterator();
+	Iterator<IExp> param=callParam.iterator();
+	int i=0;
+	while(args.hasNext()&&param.hasNext()&&!breakFlag){
+		IExp lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
+      	 	IExp rexp = param.next();//this.mCurrentST.getExpType(node.getRExp());
+		String lexpType = this.mCurrentST.getExpType(lexp);
+       		String rexpType = this.mCurrentST.getExpType(rexp);
+		i++;
+		if(!rexpType.equalsIgnoreCase(lexpType)){
+			this.error=true;       
+	           	
+		//System.out.println(
+                  errorMessage+= "Args for methodCall "+node.getId()+" is not as expected, check argument # "+i+" ["+
+                   node.getLine()+" , "+ 
+                   node.getPos()+"]\n";
+		   breakFlag=true;		  
+		   break;		
+		}
+
+	}
+	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
+		this.mCurrentST.setExpType(node,this.getType(this.mCurrentST.getExpType(node.getExp())));
+	}
+       /*if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
+           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
+          ){
+           this.mCurrentST.setExpType(node, node.getExp);
+	//System.out.println("+ is correct");
+       } else {
+	this.error=true;       
+	           
+		//System.out.println(
+                  errorMessage+= "Operands to + operator must be INT or BYTE ["+
+                   node.getLExp().getLine()+" , "+ 
+                   node.getLExp().getPos()+"]\n";
+       }
+	*/
+   }
+   
    public void outMinusExp(MinusExp node)
    {
        String lexpType = this.mCurrentST.getExpType(node.getLExp());
@@ -136,7 +229,7 @@ public class CheckTypes extends DepthFirstVisitor
 
    }
 
-   public void outLtExp(LtExp node)
+   /*public void outLtExp(LtExp node)
    {
        String lexpType = this.mCurrentST.getExpType(node.getLExp());
        String rexpType = this.mCurrentST.getExpType(node.getRExp());
@@ -153,7 +246,7 @@ public class CheckTypes extends DepthFirstVisitor
                    node.getLExp().getPos()+"]\n";
        }
 
-   }
+   }*/
 
 
     public void outNegExp(NegExp node)
@@ -294,5 +387,35 @@ public class CheckTypes extends DepthFirstVisitor
   }
   public void getErrorMessage(){
 	System.out.println(this.errorMessage);
+  }
+  public Type getType (String type){
+
+  if(type.equalsIgnoreCase("INT") )
+    {
+      return Type.INT;
+    }
+
+    if(type.equalsIgnoreCase("BOOL"))
+    {
+      return Type.BOOL;
+    }
+
+    if(type.equalsIgnoreCase("BYTE"))
+    {
+      return Type.BYTE;
+    }
+
+    if(type.equalsIgnoreCase("COLOR"))
+    {
+      return Type.COLOR;
+    }
+
+    if(type.equalsIgnoreCase("BUTTON"))
+    {
+      return Type.BUTTON;
+    }
+
+   return Type.VOID;
+
   }
 }

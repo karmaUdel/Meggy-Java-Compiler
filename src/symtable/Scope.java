@@ -14,7 +14,7 @@ public class Scope{
         else return false;
     }
 
-    public insert (STE ste)
+    public void insert (STE ste)
     {
         mHashMap.put(STE.getName(),ste);
     }

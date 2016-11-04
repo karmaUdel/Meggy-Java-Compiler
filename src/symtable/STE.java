@@ -14,7 +14,7 @@ private String mName;
 	 return this.mName;	
 	}
 
-	 public setName(String name){
+	 public void setName(String name){
 	 this.mName = name;
 	}
 		
