@@ -102,7 +102,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	//System.out.println("+ is correct");
+	System.out.println("+ is correct");
        } else {
 	this.error=true;       
 	           
@@ -121,7 +121,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	//System.out.println("+ is correct");
+	System.out.println("+ is correct");
        } else {
 	this.error=true;       
 	           
@@ -179,7 +179,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, node.getExp);
-	//System.out.println("+ is correct");
+	System.out.println("+ is correct");
        } else {
 	this.error=true;       
 	           
@@ -199,7 +199,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	//System.out.println("- is correct");
+	System.out.println("- is correct");
        } else {
 	this.error=true;       
 	  //         System.out.println(
@@ -218,7 +218,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	//System.out.println("* is correct");
+	System.out.println("* is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -237,7 +237,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.BOOL);
-	//System.out.println("Lt is correct");
+	System.out.println("Lt is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -256,7 +256,7 @@ public class CheckTypes extends DepthFirstVisitor
        if ((expType==Type.INT.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	//System.out.println("UMin is correct");
+	System.out.println("UMin is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -274,7 +274,7 @@ public class CheckTypes extends DepthFirstVisitor
        if ((expType==Type.INT.toString()  || expType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.BYTE);
-	//System.out.println("Byte is correct");
+	System.out.println("Byte is correct");
        } else {
 	this.error=true;       
 //	           System.out.println(
@@ -292,7 +292,7 @@ public class CheckTypes extends DepthFirstVisitor
        if ((expType==Type.BOOL.toString())
           ){
            this.mCurrentST.setExpType(node, Type.BOOL);
-	//System.out.println("NOT is correct");
+	System.out.println("NOT is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -309,7 +309,7 @@ public class CheckTypes extends DepthFirstVisitor
        if ((expType==Type.INT.toString())
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	//System.out.println("NOT is correct");
+	System.out.println("NOT is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -330,7 +330,7 @@ public class CheckTypes extends DepthFirstVisitor
 	   (colorexpType == Type.COLOR.toString())
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	//System.out.println("SetPixel is correct");
+	System.out.println("SetPixel is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -349,7 +349,7 @@ public class CheckTypes extends DepthFirstVisitor
        if (expType==Type.BUTTON.toString())
 	{
            this.mCurrentST.setExpType(node, Type.BOOL);
-	//System.out.println("CheckButton is correct");
+	System.out.println("CheckButton is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -371,7 +371,7 @@ public class CheckTypes extends DepthFirstVisitor
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString()) 
           ){
            this.mCurrentST.setExpType(node, Type.COLOR);
-	//System.out.println("GetPixel is correct");
+	System.out.println("GetPixel is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
