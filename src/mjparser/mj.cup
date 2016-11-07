@@ -101,7 +101,7 @@ non terminal LinkedList<MethodDecl> methodDecl;
 non terminal LinkedList<Formal> formal;
 non terminal IType type;
 non terminal LinkedList<IExp> args;
-non terminal IStatement returnStatement;
+non terminal IExp returnStatement;
 
 /* Declare precedence and associativity  here declaration */
 
@@ -116,7 +116,8 @@ precedence left TIMES;
 precedence right UMINUS; 
 precedence nonassoc ELSE;
 precedence nonassoc IF;
-//precedence left THIS;
+precedence left THIS;
+precedence left DOT;
 
 /* Meggy Java Grammar */
 start with program;
@@ -165,7 +166,7 @@ main_class ::=
           {:
           // end of class
 
-   		//System.out.println(" end of class1");
+   		System.out.println(" main");
 						
 		RESULT = new BlockStatement(ex.line,ex.pos,list);
 
@@ -197,11 +198,11 @@ if(op2!=null){
 									RESULT = list;:}; 
 
 	
-	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA COLOR_LITERAL:e2 RPAREN SEMI 
+	statement ::= MEGGYSETPIXEL:op LPAREN operation:e COMMA operation:e1 COMMA operation:e2 RPAREN SEMI 
 						{:	
 							//System.out.println("Setpixel ");
-							ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
-							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,c);
+							//ColorLiteral c = new ColorLiteral(op.line,op.pos,e2.lexeme,e2.value);
+							RESULT = new MeggySetPixel(op.line,op.pos,e,e1,e2);
 					
 						:}
 						|MEGGYDELAY:op LPAREN operation:e RPAREN  SEMI 
@@ -246,7 +247,7 @@ if(op2!=null){
 					{:
 					//LinkedList _args = new LinkedList<IExp>();
 					//_args.add(0,e2);
-					//System.out.println("method call from method");
+					System.out.println("method call from method");
 					RESULT = new CallStatement(name.line,name.pos,e1,name.lexeme,_args);
 					:};
 
@@ -292,19 +293,19 @@ if(op2!=null){
 					:}
 
 
-					| LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN
- 					{:      //System.out.println("op to byte");
+					| LPAREN BYTE:op RPAREN  operation:e 
+ 					{:      System.out.println("op to byte operation");
 
 
 						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
-					| LPAREN BYTE:op RPAREN INT_LITERAL:ex
-					{:      //System.out.println("op to byte");
+					//| //LPAREN BYTE:op RPAREN operation:ex
+					//{:      System.out.println("op to byte int literal");
 
-					IntLiteral a = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); 
+					//IntLiteral a = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); 
 
-						RESULT = new ByteCast(op.line, op.pos,a);
-					:}
+						//RESULT = new ByteCast(op.line, op.pos,ex);
+					//:}
 
 					|NOT:op operation:e
 					{:
@@ -350,7 +351,7 @@ otherClass ::= CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE otherClass
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
 		//System.out.println("before : class is "+_methodDecls+"  and statement list is "+methods );
 		_methodDecls.addAll(methods);
-		//System.out.println("after : class is "+_methodDecls+"  and statement list is "+methods );		
+		System.out.println(" class is "+name );		
 		RESULT=new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
 		:}
 		| {:
@@ -371,10 +372,8 @@ methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE sta
     		LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
 		System.out.println(" method is "+name.lexeme );
 		_statements.addAll(block);
-		if(rstmt!=null){
-		_statements.add(rstmt);		
-		}
-		MethodDecl method=new MethodDecl(op.line,op.pos,typ,name+"",_formals,_varDecls,_statements);
+
+		MethodDecl method=new MethodDecl(op.line,op.pos,typ,name+"",_formals,_varDecls,_statements,rstmt);
 		LinkedList<MethodDecl> methodList = new LinkedList<MethodDecl>();
 		if (methods!=null)
 			methodList.addAll(methods);
@@ -449,5 +448,7 @@ args::= operation:op COMMA args:lst
 	RESULT= new LinkedList<IExp>();
 	:}
 ;
-returnStatement::= RETURN operation:op SEMI{:System.out.println("return statement : "+ op);/*RESULT = op;*/ :}|;
+returnStatement::= RETURN operation:op SEMI{:System.out.println("return statement : "+ op);RESULT = op; :}
+		  | {:System.out.println("no return type"); RESULT=null;:}
+		 ;
 

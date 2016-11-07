@@ -1,22 +1,19 @@
+
 package symtable;
 
-//Might need to import stuff
+import java.io.PrintStream;
 
-public class STE{
+public abstract class STE {
+    public String mName;
+    public STE(String name){
+	this.mName=name;
+    }
+    public void setName(String name){
+	this.mName=name;
+    } 
+    public String getName() {
+        return this.mName;
+    }
 
-private String mName;
-
-	public STE() {
-
-	}
-
-	 public String getName(){
-	 return this.mName;	
-	}
-
-	 public void setName(String name){
-	 this.mName = name;
-	}
-		
-
+    public abstract int outputDot(PrintStream var1, int var2);
 }

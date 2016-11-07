@@ -16,7 +16,7 @@ class PA4raindrop {
         // but syntax needs to be there.
         // Rain in column 3.
         while (true) {
-            new Cloud().rain((byte)3,(byte)7);
+            //new Cloud().rain((byte)3,(byte)7);
             Meggy.delay(500);
             Meggy.setPixel((byte)3, (byte)0, Meggy.Color.DARK);
             Meggy.setPixel((byte)1, (byte)6, Meggy.Color.ORANGE);
@@ -26,7 +26,7 @@ class PA4raindrop {
 
 class Cloud {
     
-    public void rain(byte x, byte y) {
+    public boolean rain(byte x, byte y) {
         // light up x,y if is in bounds
         // and continue recursion
         if (this.inBounds(x, y)) {
@@ -37,10 +37,11 @@ class Cloud {
             Meggy.delay(100);
             this.rain(x, (byte)(y-(byte)1));
         } else {}
+	return true;
     }
     
     public boolean inBounds(byte x, byte y) {
-	if(x<y){Meggy.Delay(1000);}
+	if(x<y){Meggy.delay(1000);}
         return ((byte)(0-1) < y) && (y < (byte)8);
     }
 

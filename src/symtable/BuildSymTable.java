@@ -9,20 +9,42 @@ import exceptions.InternalException;
 
  */
 public class BuildSymTable extends DepthFirstVisitor   {
-	SymTable symTable; 
-	
+	private SymTable symTable; 
+	private String currentClass; 
   private static final Type BOOL = Type.BOOL;
   private static final Type INT = Type.INT;
   private static final Type BYTE = Type.BYTE;
   private static final Type COLOR = Type.COLOR;
   private static final Type BUTTON = Type.BUTTON;
-  private static final Type VOID = Type.VOID;
+  private static final Type VOID = Type.VOID; 
+  private static final Type TONE = Type.TONE;
 
     public BuildSymTable() {
-	symTable= new SymTable();
-
+	this.symTable= new SymTable();
+	this.currentClass="";
     }
+ public Type getType(IType node){
+   if(node instanceof BoolType){
+	return Type.BOOL;
+   }
+   if(node instanceof IntType)
+return Type.INT;
 
+if(node instanceof ByteType)
+return Type.BYTE;
+
+if(node instanceof ColorType)
+return Type.COLOR;
+
+if(node instanceof ButtonType)
+return Type.BUTTON;
+
+
+if(node instanceof ToneType)
+ return Type.TONE;
+
+return Type.VOID;
+ }
     
   @Override 
    public void inPlusExp(PlusExp node)
@@ -154,5 +176,64 @@ public class BuildSymTable extends DepthFirstVisitor   {
 	}
 /*
  */
+	public void inMethodDecl(MethodDecl methodDecl) {
+        MethodSTE methodSTE;
+        Formal formal;
+        Iterator iterator = methodDecl.getFormals().iterator();
+        LinkedList<Type> linkedList = new LinkedList<Type>();
+        while (iterator.hasNext()) {
+            formal = (Formal)iterator.next();
+            linkedList.add(this.getType(formal.getType()));
+        }//get all formal parameters
+        Signature sig = new Signature(this.getType(methodDecl.getType()), linkedList);//signature
+        if (!this.isDuplicate(methodDecl.getName(), methodDecl.getLine(), methodDecl.getPos())) {
+            methodSTE = new MethodSTE(methodDecl.getName(), sig, this.currentClass+ methodDecl.getName());
+        //   System.out.println(this.currentClass);
+	//ClassSTE ste= (ClassSTE) this.symTable.lookup(this.currentClass);
+	//ste.setMethodSTE(methodSTE);
+	}else{
+	    methodSTE = new MethodSTE(methodDecl.getName()+"duplicate", sig, this.currentClass+ methodDecl.getName()+"duplicate");
+		//create duplicate methodSTE
+	}
+        this.symTable.insert(methodSTE);
+        this.symTable.pushScope( methodDecl.getName());
+       
+        methodSTE.setVarSTE("this", Type.getClassType(this.currentClass),1);
+        int i=0;
+	for (Formal formal2 : methodDecl.getFormals()) {
+          methodSTE.setVarSTE(formal2.getName(), this.getType(formal2.getType()), 3+i);
+          i++;
+        
+	}
+    }
 
+    public void outMethodDecl(MethodDecl methodDecl) {
+        this.symTable.popScope();
+        
+    }
+
+    public void inTopClassDecl(TopClassDecl topClassDecl) {
+        if(!this.isDuplicate(topClassDecl.getName(), topClassDecl.getLine(), topClassDecl.getPos())){ 
+	        this.currentClass = topClassDecl.getName();
+       	}else{			// if duplicate class is found add duplicare to it
+		//System.exit(0);
+		this.currentClass = topClassDecl.getName()+"duplicate"; 
+	}
+  	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
+	this.symTable.pushScope(this.currentClass);//inside top class	
+
+
+    }
+
+    public void outTopClassDecl(TopClassDecl topClassDecl) {
+        this.symTable.popScope();
+    }
+
+    private boolean isDuplicate(String name, int line, int pos) {
+        if (this.symTable.lookupInnermost(name) != null) {
+            System.err.println("[" +line+ "," +pos+ "] Duplicate name " + name);
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,0 +1,33 @@
+digraph SymTable {
+	graph [rankdir="LR"];
+	node [shape=record];
+	0 [label=" <f0> Scope | <f1> dictionary\[C\] "];
+	0:<f1> -> 1:<f0>;
+	1 [label=" <f0> ClassSTE | <f1> mName = C| <f2> mMain = false| <f3> mSuperClass = null| <f4> mScope "];
+	1:<f4> -> 2:<f0>;
+	2 [label=" <f0> Scope | <f1> dictionary\[setP\] | <f2> dictionary\[setPduplicate\] "];
+	2:<f1> -> 3:<f0>;
+	3 [label=" <f0> MethodSTE | <f1> mName = setP| <f2> mSignature = (COLOR, BYTE, INT) returns class_null| <f3> mScope "];
+	3:<f3> -> 4:<f0>;
+	4 [label=" <f0> Scope | <f1> dictionary\[this\] | <f2> dictionary\[c\] | <f3> dictionary\[y\] | <f4> dictionary\[x\] "];
+	4:<f1> -> 5:<f0>;
+	5 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_C| <f3> mBase = Y| <f4> mOffset = 1"];
+	4:<f2> -> 6:<f0>;
+	6 [label=" <f0> VarSTE | <f1> mName = c| <f2> mType = COLOR| <f3> mBase = Y| <f4> mOffset = 3"];
+	4:<f3> -> 7:<f0>;
+	7 [label=" <f0> VarSTE | <f1> mName = y| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 4"];
+	4:<f4> -> 8:<f0>;
+	8 [label=" <f0> VarSTE | <f1> mName = x| <f2> mType = INT| <f3> mBase = Y| <f4> mOffset = 5"];
+	2:<f2> -> 9:<f0>;
+	9 [label=" <f0> MethodSTE | <f1> mName = setPduplicate| <f2> mSignature = (COLOR, BYTE, BYTE) returns class_null| <f3> mScope "];
+	9:<f3> -> 10:<f0>;
+	10 [label=" <f0> Scope | <f1> dictionary\[this\] | <f2> dictionary\[c\] | <f3> dictionary\[y\] | <f4> dictionary\[x\] "];
+	10:<f1> -> 11:<f0>;
+	11 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_C| <f3> mBase = Y| <f4> mOffset = 1"];
+	10:<f2> -> 12:<f0>;
+	12 [label=" <f0> VarSTE | <f1> mName = c| <f2> mType = COLOR| <f3> mBase = Y| <f4> mOffset = 3"];
+	10:<f3> -> 13:<f0>;
+	13 [label=" <f0> VarSTE | <f1> mName = y| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 4"];
+	10:<f4> -> 14:<f0>;
+	14 [label=" <f0> VarSTE | <f1> mName = x| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 5"];
+}

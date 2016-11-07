@@ -49,7 +49,7 @@ public class MJDriver {
 
           // and parse
          Node ast_root =(Node) parser.parse().value;
-	//System.out.println(parser.dump_stack()+"");
+	System.out.println("parsing is successful");
 
           // print ast to file
 	//parser.dump_stack();
@@ -70,7 +70,7 @@ public class MJDriver {
                 new java.io.FileOutputStream(filename + ".ST.dot"));
           System.out.println("Printing symbol table to " + filename + ".ST.dot");
 
-          globalST.outputDot(new PrintWriter(STout));
+          globalST.outputDot(STout);
     
 	  CheckTypes typeChecker= new CheckTypes(globalST);      
 	  try{
@@ -149,10 +149,11 @@ public class MJDriver {
           
 */
         } catch(exceptions.SemanticException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Semantic error "+e.getMessage());
             System.exit(1);
        
         } catch (Exception e) {
+	System.err.println("some other error ");
             e.printStackTrace();
             System.exit(1);
         }  

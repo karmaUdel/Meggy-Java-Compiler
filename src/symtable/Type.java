@@ -12,10 +12,21 @@ public class Type
   public static final Type COLOR = new Type();
   public static final Type BUTTON = new Type();
   public static final Type VOID = new Type();
+  public static final Type TONE = new Type();
+  public static final HashMap<String, Type> classTypes = new HashMap();
+  public final String className;
+    
+  private Type(String className) {
+    if (className == null) {
+           System.out.println("ClassName can't be null");
+     }
+       this.className = className;
+    }
 
   private Type()
   {
-
+     this.className = null;
+  
   }
 
 
@@ -50,10 +61,14 @@ public class Type
       return "BUTTON";
     }
 
+    if(this == TONE)
+    {
+      return "TONE";
+    }
     
 /*
 */
-    return "MAINCLASS;";
+    return "class_"+this.className;
   }
   
   public int getAVRTypeSize() {
@@ -66,6 +81,18 @@ public class Type
 
       return 2; // class references are 2 bytes
   }
+ 
+    public static Type getClassType(String className) {
+        if (className == null) {
+            System.out.println("ClassName can't be null");
+        }
+        Type type = classTypes.get(className);
+        if (type == null) {
+            type = new Type(className);
+            classTypes.put(className, type);
+        }
+        return type;
+    }
 
     
 /*  

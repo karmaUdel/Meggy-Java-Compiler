@@ -1,61 +1,69 @@
 package symtable;
+
+import ast.node.Node;
+import java.io.PrintStream;
 import java.util.*;
-import ast.node.*;
-import ast_visitors.*;
+import symtable.*;
 
-import exceptions.InternalException;
-
-/** 
- * SymTable
- * ....
- * The symbol table also keeps a mapping of expression nodes to
- * types because that information is needed elsewhere especially
- * when looking up method call information.
- * 
- * @author mstrout
- * WB: Simplified to only expression types
- */
 public class SymTable {
-   // private final HashMap<String,Scope> mExpType = new HashMap<String,Scope>();
-	private final HashMap<Node,String> mExpType = new HashMap<Node,String>();
-		
-	private String mGlobalScope;
-
-
-	public void pushScope(String scope)
-	{
-
-	}
-
+    private final Stack<Scope> mScopeStack = new Stack();
+    private final Scope mGlobalScope = new Scope(null);
+    private final HashMap<Node, String> mExpType = new HashMap();
     
-    public void setExpType(Node exp, Type t)
-    {
-    	this.mExpType.put(exp, t.toString());
+    public SymTable() {
+        this.mScopeStack.push(this.mGlobalScope);
     }
-    
-    public String getExpType(Node exp)
-    {
-    	return this.mExpType.get(exp);
+
+    public STE lookup(String name) {
+        Scope scope = this.mScopeStack.peek();
+        return scope.lookup(name);
     }
-	/*public Node getNode(String expression){
-		return this.mExpType.get(expression);
-	}*/
-	public void outputDot(java.io.PrintWriter ps)
-	{ 	
-		DotVisitorWithMap visitor = new DotVisitorWithMap(ps,this.mExpType);
-		for (Node name: mExpType.keySet()){
 
-			    String key =name.toString();
-			    String value = mExpType.get(name).toString();  
-			   // System.out.println(key + " " + value);  
-			visitor.defaultIn(name);
-		} 
-		ps.flush();
-
-
-	}
    
-/*
- */
+    public STE lookupInnermost(String name) {
+        Scope scope = this.mScopeStack.peek();
+        return scope.lookupInnermost(name);
+    }
 
+    public void insert(STE sTE) {
+        Scope scope = this.mScopeStack.peek();
+        scope.insert(sTE);
+    }
+
+    public void pushScope(String name) {
+        STE sTE = this.lookup(name);// look for the scope of the method
+	if(sTE instanceof MethodSTE)
+	 { MethodSTE m=(MethodSTE)sTE;
+		this.mScopeStack.push(m.getScope());
+	  }
+	else if( sTE instanceof ClassSTE)        
+	 {	ClassSTE c=(ClassSTE)sTE;
+		this.mScopeStack.push(c.getScope()); // if STE is method or Class then push scope
+	 }
+	else
+		System.out.println("No such scope is defined :"+ name);
+    }
+
+    
+    public void popScope() {
+        this.mScopeStack.pop();
+    }
+
+    public void setExpType(Node node, Type type) {
+        this.mExpType.put(node, type.toString());
+    }
+
+    public String getExpType(Node node) {
+        return this.mExpType.get(node);
+    }
+
+
+
+    public void outputDot(PrintStream printStream) {
+        printStream.println("digraph SymTable {");
+        printStream.println("\tgraph [rankdir=\"LR\"];");
+        printStream.println("\tnode [shape=record];");
+        this.mGlobalScope.outputDot(printStream, 0);
+        printStream.println("}");
+    }
 }
