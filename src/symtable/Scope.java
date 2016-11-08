@@ -7,7 +7,7 @@ import symtable.*;
 public class Scope {
     private HashMap<String, STE> dictionary = new HashMap();
     private Scope mEnclosing;
-    private String mEnclosingStr;
+    private String mEnclosingStr="";
     private List<String> mDeclOrder = new LinkedList<String>();
     private String scopeName;
     public Scope(Scope scope) {
@@ -30,7 +30,7 @@ public class Scope {
     }
     public void setmEnclosing(STE sTE){
 	if(this.mEnclosing!=null){
-		//do something
+	
 	}
     }
     public Scope getmEnclosing(){
@@ -39,7 +39,7 @@ public class Scope {
 
  public void setmEnclosingStr(String name){
 	if(this.mEnclosingStr!=null){
-		//do something
+	this.mEnclosingStr+=name;
 	}
     }
     public String getmEnclosingStr(){

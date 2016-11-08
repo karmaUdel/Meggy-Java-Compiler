@@ -16,7 +16,14 @@ public class SymTable {
 
     public STE lookup(String name) {
         Scope scope = this.mScopeStack.peek();
-        return scope.lookup(name);
+
+        if(scope.lookup(name)==null)
+	{
+	
+	return this.lookup(scope.getmEnclosingStr());
+	}
+
+	return scope.lookup(name);	
     }
 
     public Scope getCurrentScope(){

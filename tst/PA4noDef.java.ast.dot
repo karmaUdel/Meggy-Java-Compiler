@@ -44,50 +44,38 @@ digraph ASTGraph {
 19 -> 21
 22 [ label="IdLiteral\nc" ];
 19 -> 22
-23 [ label="Program" ];
-0 -> 23
-24 [ label="MainClass" ];
+23 [ label="MethodDecl" ];
+10 -> 23
+24 [ label="VoidType" ];
 23 -> 24
-25 [ label="BlockStatement" ];
-24 -> 25
-26 [ label="CallStatement" ];
+25 [ label="Formal" ];
+23 -> 25
+26 [ label="ColorType" ];
 25 -> 26
-27 [ label="NewExp" ];
-26 -> 27
-28 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
-26 -> 28
-29 [ label="ByteCast" ];
-26 -> 29
-30 [ label="IntLiteral\n7" ];
+27 [ label="Formal" ];
+23 -> 27
+28 [ label="ByteType" ];
+27 -> 28
+29 [ label="Formal" ];
+23 -> 29
+30 [ label="ByteType" ];
 29 -> 30
-31 [ label="ByteCast" ];
-26 -> 31
-32 [ label="IntLiteral\n3" ];
+31 [ label="MeggySetPixel" ];
+23 -> 31
+32 [ label="IdLiteral\nx" ];
 31 -> 32
-33 [ label="TopClassDecl" ];
-23 -> 33
-34 [ label="MethodDecl" ];
-33 -> 34
-35 [ label="VoidType" ];
-34 -> 35
-36 [ label="Formal" ];
-34 -> 36
-37 [ label="ColorType" ];
-36 -> 37
-38 [ label="Formal" ];
-34 -> 38
-39 [ label="ByteType" ];
-38 -> 39
-40 [ label="Formal" ];
-34 -> 40
-41 [ label="ByteType" ];
-40 -> 41
-42 [ label="MeggySetPixel" ];
-34 -> 42
-43 [ label="IdLiteral\nx" ];
-42 -> 43
-44 [ label="IdLiteral\ny" ];
-42 -> 44
-45 [ label="IdLiteral\nc" ];
-42 -> 45
+33 [ label="IdLiteral\ny" ];
+31 -> 33
+34 [ label="IdLiteral\nc" ];
+31 -> 34
+35 [ label="CallStatement" ];
+23 -> 35
+36 [ label="ThisLiteral\nthis" ];
+35 -> 36
+37 [ label="IdLiteral\nc" ];
+35 -> 37
+38 [ label="IdLiteral\ny" ];
+35 -> 38
+39 [ label="IdLiteral\nx" ];
+35 -> 39
 }

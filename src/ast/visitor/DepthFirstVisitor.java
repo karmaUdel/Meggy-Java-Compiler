@@ -18,12 +18,9 @@ import java.util.*;
 
 public class DepthFirstVisitor extends Visitor
 {
+
+
     
-private boolean firstpass=true;
-
-    public boolean getFirstPass()
-	{ return this.firstpass;}
-
     public void defaultIn(Node node)
     {
         // Do nothing
@@ -1000,12 +997,12 @@ private boolean firstpass=true;
                 e.accept(this);
             }
 
-	if(firstpass==true)
+	/*if(firstpass==true)
 	{
 	System.out.println("------------------------First Pass Ends ---------------------------------");
 	this.firstpass=false;
 	this.visitProgram(node);
-	}
+	}*/
 	
         }
         outProgram(node);

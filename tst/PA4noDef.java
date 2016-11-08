@@ -18,6 +18,11 @@ class PA4noDef {
 class C {
     
     public void setP(byte x, byte y, Meggy.Color c) {
+            Meggy.setPixel(x, y, c);  
+	this.setP2( x, y,  c  );
+    }
+
+public void setP2(byte x, byte y, Meggy.Color c) {
             Meggy.setPixel(x, y, c);    
     }
     
