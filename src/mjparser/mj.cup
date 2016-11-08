@@ -85,7 +85,7 @@ terminal SymbolValue THIS;
 terminal UMINUS;
 
 non terminal program;
-non terminal TopClassDecl otherClass;
+non terminal LinkedList<IClassDecl> otherClass;
 non terminal Integer exp;
 non terminal IStatement statement;
 non terminal List statement_list;
@@ -126,7 +126,7 @@ program ::=
     IMPORT:op1 MEGGY SEMI main_class:op otherClass:p {: 
 
 					LinkedList<IClassDecl> _classDecls = new LinkedList<IClassDecl>() ;
-					_classDecls.add(p);
+					_classDecls.addAll(p);
 					 RESULT = new Program(op1.line,op1.pos,op,_classDecls);
 					//System.out.println("program");
 :}
@@ -345,20 +345,27 @@ if(op2!=null){
 						;
 /*PA4 grammar starts here*/
 
-otherClass ::= CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE otherClass
+otherClass ::= CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE otherClass:other
 	       {:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
 		//System.out.println("before : class is "+_methodDecls+"  and statement list is "+methods );
 		_methodDecls.addAll(methods);
 		System.out.println(" class is "+name );		
-		RESULT=new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
+		LinkedList<IClassDecl> classDecl = new LinkedList<IClassDecl>();
+		TopClassDecl classdec = new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
+		classDecl.add((IClassDecl)classdec);
+		if(other!=null){
+			classDecl.addAll(other);
+		}			
+		RESULT = classDecl;		
 		:}
 		| {:
-		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
-		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
+		LinkedList<IClassDecl> classDecl = new LinkedList<IClassDecl>();
+		//LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
 		//_methodDecls.add(methods);
-		RESULT=new TopClassDecl(0,0,"",_varDecls,_methodDecls);
+		//RESULT=new TopClassDecl(0,0,"",_varDecls,_methodDecls);
+		RESULT = classDecl;		
 		:}
 		;
 
