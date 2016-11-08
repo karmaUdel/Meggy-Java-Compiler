@@ -1,7 +1,7 @@
 digraph SymTable {
 	graph [rankdir="LR"];
 	node [shape=record];
-	0 [label=" <f0> Scope | <f1> dictionary\[Cloud\] | <f2> dictionary\[Cloudduplicate\] "];
+	0 [label=" <f0> Scope | <f1> dictionary\[Cloud\] | <f2> dictionary\[Cloud**\] "];
 	0:<f1> -> 1:<f0>;
 	1 [label=" <f0> ClassSTE | <f1> mName = Cloud| <f2> mMain = false| <f3> mSuperClass = null| <f4> mScope "];
 	1:<f4> -> 2:<f0>;
@@ -27,7 +27,7 @@ digraph SymTable {
 	9:<f3> -> 12:<f0>;
 	12 [label=" <f0> VarSTE | <f1> mName = x| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 4"];
 	0:<f2> -> 13:<f0>;
-	13 [label=" <f0> ClassSTE | <f1> mName = Cloudduplicate| <f2> mMain = false| <f3> mSuperClass = null| <f4> mScope "];
+	13 [label=" <f0> ClassSTE | <f1> mName = Cloud**| <f2> mMain = false| <f3> mSuperClass = null| <f4> mScope "];
 	13:<f4> -> 14:<f0>;
 	14 [label=" <f0> Scope | <f1> dictionary\[inBounds\] | <f2> dictionary\[snow\] "];
 	14:<f1> -> 15:<f0>;
@@ -35,7 +35,7 @@ digraph SymTable {
 	15:<f3> -> 16:<f0>;
 	16 [label=" <f0> Scope | <f1> dictionary\[this\] | <f2> dictionary\[y\] | <f3> dictionary\[x\] "];
 	16:<f1> -> 17:<f0>;
-	17 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_Cloudduplicate| <f3> mBase = Y| <f4> mOffset = 1"];
+	17 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_Cloud**| <f3> mBase = Y| <f4> mOffset = 1"];
 	16:<f2> -> 18:<f0>;
 	18 [label=" <f0> VarSTE | <f1> mName = y| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 3"];
 	16:<f3> -> 19:<f0>;
@@ -45,7 +45,7 @@ digraph SymTable {
 	20:<f3> -> 21:<f0>;
 	21 [label=" <f0> Scope | <f1> dictionary\[this\] | <f2> dictionary\[y\] | <f3> dictionary\[x\] "];
 	21:<f1> -> 22:<f0>;
-	22 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_Cloudduplicate| <f3> mBase = Y| <f4> mOffset = 1"];
+	22 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_Cloud**| <f3> mBase = Y| <f4> mOffset = 1"];
 	21:<f2> -> 23:<f0>;
 	23 [label=" <f0> VarSTE | <f1> mName = y| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 3"];
 	21:<f3> -> 24:<f0>;

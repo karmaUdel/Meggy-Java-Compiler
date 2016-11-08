@@ -192,7 +192,7 @@ return Type.VOID;
 	//ClassSTE ste= (ClassSTE) this.symTable.lookup(this.currentClass);
 	//ste.setMethodSTE(methodSTE);
 	}else{
-	    methodSTE = new MethodSTE(methodDecl.getName()+"duplicate", sig, this.currentClass+ methodDecl.getName()+"duplicate");
+	    methodSTE = new MethodSTE(methodDecl.getName()+"*", sig, this.currentClass+ methodDecl.getName()+"*");
 		//create duplicate methodSTE
 	}
         this.symTable.insert(methodSTE);
@@ -217,7 +217,7 @@ return Type.VOID;
 	        this.currentClass = topClassDecl.getName();
        	}else{			// if duplicate class is found add duplicare to it
 		//System.exit(0);
-		this.currentClass = topClassDecl.getName()+"duplicate"; 
+		this.currentClass = topClassDecl.getName()+"**"; 
 	}
   	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
 	this.symTable.pushScope(this.currentClass);//inside top class	
