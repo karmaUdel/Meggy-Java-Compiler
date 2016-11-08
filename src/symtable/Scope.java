@@ -22,7 +22,14 @@ public class Scope {
         }
         return null;
     }
-
+    public void setmEnclosing(STE sTE){
+	if(this.mEnclosing!=null){
+		//do something
+	}
+    }
+    public Scope getmEnclosing(){
+	return this.mEnclosing;
+    }
     
     public STE lookupInnermost(String string) {
         if (this.dictionary.containsKey(string)) {

@@ -36,6 +36,10 @@ public class ClassSTE extends STE {
 		mScope.insert(method);	// add method
     }
 
+    public MethodSTE getMethodSTE(String method)//TopClassDecl classDecl){
+    {	
+		return (MethodSTE)mScope.lookup(method);	// lookup method
+    }
 
     
     public int outputDot(PrintStream printStream, int n) {

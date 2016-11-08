@@ -229,6 +229,47 @@ return Type.VOID;
         this.symTable.popScope();
     }
 
+    public void inMainClass(MainClass mainClass) {
+        if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
+	        this.currentClass = mainClass.getName();
+       	}else{			// if duplicate class is found add duplicare to it
+		//System.exit(0);
+		this.currentClass = mainClass.getName()+"**"; 
+	}
+  	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
+	this.symTable.pushScope(this.currentClass);//inside top class	
+	
+
+    }
+
+    public void outMainClass(MainClass mainClass) {
+        this.symTable.popScope();
+    }
+
+    public void inCallStatement(CallStatement callStatement){
+	ClassSTE classSTE = (ClassSTE) this.symTable.lookup(this.currentClass);
+	MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
+	IExp exp= callStatement.getExp(); // get operation part where call is operation.name(***);
+	MethodSTE method=null;
+	String classname;
+	System.out.println("ClassSTE "+classSTE+"Call Exp "+exp);
+	String methodName="";	
+	if(currentMethod!=null)
+		methodName = currentMethod.getName(); 
+	if(exp instanceof ThisLiteral){ //method from same class {this.name()}
+	 method = classSTE.getMethodSTE(methodName); 	//method in class which is called
+	}else{ // method from another class {new class().name()}
+		if(exp instanceof NewExp){
+		    //NewExp newExp = (NewExp) exp;
+		    classname = ((NewExp) exp).getId(); 
+		    ClassSTE other = (ClassSTE)this.symTable.lookup(classname);
+		    method = other.getMethodSTE(methodName); // method in other class which is called
+		}
+    	}
+	if(method!=null)
+		currentMethod.getScope().setmEnclosing(method); // currentMethod references some method
+	
+    }
     private boolean isDuplicate(String name, int line, int pos) {
         if (this.symTable.lookupInnermost(name) != null) {
             System.err.println("[" +line+ "," +pos+ "] Duplicate name " + name);

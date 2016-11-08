@@ -16,7 +16,7 @@ class PA4raindrop {
         // but syntax needs to be there.
         // Rain in column 3.
         while (true) {
-            new Cloud().rain((byte)3,(byte)7);
+            //new Cloud().rain((byte)3,(byte)7);
             Meggy.delay(500);
             Meggy.setPixel((byte)3, (byte)0, Meggy.Color.DARK);
             Meggy.setPixel((byte)1, (byte)6, Meggy.Color.ORANGE);

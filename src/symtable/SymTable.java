@@ -19,6 +19,9 @@ public class SymTable {
         return scope.lookup(name);
     }
 
+    public Scope getCurrentScope(){
+	return this.mScopeStack.peek();
+    }
    
     public STE lookupInnermost(String name) {
         Scope scope = this.mScopeStack.peek();
