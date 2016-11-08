@@ -18,6 +18,11 @@ import java.util.*;
 
 public class DepthFirstVisitor extends Visitor
 {
+    
+private boolean firstpass=true;
+
+    public boolean getFirstPass()
+	{ return this.firstpass;}
 
     public void defaultIn(Node node)
     {
@@ -991,8 +996,17 @@ public class DepthFirstVisitor extends Visitor
             List<IClassDecl> copy = new ArrayList<IClassDecl>(node.getClassDecls());
             for(IClassDecl e : copy)
             {
+		
                 e.accept(this);
             }
+
+	if(firstpass==true)
+	{
+	System.out.println("------------------------First Pass Ends ---------------------------------");
+	this.firstpass=false;
+	this.visitProgram(node);
+	}
+	
         }
         outProgram(node);
     }

@@ -7,6 +7,7 @@ import symtable.*;
 public class Scope {
     private HashMap<String, STE> dictionary = new HashMap();
     private Scope mEnclosing;
+    private String mEnclosingStr;
     private List<String> mDeclOrder = new LinkedList<String>();
     private String scopeName;
     public Scope(Scope scope) {
@@ -14,7 +15,12 @@ public class Scope {
     }
 
     public STE lookup(String string) {
-        if (this.dictionary.containsKey(string)) {
+	System.out.println("String "+string );
+
+	this.print(dictionary);
+
+	        
+	if (this.dictionary.containsKey(string)) {
             return this.dictionary.get(string);
         }
         if (this.mEnclosing != null) {
@@ -30,6 +36,16 @@ public class Scope {
     public Scope getmEnclosing(){
 	return this.mEnclosing;
     }
+
+ public void setmEnclosingStr(String name){
+	if(this.mEnclosingStr!=null){
+		//do something
+	}
+    }
+    public String getmEnclosingStr(){
+	return this.mEnclosingStr;
+    }
+
     
     public STE lookupInnermost(String string) {
         if (this.dictionary.containsKey(string)) {
@@ -39,12 +55,14 @@ public class Scope {
     }
 
     public void insert(STE sTE) {
+
         if (this.dictionary.containsKey(sTE.getName())) {
             System.out.println("Duplicate name " + sTE.getName());
         }else{
             this.dictionary.put(sTE.getName(), sTE);
             this.mDeclOrder.add(sTE.getName());
 	}
+	this.print(dictionary);
     }
 
     public List<String> getDeclOrder() {
@@ -57,6 +75,14 @@ public class Scope {
     public void setScopeName(String name){
 	this.scopeName=name;
     }
+public void print(HashMap<String, STE> map){
+	System.out.println("-----Printing dictionary-----");
+for (String key : map.keySet()) {
+    System.out.println(key + " " + map.get(key));
+}
+	System.out.println("-----End-----");
+}
+
     public int outputDot(PrintStream printStream, int n) {
         String method;
         int n2 = n;

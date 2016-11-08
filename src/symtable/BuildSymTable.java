@@ -10,7 +10,8 @@ import exceptions.InternalException;
  */
 public class BuildSymTable extends DepthFirstVisitor   {
 	private SymTable symTable; 
-	private String currentClass; 
+	private String currentClass;
+	 
   private static final Type BOOL = Type.BOOL;
   private static final Type INT = Type.INT;
   private static final Type BYTE = Type.BYTE;
@@ -151,6 +152,9 @@ return Type.VOID;
 
 
    public void checkExp(IExp exp){
+	
+	if(!this.getFirstPass())
+{
 
 	switch(exp.getClass().getSimpleName()){ 
 
@@ -172,11 +176,20 @@ return Type.VOID;
 
 
 	}
+}
+
    
 	}
 /*
  */
 	public void inMethodDecl(MethodDecl methodDecl) {
+
+
+
+	if(this.getFirstPass())
+{
+
+	System.out.println("First pass "+methodDecl.getName());
         MethodSTE methodSTE;
         Formal formal;
         Iterator iterator = methodDecl.getFormals().iterator();
@@ -195,81 +208,129 @@ return Type.VOID;
 	    methodSTE = new MethodSTE(methodDecl.getName()+"*", sig, this.currentClass+ methodDecl.getName()+"*");
 		//create duplicate methodSTE
 	}
-        this.symTable.insert(methodSTE);
-        this.symTable.pushScope( methodDecl.getName());
+
+
+       this.symTable.insert(methodSTE);
+System.out.println("MethodSTE "+methodSTE);
        
         methodSTE.setVarSTE("this", Type.getClassType(this.currentClass),1);
         int i=0;
 	for (Formal formal2 : methodDecl.getFormals()) {
           methodSTE.setVarSTE(formal2.getName(), this.getType(formal2.getType()), 3+i);
           i++;
+	} }
+
+else{
+
+	System.out.println("Second pass "+methodDecl.getName());
+	System.out.println("Scope "+this.symTable.getCurrentScope().getScopeName());
+	this.symTable.pushScope( methodDecl.getName());
         
-	}
+        	}
+
     }
 
+
     public void outMethodDecl(MethodDecl methodDecl) {
-        this.symTable.popScope();
+	if(!this.getFirstPass())
+        	this.symTable.popScope();
         
     }
 
     public void inTopClassDecl(TopClassDecl topClassDecl) {
+
+	
+if(this.getFirstPass())
+{
+
+	System.out.println("First pass "+topClassDecl.getName());
+
         if(!this.isDuplicate(topClassDecl.getName(), topClassDecl.getLine(), topClassDecl.getPos())){ 
 	        this.currentClass = topClassDecl.getName();
        	}else{			// if duplicate class is found add duplicare to it
 		//System.exit(0);
 		this.currentClass = topClassDecl.getName()+"**"; 
 	}
-  	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
-	this.symTable.pushScope(this.currentClass);//inside top class	
 
+  	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
+	this.symTable.pushScope(this.currentClass);//inside top class
+}
+else{
+	System.out.println("Second pass "+topClassDecl.getName());
+	this.currentClass = topClassDecl.getName();
+	this.symTable.pushScope(this.currentClass);//inside top class	
+}
 
     }
 
     public void outTopClassDecl(TopClassDecl topClassDecl) {
+
+//	if(!this.getFirstPass())
         this.symTable.popScope();
     }
 
-    public void inMainClass(MainClass mainClass) {
-        if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
+  /*  public void inMainClass(MainClass mainClass) {
+       if(this.getFirstPass())	
+{	
+	System.out.println("First pass "+mainClass.getName());
+
+ if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
 	        this.currentClass = mainClass.getName();
        	}else{			// if duplicate class is found add duplicare to it
 		//System.exit(0);
 		this.currentClass = mainClass.getName()+"**"; 
 	}
   	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
-	this.symTable.pushScope(this.currentClass);//inside top class	
-	
+	}else{
+		this.symTable.pushScope(mainClass.getName());//inside main class	
+	}
 
     }
 
     public void outMainClass(MainClass mainClass) {
-        this.symTable.popScope();
-    }
+	if(!this.getFirstPass())	
+        	this.symTable.popScope();
+    } */
 
     public void inCallStatement(CallStatement callStatement){
-	ClassSTE classSTE = (ClassSTE) this.symTable.lookup(this.currentClass);
-	MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
+	if(!this.getFirstPass()){
+
+	System.out.println("Second pass "+ callStatement.getId());
+
+	Scope currentScope = this.symTable.getCurrentScope();
+
+	//MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
+	
 	IExp exp= callStatement.getExp(); // get operation part where call is operation.name(***);
+
 	MethodSTE method=null;
 	String classname;
-	System.out.println("ClassSTE "+classSTE+"Call Exp "+exp);
+
+
 	String methodName="";	
-	if(currentMethod!=null)
-		methodName = currentMethod.getName(); 
+
+
+	methodName = callStatement.getId();
+ 
 	if(exp instanceof ThisLiteral){ //method from same class {this.name()}
-	 method = classSTE.getMethodSTE(methodName); 	//method in class which is called
+		//method in class which is called
+
 	}else{ // method from another class {new class().name()}
 		if(exp instanceof NewExp){
 		    //NewExp newExp = (NewExp) exp;
 		    classname = ((NewExp) exp).getId(); 
-		    ClassSTE other = (ClassSTE)this.symTable.lookup(classname);
-		    method = other.getMethodSTE(methodName); // method in other class which is called
+		    //STE other = this.symTable.lookup(classname);
+		     //methodName = classname+"."+methodName; // method in other class which is called
 		}
     	}
-	if(method!=null)
-		currentMethod.getScope().setmEnclosing(method); // currentMethod references some method
-	
+
+	if(methodName!=null)
+		currentScope.setmEnclosingStr(methodName); // currentMethod references some method
+	}
     }
+    public void outCallStatement(CallStatement callStatement){
+    }
+
     private boolean isDuplicate(String name, int line, int pos) {
         if (this.symTable.lookupInnermost(name) != null) {
             System.err.println("[" +line+ "," +pos+ "] Duplicate name " + name);

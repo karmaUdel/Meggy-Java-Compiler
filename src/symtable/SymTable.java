@@ -22,6 +22,9 @@ public class SymTable {
     public Scope getCurrentScope(){
 	return this.mScopeStack.peek();
     }
+    public Scope getGlobalScope(){
+	return this.mGlobalScope;
+    }
    
     public STE lookupInnermost(String name) {
         Scope scope = this.mScopeStack.peek();
@@ -30,11 +33,13 @@ public class SymTable {
 
     public void insert(STE sTE) {
         Scope scope = this.mScopeStack.peek();
+	System.out.println("Scope is "+scope.getScopeName());	
         scope.insert(sTE);
     }
 
     public void pushScope(String name) {
         STE sTE = this.lookup(name);// look for the scope of the method
+	System.out.println("STE in pushscope "+ sTE);
 	if(sTE instanceof MethodSTE)
 	 { MethodSTE m=(MethodSTE)sTE;
 		this.mScopeStack.push(m.getScope());
@@ -46,6 +51,7 @@ public class SymTable {
 	else
 		System.out.println("No such scope is defined :"+ name);
     }
+
 
     
     public void popScope() {
