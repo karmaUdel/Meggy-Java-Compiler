@@ -18,24 +18,23 @@ import ast.node.*;
 import ast.visitor.DepthFirstVisitor;
 import java.util.*;
 
-import symtable.SymTable;
-import symtable.Type;
-import exceptions.InternalException;
-import exceptions.SemanticException;
-
+import symtable.*;
+import exceptions.*;
 public class CheckTypes extends DepthFirstVisitor
 {
     
    private SymTable mCurrentST;
    private boolean error;
    private String errorMessage;
+   private String currentClass; 
    public CheckTypes(SymTable st) {
      if(st==null) {
           throw new InternalException("unexpected null argument");
       }
-      mCurrentST = st;
-      error=false;
-      errorMessage="";
+      this.mCurrentST = st;
+      this.error=false;
+      this.errorMessage="";
+      this.currentClass=null;
    }
    
    //========================= Overriding the visitor interface
@@ -115,33 +114,20 @@ public class CheckTypes extends DepthFirstVisitor
    }
    public void outCallExp(CallExp node)
    {
-       /*String lexpType = this.mCurrentST.getExpType(node.getLExp());
-       String rexpType = this.mCurrentST.getExpType(node.getRExp());
-       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
-           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
-          ){
-           this.mCurrentST.setExpType(node, Type.INT);
-	System.out.println("+ is correct");
-       } else {
-	this.error=true;       
-	           
-		//System.out.println(
-                  errorMessage+= "Operands to + operator must be INT or BYTE ["+
-                   node.getLExp().getLine()+" , "+ 
-                   node.getLExp().getPos()+"]\n";
-       }*/
-
-   }
-   public void outCallStatement(CallStatement node)
-   {
 	// look scope
 	// look return parameters --done
 	// match all paramters passed or not -- done
        
+
+// get MethodSTE 
+// check reurn type of methodSTE
+// assign return type
 	boolean breakFlag=false;
-	CallStatement methodDecl = node;//this.mCurrentST.getNode(node.getId());// i want node so that i can check what is method decl is...
-	List<IExp> argsList = methodDecl.getArgs();
-        List<IExp> callParam = node.getArgs();
+ 	String methodName = node.getId();
+	STE methodSTE = this.mCurrentST.lookup(methodName);
+	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
+	List<IExp> callParam = node.getArgs();
+	//getIType();
 	if(argsList.size()!=callParam.size()){
 		this.error=true;       
 	        breakFlag=true;
@@ -151,16 +137,15 @@ public class CheckTypes extends DepthFirstVisitor
                    node.getLine()+" , "+ 
                    node.getPos()+"]\n";
 	}
-	Iterator<IExp> args=argsList.iterator();
+	Iterator<Type> args=argsList.iterator();
 	Iterator<IExp> param=callParam.iterator();
 	int i=0;
 	while(args.hasNext()&&param.hasNext()&&!breakFlag){
-		IExp lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
+		Type lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
       	 	IExp rexp = param.next();//this.mCurrentST.getExpType(node.getRExp());
-		String lexpType = this.mCurrentST.getExpType(lexp);
-       		String rexpType = this.mCurrentST.getExpType(rexp);
+		String rexpType = this.mCurrentST.getExpType(rexp);
 		i++;
-		if(!rexpType.equalsIgnoreCase(lexpType)){
+		if(!rexpType.equalsIgnoreCase(lexp.toString())){
 			this.error=true;       
 	           	
 		//System.out.println(
@@ -173,22 +158,56 @@ public class CheckTypes extends DepthFirstVisitor
 
 	}
 	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
-		this.mCurrentST.setExpType(node,this.getType(this.mCurrentST.getExpType(node.getExp())));
+		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
 	}
-       /*if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
-           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
-          ){
-           this.mCurrentST.setExpType(node, node.getExp);
-	System.out.println("+ is correct");
-       } else {
-	this.error=true;       
-	           
+   }
+   public void outCallStatement(CallStatement node)
+   {	// look scope
+	// look return parameters --done
+	// match all paramters passed or not -- done
+       
+
+// get MethodSTE 
+// check reurn type of methodSTE
+// assign return type
+	boolean breakFlag=false;
+ 	String methodName = node.getId();
+	STE methodSTE = this.mCurrentST.lookup(methodName);
+	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
+	List<IExp> callParam = node.getArgs();
+	//getIType();
+	if(argsList.size()!=callParam.size()){
+		this.error=true;       
+	        breakFlag=true;
 		//System.out.println(
-                  errorMessage+= "Operands to + operator must be INT or BYTE ["+
-                   node.getLExp().getLine()+" , "+ 
-                   node.getLExp().getPos()+"]\n";
-       }
-	*/
+                  errorMessage+= "Required # of Args for methodCall "+node.getId()+" is # "+argsList.size()+
+		   " but found only #"+callParam.size() +" arguements ["+
+                   node.getLine()+" , "+ 
+                   node.getPos()+"]\n";
+	}
+	Iterator<Type> args=argsList.iterator();
+	Iterator<IExp> param=callParam.iterator();
+	int i=0;
+	while(args.hasNext()&&param.hasNext()&&!breakFlag){
+		Type lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
+      	 	IExp rexp = param.next();//this.mCurrentST.getExpType(node.getRExp());
+		String rexpType = this.mCurrentST.getExpType(rexp);
+		i++;
+		if(!rexpType.equalsIgnoreCase(lexp.toString())){
+			this.error=true;       
+	           	
+		//System.out.println(
+                  errorMessage+= "Args for methodCall "+node.getId()+" is not as expected, check argument # "+i+" ["+
+                   node.getLine()+" , "+ 
+                   node.getPos()+"]\n";
+		   breakFlag=true;		  
+		   break;		
+		}
+
+	}
+	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
+		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
+	}
    }
    
    public void outMinusExp(MinusExp node)
@@ -229,25 +248,7 @@ public class CheckTypes extends DepthFirstVisitor
 
    }
 
-   /*public void outLtExp(LtExp node)
-   {
-       String lexpType = this.mCurrentST.getExpType(node.getLExp());
-       String rexpType = this.mCurrentST.getExpType(node.getRExp());
-       if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
-           (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
-          ){
-           this.mCurrentST.setExpType(node, Type.BOOL);
-	System.out.println("Lt is correct");
-       } else {
-	this.error=true;       
-	           //System.out.println(
-                   errorMessage+="Operands to * operator must be INT or BYTE ["+
-                   node.getLExp().getLine()+" , "+ 
-                   node.getLExp().getPos()+"]\n";
-       }
-
-   }*/
-
+  
 
     public void outNegExp(NegExp node)
    {
@@ -309,7 +310,7 @@ public class CheckTypes extends DepthFirstVisitor
        if ((expType==Type.INT.toString())
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	System.out.println("NOT is correct");
+	System.out.println("MeggyDelay is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
@@ -318,7 +319,23 @@ public class CheckTypes extends DepthFirstVisitor
                    node.getExp().getPos()+"]\n";
        }
  }
+   public void outMeggyToneStart(MeggyToneStart node)
+   {
+       String toneExpType = this.mCurrentST.getExpType(node.getToneExp());
+       String durationExpType = this.mCurrentST.getExpType(node.getDurationExp());
 
+       if ((toneExpType==Type.INT.toString())&&(durationExpType==Type.INT.toString())
+          ){
+           this.mCurrentST.setExpType(node, Type.VOID);
+	System.out.println("ToneStart is correct");
+       } else {
+	this.error=true;       
+	           //System.out.println(
+                   errorMessage+="Operands to ToneStart operator must be INT ["+
+                   node.getToneExp().getLine()+" , "+ 
+                   node.getToneExp().getPos()+"]\n";
+       }
+   }
    public void outMeggySetPixel(MeggySetPixel node)
    {
        String lexpType = this.mCurrentST.getExpType(node.getXExp());
@@ -381,7 +398,43 @@ public class CheckTypes extends DepthFirstVisitor
        }
 
    }
+
+    public void inTopClassDecl(TopClassDecl topClassDecl) {
+        this.currentClass = topClassDecl.getName();
+        this.mCurrentST.pushScope(this.currentClass);// find class and push the scope
+    } // this. class and push scope 
+
+    public void outTopClassDecl(TopClassDecl topClassDecl) {
+        this.mCurrentST.popScope();
+    } // pop scope 
+
+    public void inMethodDecl(MethodDecl methodDecl) {
+        this.mCurrentST.pushScope(methodDecl.getName()); //find method and push scope
+    }// push method scope
+
+    public void outMethodDecl(MethodDecl methodDecl) {
+        this.mCurrentST.popScope();
+    } //pop method scope 
+
+  public void outNewExp(NewExp newExp) {
+        STE sTE = this.mCurrentST.lookup(newExp.getId());// search Class
+        if (sTE == null) {
+	    this.error = true;
+            //System.out.println(
+	    errorMessage+="Undeclared class type "+ newExp.getId()+" at ["+ newExp.getLine()+" , "+ newExp.getPos()+ "]\n";
+        }
+        this.mCurrentST.setExpType(newExp, Type.getClassType(newExp.getId()));
+    }
+
   
+    public void outThisExp(ThisLiteral thisLiteral) {
+        if (this.currentClass == null) {
+	    this.error = true;
+            //System.out.println(
+	    errorMessage+="This : CurrentClass is null at ["+thisLiteral.getLine()+" , "+thisLiteral.getPos()+"]\n";
+        }
+        this.mCurrentST.setExpType((Node)thisLiteral, Type.getClassType(this.currentClass));
+    }
   public boolean getError(){
 	return this.error;
   }
@@ -418,4 +471,28 @@ public class CheckTypes extends DepthFirstVisitor
    return Type.VOID;
 
   }
+
+   public Type getIType(IType node){
+   if(node instanceof BoolType){
+	return Type.BOOL;
+   }
+   if(node instanceof IntType)
+	return Type.INT;
+
+   if(node instanceof ByteType)
+	return Type.BYTE;
+
+   if(node instanceof ColorType)
+	return Type.COLOR;
+
+   if(node instanceof ButtonType)
+	return Type.BUTTON;
+
+
+   if(node instanceof ToneType)
+	return Type.TONE;
+
+   return Type.VOID;
+  }
+ 
 }
