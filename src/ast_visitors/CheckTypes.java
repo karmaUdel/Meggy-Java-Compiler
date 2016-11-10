@@ -45,14 +45,14 @@ public class CheckTypes extends DepthFirstVisitor
    
    public void outAndExp(AndExp node)
    {
-     if(this.mCurrentST.getExpType(node.getLExp()) != Type.BOOL.toString()) {
+     if(this.lookup(node.getLExp()) != Type.BOOL.toString()) {
 	this.error=true;
      //  System.out.println(
        errorMessage += "Invalid left operand type for operator && ["+
          node.getLExp().getLine()+" , "+  node.getLExp().getPos()+"]\n";
      }
 
-     if(this.mCurrentST.getExpType(node.getRExp()) != Type.BOOL.toString()) {
+     if(this.lookup(node.getRExp()) != Type.BOOL.toString()) {
 	this.error=true;       
 	//System.out.println(
          errorMessage +="Invalid right operand type for operator && ["+
@@ -64,8 +64,8 @@ public class CheckTypes extends DepthFirstVisitor
 
    public void outEqualExp(EqualExp node)
    {
-	String LType = this.mCurrentST.getExpType(node.getLExp());
-	String RType = this.mCurrentST.getExpType(node.getRExp());
+	String LType = this.lookup(node.getLExp());
+	String RType = this.lookup(node.getRExp());
 
      if(LType != RType) {
 	this.error=true;       
@@ -79,8 +79,8 @@ public class CheckTypes extends DepthFirstVisitor
   
    public void outLtExp(LtExp node)
    {
-	String LType = this.mCurrentST.getExpType(node.getLExp());
-	String RType = this.mCurrentST.getExpType(node.getRExp());
+	String LType = this.lookup(node.getLExp());
+	String RType = this.lookup(node.getRExp());
 
      if((LType==Type.INT.toString()  || LType==Type.BYTE.toString()) &&
            (RType==Type.INT.toString()  || RType==Type.BYTE.toString())
@@ -95,8 +95,8 @@ public class CheckTypes extends DepthFirstVisitor
    }
    public void outPlusExp(PlusExp node)
    {
-       String lexpType = this.mCurrentST.getExpType(node.getLExp());
-       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       String lexpType = this.lookup(node.getLExp());
+       String rexpType = this.lookup(node.getRExp());
        if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
@@ -251,8 +251,8 @@ i++;
    
    public void outMinusExp(MinusExp node)
    {
-       String lexpType = this.mCurrentST.getExpType(node.getLExp());
-       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       String lexpType = this.lookup(node.getLExp());
+       String rexpType = this.lookup(node.getRExp());
        if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
@@ -270,8 +270,8 @@ i++;
 
    public void outMulExp(MulExp node)
    {
-       String lexpType = this.mCurrentST.getExpType(node.getLExp());
-       String rexpType = this.mCurrentST.getExpType(node.getRExp());
+       String lexpType = this.lookup(node.getLExp());
+       String rexpType = this.lookup(node.getRExp());
        if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
@@ -291,7 +291,7 @@ i++;
 
     public void outNegExp(NegExp node)
    {
-       String expType = this.mCurrentST.getExpType(node.getExp());
+       String expType = this.lookup(node.getExp());
 
        if ((expType==Type.INT.toString())
           ){
@@ -309,7 +309,7 @@ i++;
 
    public void outByteCast(ByteCast node)
    {
-       String expType = this.mCurrentST.getExpType(node.getExp());
+       String expType = this.lookup(node.getExp());
 
        if ((expType==Type.INT.toString()  || expType==Type.BYTE.toString())
           ){
@@ -327,7 +327,7 @@ i++;
 
   public void outNotExp(NotExp node)
    {
-       String expType = this.mCurrentST.getExpType(node.getExp());
+       String expType = this.lookup(node.getExp());
 
        if ((expType==Type.BOOL.toString())
           ){
@@ -344,7 +344,7 @@ i++;
 
   public void outMeggyDelay(MeggyDelay node)
    {
-       String expType = this.mCurrentST.getExpType(node.getExp());
+       String expType = this.lookup(node.getExp());
 
        if ((expType==Type.INT.toString())
           ){
@@ -360,8 +360,8 @@ i++;
  }
    public void outMeggyToneStart(MeggyToneStart node)
    {
-       String toneExpType = this.mCurrentST.getExpType(node.getToneExp());
-       String durationExpType = this.mCurrentST.getExpType(node.getDurationExp());
+       String toneExpType = this.lookup(node.getToneExp());
+       String durationExpType = this.lookup(node.getDurationExp());
 
        if ((toneExpType==Type.INT.toString())&&(durationExpType==Type.INT.toString())
           ){
@@ -379,20 +379,10 @@ i++;
    {
 
 
-       String lexpType = this.mCurrentST.getExpType(node.getYExp());
-	if(lexpType==null){
-	System.out.println("we are broken "+node.getYExp());
-	lexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getYExp())).getType().toString();	}	
+       String lexpType = this.lookup(node.getYExp());
+       String rexpType = this.lookup(node.getXExp());
+       String colorexpType = this.lookup(node.getColor());
 
-
-	 String rexpType = this.mCurrentST.getExpType(node.getXExp());
-	if(rexpType==null){
-	System.out.println("we are broken "+node.getXExp());
-	rexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getXExp())).getType().toString();	}	
-
-
-
-       String colorexpType = this.mCurrentST.getExpType(node.getColor());
 
 	if(colorexpType==null){
 	System.out.println("we are broken "+node.getColor());
@@ -418,7 +408,7 @@ i++;
 
    public void outMeggyCheckButton(MeggyCheckButton node)
    {
-       String expType = this.mCurrentST.getExpType(node.getExp());
+       String expType = this.lookup(node.getExp());
   	System.out.println(expType);
 
        if (expType==Type.BUTTON.toString())
@@ -438,8 +428,8 @@ i++;
 
    public void outMeggyGetPixel(MeggyGetPixel node)
    {
-       String lexpType = this.mCurrentST.getExpType(node.getXExp());
-       String rexpType = this.mCurrentST.getExpType(node.getYExp());
+       String lexpType = this.lookup(node.getXExp());
+       String rexpType = this.lookup(node.getYExp());
 
 
        if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
@@ -499,6 +489,22 @@ i++;
         }
         this.mCurrentST.setExpType((Node)thisLiteral, Type.getClassType(this.currentClass));
     }
+
+
+public String lookup(IExp exp)
+{
+	 String expType = this.mCurrentST.getExpType(exp);
+	if(expType==null){
+	System.out.println("we are broken "+exp);
+	expType = ((VarSTE)this.mCurrentST.lookup(""+exp)).getType().toString();	
+	}
+
+	return expType;
+	
+
+
+}
+
   public boolean getError(){
 	return this.error;
   }
