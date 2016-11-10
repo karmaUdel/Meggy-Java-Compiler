@@ -111,6 +111,7 @@ precedence nonassoc LT;
 precedence left AND;
 precedence nonassoc EQUAL;
 precedence right BYTE;
+precedence nonassoc LT;
 precedence left PLUS,MINUS;
 precedence left TIMES;
 precedence right UMINUS; 

@@ -19,9 +19,10 @@ public class SymTable {
 	System.out.println("***SCOPE " + scope.getScopeName());
         if(scope.lookup(name)==null)
 	{
+	if(scope.getmEnclosing()!=null){
 	System.out.println("SCOPE is null and we are looking for " + name +"  inside mEnclosing which is  "+scope.getmEnclosing().getScopeName());
         System.out.println("We found "+scope.getmEnclosing().lookup(name).getName());
-	return scope.getmEnclosing().lookup(name);
+	return scope.getmEnclosing().lookup(name);}
 	
 	}
 	System.out.println("***scope.lookup(name) "+scope.lookup(name));

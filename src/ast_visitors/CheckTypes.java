@@ -83,15 +83,18 @@ public class CheckTypes extends DepthFirstVisitor
 	String RType = this.lookup(node.getRExp());
 
      if((LType==Type.INT.toString()  || LType==Type.BYTE.toString()) &&
-           (RType==Type.INT.toString()  || RType==Type.BYTE.toString())
-	) {
-	this.error=true;       
-	//System.out.println(
+           (RType==Type.INT.toString()  || RType==Type.BYTE.toString())) 
+     this.mCurrentST.setExpType(node, Type.BOOL);
+	
+     else
+{
+this.error=true;       
+	System.out.println("types" +LType + RType);
          errorMessage+="Different types for operator < ["+
          node.getLExp().getLine()+" , "+ node.getLExp().getPos()+"]\n";
-     }
+}
 
-     this.mCurrentST.setExpType(node, Type.BOOL);
+
    }
    public void outPlusExp(PlusExp node)
    {

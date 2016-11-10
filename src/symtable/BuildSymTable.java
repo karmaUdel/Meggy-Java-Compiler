@@ -204,12 +204,18 @@ System.out.println("CurrentClass is "+this.currentClass);
             linkedList.add(this.getType(formal.getType()));
         }//get all formal parameters
         Signature sig = new Signature(this.getType(methodDecl.getType()), linkedList);//signature
+
         if (!this.isDuplicate(methodDecl.getName(), methodDecl.getLine(), methodDecl.getPos())) {
             methodSTE = new MethodSTE(methodDecl.getName(), sig, this.currentClass+ methodDecl.getName());
         //   System.out.println(this.currentClass);
 	//ClassSTE ste= (ClassSTE) this.symTable.lookup(this.currentClass);
 	//ste.setMethodSTE(methodSTE);
 	}else{
+
+	System.out.println("Duplicate method declaration: " +  methodDecl.getName());
+	System.out.println("Cannot continue parsing ............");
+	System.exit(0);
+
 	    methodSTE = new MethodSTE(methodDecl.getName()+"*", sig, this.currentClass+ methodDecl.getName()+"*");
 		//create duplicate methodSTE
 	}
@@ -253,7 +259,8 @@ if(this.getFirstPass())
         if(!this.isDuplicate(topClassDecl.getName(), topClassDecl.getLine(), topClassDecl.getPos())){ 
 	        this.currentClass = topClassDecl.getName();
        	}else{			// if duplicate class is found add duplicare to it
-		//System.exit(0);
+		System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
+	System.out.println("Cannot continue parsing ............");
 		this.currentClass = topClassDecl.getName()+"**"; 
 	}
 
@@ -284,6 +291,7 @@ System.out.println("CurrentClass is "+this.currentClass);
  if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
 	        this.currentClass = mainClass.getName();
        	}else{			// if duplicate class is found add duplicare to it
+		
 		//System.exit(0);
 		this.currentClass = mainClass.getName()+"**"; 
 	}
