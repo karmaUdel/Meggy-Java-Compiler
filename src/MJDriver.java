@@ -71,7 +71,7 @@ public class MJDriver {
           System.out.println("Printing symbol table to " + filename + ".ST.dot");
 
           globalST.outputDot(STout);
-    
+    	
 	  CheckTypes typeChecker= new CheckTypes(globalST);      
 	  try{
 	  // perform type checking

@@ -20,6 +20,10 @@ public class Signature {
         return this.returnType;
     }
 
+  public List<Type> getFormals() {
+        return this.formals;
+    }
+
     public String toString() {
         String signature = "(";
         if(this.formals!=null){

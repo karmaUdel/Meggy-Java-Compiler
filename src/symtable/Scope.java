@@ -7,12 +7,15 @@ import symtable.*;
 public class Scope {
     private HashMap<String, STE> dictionary = new HashMap();
     private Scope mEnclosing;
-    private String mEnclosingStr="";
+    private String mEnclosingStr=null;
     private List<String> mDeclOrder = new LinkedList<String>();
     private String scopeName;
     public Scope(Scope scope) {
-        this.mEnclosing = scope;
-    }
+	//if(scope!=null) 
+	  //      this.mEnclosing = scope;
+	//else
+	//	this.mEnclosing = new Scope(null);    
+   }
 
     public STE lookup(String string) {
 	System.out.println("String "+string );
@@ -28,9 +31,17 @@ public class Scope {
         }
         return null;
     }
+
+
     public void setmEnclosing(STE sTE){
+	System.out.println(" Let's set mEnclosing "+this.mEnclosing);
 	if(this.mEnclosing!=null){
-	
+		
+		this.mEnclosing.insert(sTE);
+	}else{
+	System.out.println(" Let's create mEnclosing ");
+		this.mEnclosing = new Scope(null);
+		this.mEnclosing.insert(sTE);		
 	}
     }
     public Scope getmEnclosing(){

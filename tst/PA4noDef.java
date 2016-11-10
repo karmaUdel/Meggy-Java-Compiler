@@ -11,7 +11,7 @@ import meggy.Meggy;
 class PA4noDef {
 
     public static void main(String[] whatever){
-	new C().setPix((byte)3,(byte)7,Meggy.Color.BLUE);
+	new C().setP((byte)3,(byte)7,Meggy.Color.BLUE);
     }
 }
 

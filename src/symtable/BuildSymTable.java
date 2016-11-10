@@ -308,12 +308,12 @@ System.out.println("CurrentClass is "+this.currentClass);
 	System.out.println("Second pass "+ callStatement.getId());
 
 	Scope currentScope = this.symTable.getCurrentScope();
-
+	Scope global = this.symTable.getGlobalScope();
 	//MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
 	
 	IExp exp= callStatement.getExp(); // get operation part where call is operation.name(***);
 	System.out.println("Method call statement from class "+this.currentClass);
-	MethodSTE method=null;
+	STE classSTE=null;
 	String classname;
 
 
@@ -324,24 +324,24 @@ System.out.println("CurrentClass is "+this.currentClass);
  
 	if(exp instanceof ThisLiteral){ //method from same class {this.name()}
 		//method in class which is called
-
+		classSTE = global.lookup(this.currentClass);
 	}else{ // method from another class {new class().name()}
 		if(exp instanceof NewExp){
 		    //NewExp newExp = (NewExp) exp;
 		    classname = ((NewExp) exp).getId(); 
+		    classSTE = global.lookup(classname);
 		    //STE other = this.symTable.lookup(classname);
 		     //methodName = classname+"."+methodName; // method in other class which is called
 		}
     	}
 
-	if(methodName!=null)
-	{	System.out.println(methodName);
-		currentScope.setmEnclosingStr(methodName); // currentMethod references some method
-		System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
-	}
-
+	if(classSTE!=null)
+	{	System.out.println("*** " + methodName + " "+ classSTE.getName());
+		currentScope.setmEnclosing(classSTE); // currentMethod references some method
+		//System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
 	}
     }
+}
     public void outCallStatement(CallStatement callStatement){
     }
 

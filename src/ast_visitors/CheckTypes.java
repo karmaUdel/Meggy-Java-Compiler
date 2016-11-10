@@ -170,13 +170,35 @@ public class CheckTypes extends DepthFirstVisitor
 // get MethodSTE 
 // check reurn type of methodSTE
 // assign return type
+
+try
+{
+	/*if(node.getExp() instanceof ThisLiteral)
+	{
+	 
+	}
+	
+
+	else if(node.getExp() instanceof NewExp)
+*/
+	
+	
 	boolean breakFlag=false;
  	String methodName = node.getId();
-	STE methodSTE = this.mCurrentST.lookup(methodName);
+	System.out.println("Method name we are looking for is "+ methodName);
+	STE classSTE = null;
+	if(node.getExp() instanceof ThisLiteral){
+	 	classSTE = this.mCurrentST.lookup(this.currentClass);
+	}else if(node.getExp() instanceof NewExp)
+		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
+	
+	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
+	System.out.println("methSTE is " + methodSTE);
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
 	List<IExp> callParam = node.getArgs();
-	//getIType();
+System.out.println("Size");
 	if(argsList.size()!=callParam.size()){
+System.out.println("error");
 		this.error=true;       
 	        breakFlag=true;
 		//System.out.println(
@@ -185,17 +207,29 @@ public class CheckTypes extends DepthFirstVisitor
                    node.getLine()+" , "+ 
                    node.getPos()+"]\n";
 	}
+
 	Iterator<Type> args=argsList.iterator();
 	Iterator<IExp> param=callParam.iterator();
 	int i=0;
+        System.out.println(args + " " + param + " condition "+(args.hasNext()&&param.hasNext()&&!breakFlag));
 	while(args.hasNext()&&param.hasNext()&&!breakFlag){
+		String rexpType="";
 		Type lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
       	 	IExp rexp = param.next();//this.mCurrentST.getExpType(node.getRExp());
-		String rexpType = this.mCurrentST.getExpType(rexp);
-		i++;
+
+
+
+		rexpType = this.mCurrentST.getExpType(rexp);
+
+if(rexpType==null){
+System.out.println("we are broken "+rexp);
+rexpType = ((VarSTE)this.mCurrentST.lookup(""+rexp)).getType().toString();	}	
+
+i++;
+		System.out.println(i+". rexpType is "+rexpType+ " && lexp is "+lexp+" are equal ? "+rexpType.equalsIgnoreCase(lexp.toString()));
 		if(!rexpType.equalsIgnoreCase(lexp.toString())){
 			this.error=true;       
-	           	
+	           System.out.println("*** inside while and error");	
 		//System.out.println(
                   errorMessage+= "Args for methodCall "+node.getId()+" is not as expected, check argument # "+i+" ["+
                    node.getLine()+" , "+ 
@@ -204,9 +238,14 @@ public class CheckTypes extends DepthFirstVisitor
 		   break;		
 		}
 
+
 	}
 	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
 		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
+	}
+}
+	catch(Exception e){
+	System.out.println("Caught in call stmt:" +  e.getMessage() );
 	}
    }
    
@@ -338,9 +377,28 @@ public class CheckTypes extends DepthFirstVisitor
    }
    public void outMeggySetPixel(MeggySetPixel node)
    {
-       String lexpType = this.mCurrentST.getExpType(node.getXExp());
-       String rexpType = this.mCurrentST.getExpType(node.getYExp());
+
+
+       String lexpType = this.mCurrentST.getExpType(node.getYExp());
+	if(lexpType==null){
+	System.out.println("we are broken "+node.getYExp());
+	lexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getYExp())).getType().toString();	}	
+
+
+	 String rexpType = this.mCurrentST.getExpType(node.getXExp());
+	if(rexpType==null){
+	System.out.println("we are broken "+node.getXExp());
+	rexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getXExp())).getType().toString();	}	
+
+
+
        String colorexpType = this.mCurrentST.getExpType(node.getColor());
+
+	if(colorexpType==null){
+	System.out.println("we are broken "+node.getColor());
+	colorexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getColor())).getType().toString();	}	
+
+
 
        if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString()) &&
@@ -402,6 +460,8 @@ public class CheckTypes extends DepthFirstVisitor
     public void inTopClassDecl(TopClassDecl topClassDecl) {
         this.currentClass = topClassDecl.getName();
         this.mCurrentST.pushScope(this.currentClass);// find class and push the scope
+
+	System.out.println("in Top Decl");
     } // this. class and push scope 
 
     public void outTopClassDecl(TopClassDecl topClassDecl) {
@@ -417,12 +477,16 @@ public class CheckTypes extends DepthFirstVisitor
     } //pop method scope 
 
   public void outNewExp(NewExp newExp) {
+
+
         STE sTE = this.mCurrentST.lookup(newExp.getId());// search Class
         if (sTE == null) {
 	    this.error = true;
             //System.out.println(
 	    errorMessage+="Undeclared class type "+ newExp.getId()+" at ["+ newExp.getLine()+" , "+ newExp.getPos()+ "]\n";
         }
+
+	System.out.println("new Exp:" +sTE.getName());
         this.mCurrentST.setExpType(newExp, Type.getClassType(newExp.getId()));
     }
 

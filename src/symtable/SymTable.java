@@ -16,12 +16,15 @@ public class SymTable {
 
     public STE lookup(String name) {
         Scope scope = this.mScopeStack.peek();
-
+	System.out.println("***SCOPE " + scope.getScopeName());
         if(scope.lookup(name)==null)
 	{
+	System.out.println("SCOPE is null and we are looking for " + name +"  inside mEnclosing which is  "+scope.getmEnclosing().getScopeName());
+        System.out.println("We found "+scope.getmEnclosing().lookup(name).getName());
+	return scope.getmEnclosing().lookup(name);
 	
-	return this.lookup(scope.getmEnclosingStr());
 	}
+	System.out.println("***scope.lookup(name) "+scope.lookup(name));
 
 	return scope.lookup(name);	
     }
