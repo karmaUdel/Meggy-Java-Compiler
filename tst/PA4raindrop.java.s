@@ -35,6 +35,13 @@ cp     r24, r25
 brne   MJ_L1
 jmp    MJ_L2
 MJ_L1:
+# NewExp
+ldi    r24, lo8(0)
+ldi    r25, hi8(0)
+# push object address
+# push two byte expression onto stack
+push   r25
+push   r24
 
 # interger value 7
 ldi    r24,lo8(7)
@@ -61,6 +68,17 @@ push   r24
 pop    r24
 pop    r25
 push   r24
+#### function call
+# put parameter values into appropriate registers
+# load a one byte expression off stack
+pop    r20
+# load a one byte expression off stack
+pop    r22
+# receiver will be passed as first param
+# load a two byte expression off stack
+pop    r24
+pop    r25
+call    PA4raindroprain
 
 # interger value 500
 ldi    r24,lo8(500)
@@ -198,6 +216,8 @@ pop    r30
 pop    r30
 pop    r30
 pop    r30
+pop    r30
+pop    r30
 # Copy stack pointer to frame pointer
 in     r28,__SP_L__
 in     r29,__SP_H__
@@ -263,6 +283,8 @@ pop    r30
 pop    r30
 pop    r30
 pop    r30
+pop    r30
+pop    r30
 # restoring the frame pointer
 pop    r28
 pop    r29
@@ -291,6 +313,26 @@ std    Y + 4, r20
 /* done with function Cloudrain prologue */
 
 ## If statement
+# loading the implicit this
+# load a two byte variable from base+offset
+ldd    r31, Y + 2
+ldd    r30, Y + 1
+# push two byte expression onto stack
+push   r31
+push   r30
+#### function call
+# put parameter values into appropriate registers
+# load a one byte expression off stack
+pop    r18
+# load a one byte expression off stack
+pop    r20
+# load a one byte expression off stack
+pop    r22
+# receiver will be passed as first param
+# load a two byte expression off stack
+pop    r24
+pop    r25
+call    CloudinBounds
 breq   MJ_L14
 MJ_L15:
 ldi    r24, 1
@@ -324,6 +366,13 @@ call   _Z6DrawPxhhh
 call   _Z12DisplaySlatev
 
 ## If statement
+# loading the implicit this
+# load a two byte variable from base+offset
+ldd    r31, Y + 2
+ldd    r30, Y + 1
+# push two byte expression onto stack
+push   r31
+push   r30
 
 # interger value 1
 ldi    r24,lo8(1)
@@ -350,6 +399,19 @@ push   r24
 pop    r24
 pop    r25
 push   r24
+#### function call
+# put parameter values into appropriate registers
+# load a one byte expression off stack
+pop    r18
+# load a one byte expression off stack
+pop    r20
+# load a one byte expression off stack
+pop    r22
+# receiver will be passed as first param
+# load a two byte expression off stack
+pop    r24
+pop    r25
+call    CloudinBounds
 breq   MJ_L21
 MJ_L22:
 ldi    r24, 1
@@ -426,6 +488,13 @@ push   r24
 pop    r24
 pop    r25
 call   _Z8delay_msj	
+# loading the implicit this
+# load a two byte variable from base+offset
+ldd    r31, Y + 2
+ldd    r30, Y + 1
+# push two byte expression onto stack
+push   r31
+push   r30
 
 # interger value 1
 ldi    r24,lo8(1)
@@ -454,6 +523,17 @@ push   r24
 pop    r24
 pop    r25
 push   r24
+#### function call
+# put parameter values into appropriate registers
+# load a one byte expression off stack
+pop    r20
+# load a one byte expression off stack
+pop    r22
+# receiver will be passed as first param
+# load a two byte expression off stack
+pop    r24
+pop    r25
+call    Cloudrain
 
 #Else part
 MJ_L11:

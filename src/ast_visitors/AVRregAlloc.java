@@ -21,14 +21,18 @@ public class AVRregAlloc extends DepthFirstVisitor {
 	
 	public void visitProgram(Program program){
 		if(program.getMainClass()!=null){
-		program.getMainClass().accept((Visitor)this);
+			program.getMainClass().accept((Visitor)this);
 		}
 		// once code is written on out buffer
 		// flush the writer
-
+		this.out.println();
+		this.out.println();
 		if(program.getClassDecls()!=null){
-			for (int i=0; i< program.getClassDecls().size();i++)
+			for (int i=0; i< program.getClassDecls().size();i++){
 				program.getClassDecls().get(i).accept((Visitor)this);
+				this.out.println();
+				this.out.println();
+			}
 		}
 		this.out.flush();
 	}
@@ -466,8 +470,11 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		this.currentClass = topClassDecl.getName();		
 		System.out.println("Topclass "+this.currentClass);
 		if(topClassDecl.getMethodDecls()!=null){
-			for (int i=0; i< topClassDecl.getMethodDecls().size();i++)
+			for (int i=0; i< topClassDecl.getMethodDecls().size();i++){
 				topClassDecl.getMethodDecls().get(i).accept((Visitor)this);
+				this.out.println();
+				this.out.println();
+			}
 		}		
 	}
 	public void visitMethodDecl(MethodDecl methodDecl){
@@ -479,35 +486,42 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println(".type  "+this.currentClass+methodDecl.getName()+", @function");
 		this.out.println(this.currentClass+methodDecl.getName()+":");
     		this.out.println("push   r29");
-    		this.out.println("push   r28");
+    		this.out.println("push   r28");		
+		this.out.println();
     		this.out.println("# make space for locals and params");
     		this.out.println("ldi    r30, 0");
 		for (int i=0; i< methodDecl.getFormals().size(); i++) {   		
 			this.out.println("pop    r30");
     			this.out.println("pop    r30");
 		}
+		this.out.println();
 
     		this.out.println("# Copy stack pointer to frame pointer");
     		this.out.println("in     r28,__SP_L__");
     		this.out.println("in     r29,__SP_H__");
+		this.out.println();
 
     		this.out.println("# save off parameters"); // need to generalize this
     		this.out.println("std    Y + 2, r25");
     		this.out.println("std    Y + 1, r24");
     		this.out.println("std    Y + 3, r22");
     		this.out.println("std    Y + 4, r20");
+		this.out.println();
 		this.out.println("/* done with function "+this.currentClass+methodDecl.getName()+" prologue */");
+		this.out.println();
 
 		
 		//body
 		if(methodDecl.getStatements()!=null){
 			for (int i=0; i< methodDecl.getStatements().size(); i++) {   		
 				methodDecl.getStatements().get(i).accept((Visitor)this);
+				this.out.println();
 			}
 
 		}
 		
-
+		this.out.println();
+		this.out.println();
 		//epilogue
 		this.out.println("/* epilogue start for "+this.currentClass+methodDecl.getName()+" */");
 		if(this.getIType(methodDecl.getType())!=Type.VOID){
@@ -517,18 +531,97 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		}else{
     			this.out.println("# No return value");
 		}
+		this.out.println();
 		this.out.println("# pop space off stack for parameters and locals");
 		for (int i=0; i< methodDecl.getFormals().size(); i++) {   		
 			this.out.println("pop    r30");
     			this.out.println("pop    r30");
 		}
+		this.out.println();
     		this.out.println("# restoring the frame pointer");
 	    	this.out.println("pop    r28");
     		this.out.println("pop    r29");
     		this.out.println("ret");
     		this.out.println(".size "+this.currentClass+methodDecl.getName()+", .-"+this.currentClass+methodDecl.getName());
 	}
+	
+	public void visitCallExp(CallExp call){
+		call.getExp().accept((Visitor)this);// thisLiteral or newExp
+		for (int i=0; i< call.getArgs().size();i++)
+			call.getArgs().get(i).accept((Visitor)this); //set All arguements
+    		this.out.println("#### function call");
+		this.out.println();
+    		this.out.println("# put parameter values into appropriate registers");
+		for (int i=call.getArgs().size(); i> 0;i--){
+    			this.out.println("# load a one byte expression off stack");
+    			this.out.println("pop    r"+(24-(2*i)));
+			this.out.println();
+		}
+		this.out.println();
+    		this.out.println("# receiver will be passed as first param");
+    		this.out.println("# load a two byte expression off stack");
+    		this.out.println("pop    r24");
+    		this.out.println("pop    r25");
+		this.out.println();
+		this.out.println();
+    		this.out.println("call    "+this.currentClass+call.getId());
+		this.out.println();
+		this.out.println();
 
+	}
+
+	public void visitCallStatement(CallStatement call){
+		call.getExp().accept((Visitor)this);// thisLiteral or newExp
+		for (int i=0; i< call.getArgs().size();i++)
+			call.getArgs().get(i).accept((Visitor)this); //set All arguements
+    		this.out.println("#### function call");
+		this.out.println();
+    		this.out.println("# put parameter values into appropriate registers");
+		for (int i=call.getArgs().size(); i> 0;i--){
+    			this.out.println("# load a one byte expression off stack");
+    			this.out.println("pop    r"+(24-(2*i)));
+			this.out.println();
+		}
+		this.out.println();
+    		this.out.println("# receiver will be passed as first param");
+    		this.out.println("# load a two byte expression off stack");
+    		this.out.println("pop    r24");
+    		this.out.println("pop    r25");
+		this.out.println();
+		this.out.println();
+
+    		this.out.println("call    "+this.currentClass+call.getId());
+		this.out.println();
+		this.out.println();
+	}
+
+	public void visitThisLiteral(ThisLiteral thisLiteral){
+
+    		this.out.println("# loading the implicit this");
+	    	this.out.println("# load a two byte variable from base+offset");
+    		this.out.println("ldd    r31, Y + 2");
+    		this.out.println("ldd    r30, Y + 1");
+		this.out.println();
+    		this.out.println("# push two byte expression onto stack");
+    		this.out.println("push   r31");
+    		this.out.println("push   r30");
+		this.out.println();
+	}
+
+	public void visitNewExp(NewExp newExp){
+
+		this.out.println();
+    		this.out.println("# NewExp");
+    		this.out.println("ldi    r24, lo8(0)");
+    		this.out.println("ldi    r25, hi8(0)");
+		this.out.println();
+    		this.out.println("# push object address");
+    		this.out.println("# push two byte expression onto stack");
+    		this.out.println("push   r25");
+    		this.out.println("push   r24");
+		this.out.println();
+
+	}
 
 	public Type getIType(IType node){
 	   if(node instanceof BoolType){

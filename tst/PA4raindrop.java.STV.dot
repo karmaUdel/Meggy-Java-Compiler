@@ -17,13 +17,15 @@ digraph SymTable {
 	4:<f3> -> 7:<f0>;
 	7 [label=" <f0> VarSTE | <f1> mName = y| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 4"];
 	2:<f2> -> 8:<f0>;
-	8 [label=" <f0> MethodSTE | <f1> mName = inBounds| <f2> mSignature = (BYTE, BYTE) returns BOOL| <f3> mScope "];
+	8 [label=" <f0> MethodSTE | <f1> mName = inBounds| <f2> mSignature = (BYTE, BYTE, BYTE) returns BOOL| <f3> mScope "];
 	8:<f3> -> 9:<f0>;
-	9 [label=" <f0> Scope | <f1> mDict\[this\] | <f2> mDict\[x\] | <f3> mDict\[y\] "];
+	9 [label=" <f0> Scope | <f1> mDict\[this\] | <f2> mDict\[x\] | <f3> mDict\[y\] | <f4> mDict\[point\] "];
 	9:<f1> -> 10:<f0>;
 	10 [label=" <f0> VarSTE | <f1> mName = this| <f2> mType = class_Cloud;| <f3> mBase = Y| <f4> mOffset = 1"];
 	9:<f2> -> 11:<f0>;
 	11 [label=" <f0> VarSTE | <f1> mName = x| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 3"];
 	9:<f3> -> 12:<f0>;
 	12 [label=" <f0> VarSTE | <f1> mName = y| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 4"];
+	9:<f4> -> 13:<f0>;
+	13 [label=" <f0> VarSTE | <f1> mName = point| <f2> mType = BYTE| <f3> mBase = Y| <f4> mOffset = 5"];
 }

@@ -30,9 +30,9 @@ class Cloud {
     public void rain(byte x, byte y) {
         // light up x,y if is in bounds
         // and continue recursion
-        if (this.inBounds(x, y)) {
+        if (this.inBounds(x, y, y)) {
             Meggy.setPixel(x, y, Meggy.Color.BLUE);
-            if (this.inBounds(x,(byte)(y+(byte)1))) {
+            if (this.inBounds(x,(byte)(y+(byte)1),y)) {
                     Meggy.setPixel(x, (byte)(y+(byte)1), Meggy.Color.DARK);
             } else {}
             Meggy.delay(100);
@@ -40,7 +40,7 @@ class Cloud {
         } else {}
     }
     
-    public boolean inBounds(byte x, byte y) {
+    public boolean inBounds(byte x, byte y, byte point) {
 	if(x<y){Meggy.delay(1000);}
         return ((byte)(0+1) < y ) && (y < (byte)8);
     }
