@@ -107,18 +107,18 @@ non terminal IExp returnStatement;
 
 
 precedence right NOT;
-precedence nonassoc LT;
 precedence left AND;
-precedence nonassoc EQUAL;
-precedence right BYTE;
-precedence nonassoc LT;
+precedence left LT,EQUAL;
+//precedence nonassoc EQUAL;
+
 precedence left PLUS,MINUS;
 precedence left TIMES;
-precedence right UMINUS; 
+precedence left UMINUS; 
+precedence right BYTE;
 precedence nonassoc ELSE;
 precedence nonassoc IF;
-precedence left THIS;
-precedence left DOT;
+precedence right THIS;
+precedence right DOT;
 
 /* Meggy Java Grammar */
 start with program;
@@ -300,14 +300,7 @@ if(op2!=null){
 
 						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
-					//| //LPAREN BYTE:op RPAREN operation:ex
-					//{:      System.out.println("op to byte int literal");
-
-					//IntLiteral a = new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value); 
-
-						//RESULT = new ByteCast(op.line, op.pos,ex);
-					//:}
-
+					
 					|NOT:op operation:e
 					{:
 						//System.out.println("not");
