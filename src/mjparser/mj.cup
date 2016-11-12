@@ -294,12 +294,25 @@ if(op2!=null){
 					:}
 
 
-					| LPAREN BYTE:op RPAREN  operation:e 
+					| LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN  
  					{:      System.out.println("op to byte operation");
 
 
 						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
+
+					| LPAREN BYTE:op RPAREN  INT_LITERAL:ex
+ 					{:      System.out.println("op to byte operation");
+					IntLiteral e =  new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value);
+
+						RESULT = new ByteCast(op.line, op.pos,e);
+					:}
+					| LPAREN BYTE:op RPAREN  ID:ex
+ 					{:      System.out.println("op to byte operation");
+					IdLiteral e =  new IdLiteral(ex.line,ex.pos,ex+"");
+
+						RESULT = new ByteCast(op.line, op.pos,e);
+					:}	
 					
 					|NOT:op operation:e
 					{:
