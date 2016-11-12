@@ -17,8 +17,9 @@ class PA4raindrop {
         // Rain in column 3.
         while (true) {
             new Cloud().rain((byte)3,(byte)7);
+	    //Meggy.toneStart(Meggy.Tone.C3,10);	
             Meggy.delay(500);
-            Meggy.setPixel((byte)3, (byte)0, Meggy.Color.DARK);
+            Meggy.setPixel((byte)((byte)3*(byte)4), (byte)0, Meggy.Color.DARK);
             Meggy.setPixel((byte)1, (byte)6, Meggy.Color.ORANGE);
         }
     }
@@ -41,7 +42,7 @@ class Cloud {
     
     public boolean inBounds(byte x, byte y) {
 	if(x<y){Meggy.delay(1000);}
-        return ((byte)0+1 < y ) && (y < (byte)8);
+        return ((byte)(0+1) < y ) && (y < (byte)8);
     }
 
 }

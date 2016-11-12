@@ -79,6 +79,8 @@ public class MJDriver {
 	  ast_root.accept(typeChecker);
 	 System.out.println("Error present ? "+ typeChecker.getError());
           }catch(Exception e){
+System.out.println("error is caught"+e);
+	e.printStackTrace();
 		System.out.println(e.getMessage());//print message and continue 
 		//added for testing AVR generation	  	
 	  }

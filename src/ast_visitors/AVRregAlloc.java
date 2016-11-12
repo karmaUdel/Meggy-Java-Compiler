@@ -7,13 +7,15 @@ import java.util.*;
 import symtable.*;
 
 public class AVRregAlloc extends DepthFirstVisitor {
-    private final SymTable mCurrentST; // symbol table
+    	private final SymTable mCurrentST; // symbol table
 	private final PrintWriter out; // PrintWriter
 	private int branchId;//to know which branch
+	private String currentClass;
 	public AVRregAlloc(PrintWriter out,SymTable symTable) {
         	this.mCurrentST = symTable;
 		this.out=out;
 		this.branchId=0;
+		this.currentClass="";
 	}
 	
 	
@@ -23,12 +25,19 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		}
 		// once code is written on out buffer
 		// flush the writer
+
+		if(program.getClassDecls()!=null){
+			for (int i=0; i< program.getClassDecls().size();i++)
+				program.getClassDecls().get(i).accept((Visitor)this);
+		}
 		this.out.flush();
 	}
 	public void visitMainClass(MainClass mainClass){
 		//before iterating through block write head 
-		InputStream mainPrologue=null;
-        	BufferedReader reader=null;
+		this.currentClass = mainClass.getName();
+		System.out.println("Mainclass "+this.currentClass);				
+		InputStream mainPrologue = null;
+        	BufferedReader reader = null;
         	try {
             		mainPrologue = this.getClass().getClassLoader().getResourceAsStream("avrH.rtl.s");
             		reader = new BufferedReader(new InputStreamReader(mainPrologue));
@@ -114,6 +123,22 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("pop    r24");
     		this.out.println("cp    r24, r18");
 	}
+	public void visitLtExp(LtExp ltExp) {
+		if(ltExp.getLExp()!=null){
+		ltExp.getLExp().accept((Visitor)this);
+		}
+		if(ltExp.getRExp()!=null){
+		ltExp.getRExp().accept((Visitor)this);
+		}
+		this.out.println("# Less than check expression");
+    		this.out.println("# load a one byte expression off stack");
+    		this.out.println("pop    r18");
+   		this.out.println("# load a one byte expression off stack");
+    		this.out.println("pop    r24");
+    		this.out.println("cp    r24, r18");
+
+    	}
+
 	
 	public void visitNotExp(NotExp notExp) {
 		if(notExp.getExp()!=null){
@@ -176,11 +201,11 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		}
 		this.out.println("");
 		this.out.println("# Do MUL sub operation");
-    		this.out.println("MUL    r24, r18");
-    		this.out.println("MUL    r25, r19");
+    		this.out.println("muls    r24, r18");
+    		//this.out.println("MUL    r25, r19");
     		this.out.println("# push hi order byte first");
     		this.out.println("# push two byte expression onto stack");
-    		this.out.println("push   r25");
+    		//this.out.println("push   r25");
     		this.out.println("push   r24");
 	}
 	public void visitMeggySetPixel(MeggySetPixel meggySetPixel) {
@@ -236,6 +261,25 @@ public class AVRregAlloc extends DepthFirstVisitor {
     			this.out.println("push   r24 ");   	
 		
 	}
+	public void visitMeggyToneStart(MeggyToneStart meggyToneStart) {
+
+		int branchStart,branchThen,branchElse;
+		branchStart=this.branchId++;
+		if(meggyToneStart.getToneExp()!=null){
+		meggyToneStart.getToneExp().accept((Visitor)this);
+		}
+		if(meggyToneStart.getDurationExp()!=null){
+		meggyToneStart.getDurationExp().accept((Visitor)this);
+		}
+		this.out.println("");
+	    	this.out.println("# Code for MeggySetPixel");
+	    	this.out.println("pop    r22");
+		this.out.println("pop    r23");
+		this.out.println("pop    r24");
+		this.out.println("pop    r25");
+		this.out.println("call   _Z10Tone_Startjj");
+	}
+
 	public void visitIfStatement(IfStatement ifStatement){
 
 		int branchStart,branchThen,branchElse,branchDone,branchTrue;
@@ -361,6 +405,20 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		this.out.println("push   r25");
 		this.out.println("push   r24");
 	}
+	public void visitToneLiteral(ToneLiteral toneLiteral){
+		//int code 
+		//get value from symbol table
+		//left --> right
+		
+		//# Load constant int intLiteral.getIntValue()
+		this.out.println("");
+		this.out.println("# Tone_Literal value "+toneLiteral.getLexeme());	    	
+		this.out.println("ldi    r24,lo8(" +toneLiteral.getIntValue()+")");
+		this.out.println("ldi    r25,hi8("+toneLiteral.getIntValue()+")");
+		//# push two byte expression onto stack
+		this.out.println("push   r25");
+		this.out.println("push   r24");
+	}
 	public void visitColorLiteral(ColorLiteral colorLiteral){
 		//color code
 		//fetcch value from symbol table
@@ -403,4 +461,96 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		//System.out.println("Inside catch button:"+button);		
 		this.out.println("lds    r24,Button_"+button);
 	}
+	public void visitTopClassDecl(TopClassDecl topClassDecl){
+		
+		this.currentClass = topClassDecl.getName();		
+		System.out.println("Topclass "+this.currentClass);
+		if(topClassDecl.getMethodDecls()!=null){
+			for (int i=0; i< topClassDecl.getMethodDecls().size();i++)
+				topClassDecl.getMethodDecls().get(i).accept((Visitor)this);
+		}		
+	}
+	public void visitMethodDecl(MethodDecl methodDecl){
+
+		System.out.println("method "+this.currentClass+methodDecl.getName());
+		//prologue
+	    	this.out.println(".text");
+		this.out.println(".global "+this.currentClass+methodDecl.getName());
+    		this.out.println(".type  "+this.currentClass+methodDecl.getName()+", @function");
+		this.out.println(this.currentClass+methodDecl.getName()+":");
+    		this.out.println("push   r29");
+    		this.out.println("push   r28");
+    		this.out.println("# make space for locals and params");
+    		this.out.println("ldi    r30, 0");
+		for (int i=0; i< methodDecl.getFormals().size(); i++) {   		
+			this.out.println("pop    r30");
+    			this.out.println("pop    r30");
+		}
+
+    		this.out.println("# Copy stack pointer to frame pointer");
+    		this.out.println("in     r28,__SP_L__");
+    		this.out.println("in     r29,__SP_H__");
+
+    		this.out.println("# save off parameters"); // need to generalize this
+    		this.out.println("std    Y + 2, r25");
+    		this.out.println("std    Y + 1, r24");
+    		this.out.println("std    Y + 3, r22");
+    		this.out.println("std    Y + 4, r20");
+		this.out.println("/* done with function "+this.currentClass+methodDecl.getName()+" prologue */");
+
+		
+		//body
+		if(methodDecl.getStatements()!=null){
+			for (int i=0; i< methodDecl.getStatements().size(); i++) {   		
+				methodDecl.getStatements().get(i).accept((Visitor)this);
+			}
+
+		}
+		
+
+		//epilogue
+		this.out.println("/* epilogue start for "+this.currentClass+methodDecl.getName()+" */");
+		if(this.getIType(methodDecl.getType())!=Type.VOID){
+			this.out.println("# handle return value");
+    			this.out.println("# load a one byte expression off stack");
+    			this.out.println("pop    r24");
+		}else{
+    			this.out.println("# No return value");
+		}
+		this.out.println("# pop space off stack for parameters and locals");
+		for (int i=0; i< methodDecl.getFormals().size(); i++) {   		
+			this.out.println("pop    r30");
+    			this.out.println("pop    r30");
+		}
+    		this.out.println("# restoring the frame pointer");
+	    	this.out.println("pop    r28");
+    		this.out.println("pop    r29");
+    		this.out.println("ret");
+    		this.out.println(".size "+this.currentClass+methodDecl.getName()+", .-"+this.currentClass+methodDecl.getName());
+	}
+
+
+	public Type getIType(IType node){
+	   if(node instanceof BoolType){
+		return Type.BOOL;
+   	   }
+	   if(node instanceof IntType)
+		return Type.INT;
+
+	   if(node instanceof ByteType)
+		return Type.BYTE;
+
+	   if(node instanceof ColorType)
+		return Type.COLOR;
+
+   	   if(node instanceof ButtonType)
+		return Type.BUTTON;
+
+
+  	   if(node instanceof ToneType)
+		return Type.TONE;
+
+   	  return Type.VOID;
+  }
+
 }
