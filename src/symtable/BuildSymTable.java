@@ -132,6 +132,12 @@ return Type.VOID;
     }
 
  @Override
+  public void inToneExp(ToneLiteral node)
+    {
+        checkExp(node);
+    }
+
+ @Override
   public void inIntegerExp(IntLiteral node)
     {
         checkExp(node);
@@ -176,6 +182,10 @@ return Type.VOID;
 
 		case "ColorLiteral":
 		symTable.setExpType(exp, COLOR);
+		break;
+
+		case "ToneLiteral":
+		symTable.setExpType(exp, TONE);
 		break;
 
 
@@ -350,6 +360,47 @@ System.out.println("CurrentClass is "+this.currentClass);
 	}
     }
 }
+   public void inCallExp(CallExp callExp){
+	if(!this.getFirstPass()){
+
+	System.out.println("Second pass "+ callExp.getId());
+
+	Scope currentScope = this.symTable.getCurrentScope();
+	Scope global = this.symTable.getGlobalScope();
+	//MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
+	
+	IExp exp= callExp.getExp(); // get operation part where call is operation.name(***);
+	System.out.println("Method call statement from class "+this.currentClass);
+	STE classSTE=null;
+	String classname;
+
+
+	String methodName="";	
+
+
+	methodName = callExp.getId();
+ 
+	if(exp instanceof ThisLiteral){ //method from same class {this.name()}
+		//method in class which is called
+		classSTE = global.lookup(this.currentClass);
+	}else{ // method from another class {new class().name()}
+		if(exp instanceof NewExp){
+		    //NewExp newExp = (NewExp) exp;
+		    classname = ((NewExp) exp).getId(); 
+		    classSTE = global.lookup(classname);
+		    //STE other = this.symTable.lookup(classname);
+		     //methodName = classname+"."+methodName; // method in other class which is called
+		}
+    	}
+
+	if(classSTE!=null)
+	{	System.out.println("*** " + methodName + " "+ classSTE.getName());
+		currentScope.setmEnclosing(classSTE); // currentMethod references some method
+		//System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
+	}
+    }
+}
+
     public void outCallStatement(CallStatement callStatement){
     }
 

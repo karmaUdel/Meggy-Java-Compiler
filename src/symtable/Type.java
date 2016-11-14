@@ -66,6 +66,10 @@ public class Type
       return "TONE";
     }
     
+    if(this==VOID)
+{	System.out.println("void");
+	return "VOID";
+ }   
 /*
 */
     return "class_"+this.className;

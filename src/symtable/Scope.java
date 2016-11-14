@@ -34,12 +34,12 @@ public class Scope {
 
 
     public void setmEnclosing(STE sTE){
-	//System.out.println(" Let's set mEnclosing "+this.mEnclosing);
+	System.out.println(" Let's set mEnclosing "+this.mEnclosing);
 	if(this.mEnclosing!=null){
 		
 		this.mEnclosing.insert(sTE);
 	}else{
-	//System.out.println(" Let's create mEnclosing ");
+	System.out.println(" Let's create mEnclosing ");
 		this.mEnclosing = new Scope(null);
 		this.mEnclosing.insert(sTE);		
 	}

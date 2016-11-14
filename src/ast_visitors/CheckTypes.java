@@ -1,5 +1,4 @@
 package ast_visitors;
-
 /** 
  * CheckTypes
  * 
@@ -126,8 +125,8 @@ this.error=true;
 // check reurn type of methodSTE
 // assign return type
 
-try
-{
+//try
+//{
 	/*if(node.getExp() instanceof ThisLiteral)
 	{
 	 
@@ -140,14 +139,16 @@ try
 	
 	boolean breakFlag=false;
  	String methodName = node.getId();
-	//System.out.println("Method name we are looking for is "+ methodName);
+	System.out.println("Method name we are looking for is "+ methodName);
 	STE classSTE = null;
 	if(node.getExp() instanceof ThisLiteral){
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
 		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
-	
+	System.out.println("Class is " + this.currentClass + classSTE);
 	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
+	//System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
+	if(methodSTE!=null){
 	//System.out.println("methSTE is " + methodSTE);
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
 	List<IExp> callParam = node.getArgs();
@@ -173,14 +174,17 @@ try
       	 	IExp rexp = param.next();//this.mCurrentST.getExpType(node.getRExp());
 
 
-
+System.out.println("setting returntype "+this.mCurrentST.getExpType(rexp));
 		rexpType = this.mCurrentST.getExpType(rexp);
 
 if(rexpType==null){
-//System.out.println("we are broken "+rexp);
-rexpType = ((VarSTE)this.mCurrentST.lookup(""+rexp)).getType().toString();	}	
-
+System.out.println("returntype before");
+rexpType = ((VarSTE)this.mCurrentST.lookup(""+rexp)).getType().toString();		
+System.out.println("returntype for CallExp "+rexpType);
+}
 i++;
+
+
 		//System.out.println(i+". rexpType is "+rexpType+ " && lexp is "+lexp+" are equal ? "+rexpType.equalsIgnoreCase(lexp.toString()));
 		if(!rexpType.equalsIgnoreCase(lexp.toString())){
 			this.error=true;       
@@ -196,11 +200,16 @@ i++;
 
 	}
 	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
+		
 		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
+	System.out.println("CallExp return type is :: "+this.mCurrentST.getExpType(node));
 	}
 }
-	catch(Exception e){
-	System.out.println("Caught in call Expression:" +  e.getMessage() );
+	else{
+	this.error=true;  
+	errorMessage+="Method :: "+methodName+" is not Found" + " ["+
+                   node.getLine()+" , "+ 
+                   node.getPos()+"]\n";  
 	}
    }
    public void outCallStatement(CallStatement node)
@@ -213,8 +222,7 @@ i++;
 // check reurn type of methodSTE
 // assign return type
 
-try
-{
+
 	/*if(node.getExp() instanceof ThisLiteral)
 	{
 	 
@@ -236,6 +244,9 @@ try
 	
 	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
 	//System.out.println("methSTE is " + methodSTE);
+	if(methodSTE!=null){
+//System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
+
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
 	List<IExp> callParam = node.getArgs();
 //System.out.println("Size");
@@ -286,8 +297,11 @@ i++;
 		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
 	}
 }
-	catch(Exception e){
-	System.out.println("Caught in call stmt:" +  e.getMessage() );
+	else{
+	this.error=true;  
+	errorMessage+="Method :: "+methodName+" is not Found" + " ["+
+                   node.getLine()+" , "+ 
+                   node.getPos()+"]\n";  
 	}
    }
    
@@ -406,14 +420,14 @@ i++;
        String toneExpType = this.lookup(node.getToneExp());
        String durationExpType = this.lookup(node.getDurationExp());
 
-       if ((toneExpType==Type.INT.toString())&&(durationExpType==Type.INT.toString())
+       if ((toneExpType.equalsIgnoreCase(Type.TONE.toString()))&&(durationExpType.equalsIgnoreCase(Type.INT.toString()))
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
 	System.out.println("ToneStart is correct");
        } else {
 	this.error=true;       
 	           //System.out.println(
-                   errorMessage+="Operands to ToneStart operator must be INT ["+
+                   errorMessage+="Operands to ToneStart operator must be TONE,INT ["+
                    node.getToneExp().getLine()+" , "+ 
                    node.getToneExp().getPos()+"]\n";
        }
@@ -506,6 +520,24 @@ i++;
     }// push method scope
 
     public void outMethodDecl(MethodDecl methodDecl) {
+	
+	if(methodDecl.getExp() ==null && !this.getIType(methodDecl.getType()).toString().equalsIgnoreCase("VOID") )
+
+	 {
+	System.out.println(methodDecl.getType().toString());
+this.error = true;
+		    errorMessage+="Expected Return type is "+ this.getIType(methodDecl.getType()).toString() + "/ Return statement is missing  at ["+ methodDecl.getLine()+" , "+ methodDecl.getPos()+ "]\n";}
+
+	if(methodDecl.getExp()!=null){
+	 if(!this.getIType(methodDecl.getType()).toString().equalsIgnoreCase(this.lookup(methodDecl.getExp()))){
+	    this.error = true;
+		    errorMessage+="Expected Return type is "+ this.getIType(methodDecl.getType()).toString() + "/ Return type found is: "+ this.lookup(methodDecl.getExp()) + " at ["+ methodDecl.getLine()+" , "+ methodDecl.getPos()+ "]\n";}
+	if (this.getIType(methodDecl.getType()).toString().equalsIgnoreCase("VOID")) {
+ 		this.error = true;
+		errorMessage+="Expected Return type is VOID no Return Statement expected  at ["+ methodDecl.getLine()+" , "+ methodDecl.getPos()+ "] \n";
+
+	} // if return type is void no return statement is allowed
+	}
         this.mCurrentST.popScope();
     } //pop method scope 
 
@@ -537,9 +569,13 @@ i++;
 public String lookup(IExp exp)
 {
 	 String expType = this.mCurrentST.getExpType(exp);
-	if(expType==null){
+	if(expType==null && exp!=null){
 	System.out.println("we are broken "+exp);
+	try{
 	expType = ((VarSTE)this.mCurrentST.lookup(""+exp)).getType().toString();	
+	}catch(Exception e){
+	//expType =  this.mCurrentST.setExpType()
+	}
 	}
 
 	return expType;
