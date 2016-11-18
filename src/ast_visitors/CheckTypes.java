@@ -350,14 +350,14 @@ i++;
    {
        String expType = this.lookup(node.getExp());
 
-       if ((expType==Type.INT.toString())
+       if ((expType==Type.INT.toString())||(expType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
 	//System.out.println("UMin is correct");
        } else {
 	this.error=true;       
 	           ////System.out.println(
-                   errorMessage+="Operands to UMin operator must be INT ["+
+                   errorMessage+="Operands to UMin operator must be INT or BYTE["+
                    node.getExp().getLine()+" , "+ 
                    node.getExp().getPos()+"]\n";
        }
@@ -588,7 +588,7 @@ public String lookup(IExp exp)
 	return this.error;
   }
   public void getErrorMessage(){
-	//System.out.println(this.errorMessage);
+	System.out.println(this.errorMessage);
   }
   public Type getType (String type){
 

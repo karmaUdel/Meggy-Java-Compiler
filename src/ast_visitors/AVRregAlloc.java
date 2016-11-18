@@ -105,12 +105,23 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(andExp.getRExp()!=null){
 		andExp.getRExp().accept((Visitor)this);
 		}
-		this.out.println("   # And check expression");
+		this.out.println("   ");
+		/*this.out.println("   # And check expression");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r18");
+		this.out.println("   ");
    		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r24");
     		this.out.println("   AND    r24, r18");
+		this.out.println("   ");
+		*/this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+		this.out.println("   ");
+    		this.out.println("   #load zero into reg");
+    		this.out.println("   ldi    r25, 0");
+		this.out.println("   ");
+    		this.out.println("   #use cp to set SREG");
+    		this.out.println("   cp     r24, r25");
 
     	}
 	public void visitEqualExp(EqualExp equalExp) {
@@ -120,12 +131,17 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(equalExp.getRExp()!=null){
 		equalExp.getRExp().accept((Visitor)this);
 		}
-    		this.out.println("   # equality check expression");
+		this.out.println("   # Less than check expression");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r18");
+    		this.out.println("   pop    r19");
+		this.out.println("   ");
    		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r24");
+    		this.out.println("   pop    r25");
     		this.out.println("   cp    r24, r18");
+    		this.out.println("   cpc    r25, r19");
+		this.out.println("   ");
 	}
 	public void visitLtExp(LtExp ltExp) {
 		if(ltExp.getLExp()!=null){
@@ -134,12 +150,19 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(ltExp.getRExp()!=null){
 		ltExp.getRExp().accept((Visitor)this);
 		}
+		this.out.println("   ");
+
 		this.out.println("   # Less than check expression");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r18");
+    		this.out.println("   pop    r19");
+		this.out.println("   ");
    		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r24");
+    		this.out.println("   pop    r25");
     		this.out.println("   cp    r24, r18");
+    		this.out.println("   cpc    r25, r19");
+		this.out.println("   ");
 
     	}
 
@@ -148,10 +171,12 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(notExp.getExp()!=null){
 		notExp.getExp().accept((Visitor)this);
 		}
+		this.out.println("   ");
     		this.out.println("   # Not  expression");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r24");
    		this.out.println("   com    r24");
+		this.out.println("   ");
 	
     	}
 	
@@ -162,12 +187,21 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(plusExp.getRExp()!=null){
 		plusExp.getRExp().accept((Visitor)this);
 		}
-    		this.out.println("   # load a two byte variable from base+offset");
-        	this.out.println("   ldd    r25, r19");
-        	this.out.println("   ldd    r24, r18");
+		this.out.println("   ");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   pop   r18");
+    		this.out.println("   pop   r19");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   pop   r24");
+    		this.out.println("   pop   r25");
+		this.out.println("   # load a two byte variable from base+offset");
+        	this.out.println("   add    r25, r19");
+        	this.out.println("   adc    r24, r18");
+		this.out.println("   ");
         	this.out.println("   # push two byte expression onto stack");
         	this.out.println("   push   r25");
     		this.out.println("   push   r24");
+		this.out.println("   ");
 	}
 	public void visitMinusExp(MinusExp minusExp) {
 		if(minusExp.getLExp()!=null){
@@ -177,13 +211,21 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		minusExp.getRExp().accept((Visitor)this);
 		}
 		this.out.println("   ");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   pop   r18");
+    		this.out.println("   pop   r19");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   pop   r24");
+    		this.out.println("   pop   r25");
 		this.out.println("   # Do INT sub operation");
     		this.out.println("   sub    r24, r18");
     		this.out.println("   sbc    r25, r19");
+		this.out.println("   ");
     		this.out.println("   # push hi order byte first");
     		this.out.println("   # push two byte expression onto stack");
     		this.out.println("   push   r25");
     		this.out.println("   push   r24");
+		this.out.println("   ");
 
 	}
 	public void visitNegExp(NegExp negExp) {
@@ -216,6 +258,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("   mov    r26, r22");					
 	
 		this.out.println("   ");
+<<<<<<< Updated upstream
 		this.out.println("   # Do MUL sub operation");
     		this.out.println("   muls    r24, r26");
     		this.out.println("  push   r1");
@@ -223,6 +266,35 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("  eor    r0,r0");
     		this.out.println("  eor    r1,r1");
     		
+=======
+		this.out.println("   # MulExp");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r18");
+		this.out.println("   ");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r22");
+		this.out.println("   ");
+    		this.out.println("   # move one byte src into dest reg");
+    		this.out.println("   mov    r24, r18");
+		this.out.println("   ");
+    		this.out.println("   # move one byte src into dest reg");
+    		this.out.println("   mov    r26, r22");
+		this.out.println("   ");
+
+    		this.out.println("   # Do mul operation of two input bytes");
+    		this.out.println("   muls   r24, r26");
+    		this.out.println("   ");
+		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   push   r1");
+    		this.out.println("   push   r0");
+    		this.out.println("   ");
+		this.out.println("   # clear r0 and r1");
+    		this.out.println("   eor    r0,r0");
+    		this.out.println("   eor    r1,r1");
+
+		this.out.println("   ");
+		
+>>>>>>> Stashed changes
 	}
 	public void visitMeggySetPixel(MeggySetPixel meggySetPixel) {
 

@@ -130,25 +130,30 @@ main:
    pop    r25
    push   r24
    
-    # MulExp
-    # load a one byte expression off stack
-    pop    r18
-    # load a one byte expression off stack
-    pop    r22
-    # move one byte src into dest reg
-    mov    r24, r18
-    # move one byte src into dest reg
-    mov    r26, r22
-
-    # Do mul operation of two input bytes
-    muls   r24, r26
-    # push two byte expression onto stack
-    push   r1
-    push   r0
-    # clear r0 and r1, thanks Brendan!
-    eor    r0,r0
-    eor    r1,r1
-
+   # MulExp
+   # load a one byte expression off stack
+   pop    r18
+   
+   # load a one byte expression off stack
+   pop    r22
+   
+   # move one byte src into dest reg
+   mov    r24, r18
+   
+   # move one byte src into dest reg
+   mov    r26, r22
+   
+   # Do mul operation of two input bytes
+   muls   r24, r26
+   
+   # push two byte expression onto stack
+   push   r1
+   push   r0
+   
+   # clear r0 and r1
+   eor    r0,r0
+   eor    r1,r1
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -345,12 +350,21 @@ Cloudrain:
    pop    r24
    pop    r25
    push   r24
+   
+   # push two byte expression onto stack
+   pop   r18
+   pop   r19
+   # push two byte expression onto stack
+   pop   r24
+   pop   r25
    # load a two byte variable from base+offset
-   ldd    r25, r19
-   ldd    r24, r18
+   add    r25, r19
+   adc    r24, r18
+   
    # push two byte expression onto stack
    push   r25
    push   r24
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -413,12 +427,21 @@ Cloudrain:
    pop    r24
    pop    r25
    push   r24
+   
+   # push two byte expression onto stack
+   pop   r18
+   pop   r19
+   # push two byte expression onto stack
+   pop   r24
+   pop   r25
    # load a two byte variable from base+offset
-   ldd    r25, r19
-   ldd    r24, r18
+   add    r25, r19
+   adc    r24, r18
+   
    # push two byte expression onto stack
    push   r25
    push   r24
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -479,13 +502,21 @@ Cloudrain:
    pop    r25
    push   r24
    
+   # push two byte expression onto stack
+   pop   r18
+   pop   r19
+   # push two byte expression onto stack
+   pop   r24
+   pop   r25
    # Do INT sub operation
    sub    r24, r18
    sbc    r25, r19
+   
    # push hi order byte first
    # push two byte expression onto stack
    push   r25
    push   r24
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -568,12 +599,18 @@ CloudinBounds:
 
    
    ## If statement
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
+   cpc    r25, r19
+   
    breq   MJ_L22
    MJ_L23:
    ldi    r24, 1
@@ -626,12 +663,21 @@ CloudinBounds:
    ldi    r25,hi8(1)
    push   r25
    push   r24
+   
+   # push two byte expression onto stack
+   pop   r18
+   pop   r19
+   # push two byte expression onto stack
+   pop   r24
+   pop   r25
    # load a two byte variable from base+offset
-   ldd    r25, r19
-   ldd    r24, r18
+   add    r25, r19
+   adc    r24, r18
+   
    # push two byte expression onto stack
    push   r25
    push   r24
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -639,12 +685,18 @@ CloudinBounds:
    pop    r24
    pop    r25
    push   r24
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
+   cpc    r25, r19
+   
    
    # interger value 8
    ldi    r24,lo8(8)
@@ -658,18 +710,27 @@ CloudinBounds:
    pop    r24
    pop    r25
    push   r24
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
-   # And check expression
-   # load a one byte expression off stack
-   pop    r18
+   cpc    r25, r19
+   
+   
    # load a one byte expression off stack
    pop    r24
-   AND    r24, r18
+   
+   #load zero into reg
+   ldi    r25, 0
+   
+   #use cp to set SREG
+   cp     r24, r25
 
 
    /* epilogue start for CloudinBounds */
@@ -730,12 +791,18 @@ Cloudinb:
 
    
    ## If statement
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
+   cpc    r25, r19
+   
    breq   MJ_L28
    MJ_L29:
    ldi    r24, 1
@@ -788,12 +855,21 @@ Cloudinb:
    ldi    r25,hi8(1)
    push   r25
    push   r24
+   
+   # push two byte expression onto stack
+   pop   r18
+   pop   r19
+   # push two byte expression onto stack
+   pop   r24
+   pop   r25
    # load a two byte variable from base+offset
-   ldd    r25, r19
-   ldd    r24, r18
+   add    r25, r19
+   adc    r24, r18
+   
    # push two byte expression onto stack
    push   r25
    push   r24
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -801,12 +877,18 @@ Cloudinb:
    pop    r24
    pop    r25
    push   r24
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
+   cpc    r25, r19
+   
    
    # interger value 8
    ldi    r24,lo8(8)
@@ -820,18 +902,27 @@ Cloudinb:
    pop    r24
    pop    r25
    push   r24
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
-   # And check expression
-   # load a one byte expression off stack
-   pop    r18
+   cpc    r25, r19
+   
+   
    # load a one byte expression off stack
    pop    r24
-   AND    r24, r18
+   
+   #load zero into reg
+   ldi    r25, 0
+   
+   #use cp to set SREG
+   cp     r24, r25
 
 
    /* epilogue start for Cloudinb */
@@ -893,12 +984,18 @@ Cloudinbad:
 
    
    ## If statement
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
+   cpc    r25, r19
+   
    breq   MJ_L34
    MJ_L35:
    ldi    r24, 1
@@ -951,12 +1048,21 @@ Cloudinbad:
    ldi    r25,hi8(1)
    push   r25
    push   r24
+   
+   # push two byte expression onto stack
+   pop   r18
+   pop   r19
+   # push two byte expression onto stack
+   pop   r24
+   pop   r25
    # load a two byte variable from base+offset
-   ldd    r25, r19
-   ldd    r24, r18
+   add    r25, r19
+   adc    r24, r18
+   
    # push two byte expression onto stack
    push   r25
    push   r24
+   
 
    # Casting int to byte by popping
    # 2 bytes off stack and only pushing low order bits
@@ -964,12 +1070,18 @@ Cloudinbad:
    pop    r24
    pop    r25
    push   r24
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
+   cpc    r25, r19
+   
    
    # interger value 8
    ldi    r24,lo8(8)
@@ -983,18 +1095,27 @@ Cloudinbad:
    pop    r24
    pop    r25
    push   r24
+   
    # Less than check expression
    # load a one byte expression off stack
    pop    r18
+   pop    r19
+   
    # load a one byte expression off stack
    pop    r24
+   pop    r25
    cp    r24, r18
-   # And check expression
-   # load a one byte expression off stack
-   pop    r18
+   cpc    r25, r19
+   
+   
    # load a one byte expression off stack
    pop    r24
-   AND    r24, r18
+   
+   #load zero into reg
+   ldi    r25, 0
+   
+   #use cp to set SREG
+   cp     r24, r25
 
 
    /* epilogue start for Cloudinbad */
