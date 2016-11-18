@@ -202,15 +202,27 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		}
 		if(mulExp.getRExp()!=null){
 		mulExp.getRExp().accept((Visitor)this);
-		}
+		}		
+	
+		this.out.println("   ");
+		this.out.println("   # MulExp");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r18");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r22");
+    		this.out.println("   # move one byte src into dest reg");
+    		this.out.println("   mov    r24, r18");	
+    		this.out.println("   # move one byte src into dest reg");			
+    		this.out.println("   mov    r26, r22");					
+	
 		this.out.println("   ");
 		this.out.println("   # Do MUL sub operation");
-    		this.out.println("   muls    r24, r18");
-    		//this.out.println("   MUL    r25, r19");
-    		this.out.println("   # push hi order byte first");
-    		this.out.println("   # push two byte expression onto stack");
-    		//this.out.println("   push   r25");
-    		this.out.println("   push   r24");
+    		this.out.println("   muls    r24, r26");
+    		this.out.println("  push   r1");
+    		this.out.println("  push   r0");
+    		this.out.println("  eor    r0,r0");
+    		this.out.println("  eor    r1,r1");
+    		
 	}
 	public void visitMeggySetPixel(MeggySetPixel meggySetPixel) {
 
