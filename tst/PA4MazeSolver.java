@@ -19,11 +19,11 @@ class PA4MazeSolver {
 
     public static void main(String[] whatever){
         // Only want to construct one instance of class
-        new Solver().run();
+        new Solver1().run();
     }
 }
 
-class Solver {
+class Solver1 {
     
     // no maze walls, the solver should check boundaries of LED screen
     public void initMaze1() {

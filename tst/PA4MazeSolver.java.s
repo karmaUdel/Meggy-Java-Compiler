@@ -37,7 +37,7 @@ main:
    pop    r25
 
 
-   call    Solverrun
+   call    Solver1run
 
 
 
@@ -51,9 +51,9 @@ main:
 
 
    .text
-   .global SolverinitMaze1
-   .type  SolverinitMaze1, @function
-SolverinitMaze1:
+   .global Solver1initMaze1
+   .type  Solver1initMaze1, @function
+Solver1initMaze1:
    push   r29
    push   r28
 
@@ -68,11 +68,11 @@ SolverinitMaze1:
    std    Y + 2, r25
    std    Y + 1, r24
 
-   /* done with function SolverinitMaze1 prologue */
+   /* done with function Solver1initMaze1 prologue */
 
 
 
-   /* epilogue start for SolverinitMaze1 */
+   /* epilogue start for Solver1initMaze1 */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -81,13 +81,13 @@ SolverinitMaze1:
    pop    r28
    pop    r29
    ret
-   .size SolverinitMaze1, .-SolverinitMaze1
+   .size Solver1initMaze1, .-Solver1initMaze1
 
 
    .text
-   .global SolverinitMaze2
-   .type  SolverinitMaze2, @function
-SolverinitMaze2:
+   .global Solver1initMaze2
+   .type  Solver1initMaze2, @function
+Solver1initMaze2:
    push   r29
    push   r28
 
@@ -102,7 +102,7 @@ SolverinitMaze2:
    std    Y + 2, r25
    std    Y + 1, r24
 
-   /* done with function SolverinitMaze2 prologue */
+   /* done with function Solver1initMaze2 prologue */
 
    # loading the implicit this
    # load a two byte variable from base+offset
@@ -171,7 +171,7 @@ SolverinitMaze2:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
 
@@ -242,7 +242,7 @@ SolverinitMaze2:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
 
@@ -313,7 +313,7 @@ SolverinitMaze2:
    pop    r25
 
 
-   call    SolvermazeCol
+   call    Solver1mazeCol
 
 
 
@@ -384,13 +384,13 @@ SolverinitMaze2:
    pop    r25
 
 
-   call    SolvermazeCol
+   call    Solver1mazeCol
 
 
 
 
 
-   /* epilogue start for SolverinitMaze2 */
+   /* epilogue start for Solver1initMaze2 */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -399,13 +399,13 @@ SolverinitMaze2:
    pop    r28
    pop    r29
    ret
-   .size SolverinitMaze2, .-SolverinitMaze2
+   .size Solver1initMaze2, .-Solver1initMaze2
 
 
    .text
-   .global SolverinitMazeCool
-   .type  SolverinitMazeCool, @function
-SolverinitMazeCool:
+   .global Solver1initMazeCool
+   .type  Solver1initMazeCool, @function
+Solver1initMazeCool:
    push   r29
    push   r28
 
@@ -420,7 +420,7 @@ SolverinitMazeCool:
    std    Y + 2, r25
    std    Y + 1, r24
 
-   /* done with function SolverinitMazeCool prologue */
+   /* done with function Solver1initMazeCool prologue */
 
    # loading the implicit this
    # load a two byte variable from base+offset
@@ -489,7 +489,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
 
@@ -560,7 +560,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
 
@@ -631,7 +631,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeCol
+   call    Solver1mazeCol
 
 
 
@@ -702,7 +702,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeCol
+   call    Solver1mazeCol
 
 
 
@@ -773,7 +773,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
 
@@ -844,7 +844,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeCol
+   call    Solver1mazeCol
 
 
 
@@ -915,7 +915,7 @@ SolverinitMazeCool:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
 
@@ -959,7 +959,7 @@ SolverinitMazeCool:
 
 
 
-   /* epilogue start for SolverinitMazeCool */
+   /* epilogue start for Solver1initMazeCool */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -968,13 +968,13 @@ SolverinitMazeCool:
    pop    r28
    pop    r29
    ret
-   .size SolverinitMazeCool, .-SolverinitMazeCool
+   .size Solver1initMazeCool, .-Solver1initMazeCool
 
 
    .text
-   .global Solverrun
-   .type  Solverrun, @function
-Solverrun:
+   .global Solver1run
+   .type  Solver1run, @function
+Solver1run:
    push   r29
    push   r28
 
@@ -989,7 +989,7 @@ Solverrun:
    std    Y + 2, r25
    std    Y + 1, r24
 
-   /* done with function Solverrun prologue */
+   /* done with function Solver1run prologue */
 
    # loading the implicit this
    # load a two byte variable from base+offset
@@ -1010,7 +1010,7 @@ Solverrun:
    pop    r25
 
 
-   call    SolverinitMazeCool
+   call    Solver1initMazeCool
 
 
 
@@ -1097,13 +1097,13 @@ Solverrun:
    pop    r25
 
 
-   call    Solvermove
+   call    Solver1move
 
 
 
 
 
-   /* epilogue start for Solverrun */
+   /* epilogue start for Solver1run */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -1112,13 +1112,13 @@ Solverrun:
    pop    r28
    pop    r29
    ret
-   .size Solverrun, .-Solverrun
+   .size Solver1run, .-Solver1run
 
 
    .text
-   .global SolverinBounds
-   .type  SolverinBounds, @function
-SolverinBounds:
+   .global Solver1inBounds
+   .type  Solver1inBounds, @function
+Solver1inBounds:
    push   r29
    push   r28
 
@@ -1139,7 +1139,7 @@ SolverinBounds:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function SolverinBounds prologue */
+   /* done with function Solver1inBounds prologue */
 
    
    # interger value 0
@@ -1314,7 +1314,7 @@ SolverinBounds:
    cp     r24, r25
 
 
-   /* epilogue start for SolverinBounds */
+   /* epilogue start for Solver1inBounds */
    # handle return value
    # load a one byte expression off stack
    pop    r24
@@ -1329,13 +1329,13 @@ SolverinBounds:
    pop    r28
    pop    r29
    ret
-   .size SolverinBounds, .-SolverinBounds
+   .size Solver1inBounds, .-Solver1inBounds
 
 
    .text
-   .global SolverisDark
-   .type  SolverisDark, @function
-SolverisDark:
+   .global Solver1isDark
+   .type  Solver1isDark, @function
+Solver1isDark:
    push   r29
    push   r28
 
@@ -1356,7 +1356,7 @@ SolverisDark:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function SolverisDark prologue */
+   /* done with function Solver1isDark prologue */
 
    # loading the implicit this
    # load a two byte variable from base+offset
@@ -1383,7 +1383,7 @@ SolverisDark:
    pop    r25
 
 
-   call    SolverinBounds
+   call    Solver1inBounds
 
 
    
@@ -1421,7 +1421,7 @@ SolverisDark:
    cp     r24, r25
 
 
-   /* epilogue start for SolverisDark */
+   /* epilogue start for Solver1isDark */
    # handle return value
    # load a one byte expression off stack
    pop    r24
@@ -1436,13 +1436,13 @@ SolverisDark:
    pop    r28
    pop    r29
    ret
-   .size SolverisDark, .-SolverisDark
+   .size Solver1isDark, .-Solver1isDark
 
 
    .text
-   .global SolverisBLUE
-   .type  SolverisBLUE, @function
-SolverisBLUE:
+   .global Solver1isBLUE
+   .type  Solver1isBLUE, @function
+Solver1isBLUE:
    push   r29
    push   r28
 
@@ -1463,7 +1463,7 @@ SolverisBLUE:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function SolverisBLUE prologue */
+   /* done with function Solver1isBLUE prologue */
 
    # loading the implicit this
    # load a two byte variable from base+offset
@@ -1490,7 +1490,7 @@ SolverisBLUE:
    pop    r25
 
 
-   call    SolverinBounds
+   call    Solver1inBounds
 
 
    
@@ -1528,7 +1528,7 @@ SolverisBLUE:
    cp     r24, r25
 
 
-   /* epilogue start for SolverisBLUE */
+   /* epilogue start for Solver1isBLUE */
    # handle return value
    # load a one byte expression off stack
    pop    r24
@@ -1543,13 +1543,13 @@ SolverisBLUE:
    pop    r28
    pop    r29
    ret
-   .size SolverisBLUE, .-SolverisBLUE
+   .size Solver1isBLUE, .-Solver1isBLUE
 
 
    .text
-   .global SolverfindTargetOrMove
-   .type  SolverfindTargetOrMove, @function
-SolverfindTargetOrMove:
+   .global Solver1findTargetOrMove
+   .type  Solver1findTargetOrMove, @function
+Solver1findTargetOrMove:
    push   r29
    push   r28
 
@@ -1576,7 +1576,7 @@ SolverfindTargetOrMove:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function SolverfindTargetOrMove prologue */
+   /* done with function Solver1findTargetOrMove prologue */
 
    
    ## If statement
@@ -1676,7 +1676,7 @@ SolverfindTargetOrMove:
    pop    r25
 
 
-   call    Solvermove
+   call    Solver1move
 
 
    
@@ -1685,7 +1685,7 @@ SolverfindTargetOrMove:
 
 
 
-   /* epilogue start for SolverfindTargetOrMove */
+   /* epilogue start for Solver1findTargetOrMove */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -1702,13 +1702,13 @@ SolverfindTargetOrMove:
    pop    r28
    pop    r29
    ret
-   .size SolverfindTargetOrMove, .-SolverfindTargetOrMove
+   .size Solver1findTargetOrMove, .-Solver1findTargetOrMove
 
 
    .text
-   .global Solvermove
-   .type  Solvermove, @function
-Solvermove:
+   .global Solver1move
+   .type  Solver1move, @function
+Solver1move:
    push   r29
    push   r28
 
@@ -1735,7 +1735,7 @@ Solvermove:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function Solvermove prologue */
+   /* done with function Solver1move prologue */
 
    
    # interger value 256
@@ -1826,7 +1826,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisDark
+   call    Solver1isDark
 
 
    breq   MJ_L12
@@ -1916,7 +1916,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverfindTargetOrMove
+   call    Solver1findTargetOrMove
 
 
    
@@ -1984,7 +1984,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisDark
+   call    Solver1isDark
 
 
    breq   MJ_L18
@@ -2073,7 +2073,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverfindTargetOrMove
+   call    Solver1findTargetOrMove
 
 
    
@@ -2141,7 +2141,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisDark
+   call    Solver1isDark
 
 
    breq   MJ_L24
@@ -2230,7 +2230,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverfindTargetOrMove
+   call    Solver1findTargetOrMove
 
 
    
@@ -2299,7 +2299,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisDark
+   call    Solver1isDark
 
 
    breq   MJ_L30
@@ -2389,7 +2389,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverfindTargetOrMove
+   call    Solver1findTargetOrMove
 
 
    
@@ -2458,7 +2458,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisBLUE
+   call    Solver1isBLUE
 
 
    breq   MJ_L36
@@ -2559,7 +2559,7 @@ Solvermove:
    pop    r25
 
 
-   call    Solvermove
+   call    Solver1move
 
 
    
@@ -2627,7 +2627,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisBLUE
+   call    Solver1isBLUE
 
 
    breq   MJ_L43
@@ -2727,7 +2727,7 @@ Solvermove:
    pop    r25
 
 
-   call    Solvermove
+   call    Solver1move
 
 
    
@@ -2795,7 +2795,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisBLUE
+   call    Solver1isBLUE
 
 
    breq   MJ_L50
@@ -2902,7 +2902,7 @@ Solvermove:
    pop    r25
 
 
-   call    Solvermove
+   call    Solver1move
 
 
    
@@ -2971,7 +2971,7 @@ Solvermove:
    pop    r25
 
 
-   call    SolverisBLUE
+   call    Solver1isBLUE
 
 
    breq   MJ_L57
@@ -3072,7 +3072,7 @@ Solvermove:
    pop    r25
 
 
-   call    Solvermove
+   call    Solver1move
 
 
    
@@ -3105,7 +3105,7 @@ Solvermove:
 
 
 
-   /* epilogue start for Solvermove */
+   /* epilogue start for Solver1move */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -3122,13 +3122,13 @@ Solvermove:
    pop    r28
    pop    r29
    ret
-   .size Solvermove, .-Solvermove
+   .size Solver1move, .-Solver1move
 
 
    .text
-   .global SolvermazeRow
-   .type  SolvermazeRow, @function
-SolvermazeRow:
+   .global Solver1mazeRow
+   .type  Solver1mazeRow, @function
+Solver1mazeRow:
    push   r29
    push   r28
 
@@ -3152,7 +3152,7 @@ SolvermazeRow:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function SolvermazeRow prologue */
+   /* done with function Solver1mazeRow prologue */
 
    
    # color value Meggy.Color.VIOLET
@@ -3263,7 +3263,7 @@ SolvermazeRow:
    pop    r25
 
 
-   call    SolvermazeRow
+   call    Solver1mazeRow
 
 
    
@@ -3275,7 +3275,7 @@ SolvermazeRow:
 
 
 
-   /* epilogue start for SolvermazeRow */
+   /* epilogue start for Solver1mazeRow */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -3290,13 +3290,13 @@ SolvermazeRow:
    pop    r28
    pop    r29
    ret
-   .size SolvermazeRow, .-SolvermazeRow
+   .size Solver1mazeRow, .-Solver1mazeRow
 
 
    .text
-   .global SolvermazeCol
-   .type  SolvermazeCol, @function
-SolvermazeCol:
+   .global Solver1mazeCol
+   .type  Solver1mazeCol, @function
+Solver1mazeCol:
    push   r29
    push   r28
 
@@ -3320,7 +3320,7 @@ SolvermazeCol:
    std    Y + 3, r22
    std    Y + 3, r22
 
-   /* done with function SolvermazeCol prologue */
+   /* done with function Solver1mazeCol prologue */
 
    
    # color value Meggy.Color.VIOLET
@@ -3431,7 +3431,7 @@ SolvermazeCol:
    pop    r25
 
 
-   call    SolvermazeCol
+   call    Solver1mazeCol
 
 
    
@@ -3443,7 +3443,7 @@ SolvermazeCol:
 
 
 
-   /* epilogue start for SolvermazeCol */
+   /* epilogue start for Solver1mazeCol */
    # No return value
 
    # pop space off stack for parameters and locals
@@ -3458,7 +3458,7 @@ SolvermazeCol:
    pop    r28
    pop    r29
    ret
-   .size SolvermazeCol, .-SolvermazeCol
+   .size Solver1mazeCol, .-Solver1mazeCol
 
 
 

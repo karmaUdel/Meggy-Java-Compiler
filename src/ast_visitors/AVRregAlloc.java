@@ -39,7 +39,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 	public void visitMainClass(MainClass mainClass){
 		//before iterating through block write head 
 		this.currentClass = mainClass.getName();
-		System.out.println("Mainclass "+this.currentClass);				
+		//System.out.println("Mainclass "+this.currentClass);				
 		InputStream mainPrologue = null;
         	BufferedReader reader = null;
         	try {
@@ -531,7 +531,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 	public void visitTopClassDecl(TopClassDecl topClassDecl){
 		
 		this.currentClass = topClassDecl.getName();		
-		System.out.println("Topclass "+this.currentClass);
+		//System.out.println("Topclass "+this.currentClass);
 		if(topClassDecl.getMethodDecls()!=null){
 			for (int i=0; i< topClassDecl.getMethodDecls().size();i++){
 				topClassDecl.getMethodDecls().get(i).accept((Visitor)this);
@@ -542,7 +542,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 	}
 	public void visitMethodDecl(MethodDecl methodDecl){
 
-		System.out.println("method "+this.currentClass+methodDecl.getName());
+		//System.out.println("method "+this.currentClass+methodDecl.getName());
 		//prologue
 	    	this.out.println("   .text");
 		this.out.println("   .global "+this.currentClass+methodDecl.getName());

@@ -44,7 +44,7 @@ public class SymTable {
 
     public void insert(STE sTE) {
         Scope scope = this.mScopeStack.peek();
-	System.out.println("Scope is "+scope.getScopeName());	
+	//System.out.println("Scope is "+scope.getScopeName());	
         scope.insert(sTE);
     }
 

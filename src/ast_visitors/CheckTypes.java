@@ -587,8 +587,8 @@ public String lookup(IExp exp)
   public boolean getError(){
 	return this.error;
   }
-  public void getErrorMessage(){
-	System.out.println(this.errorMessage);
+  public String getErrorMessage(){
+	return this.errorMessage;
   }
   public Type getType (String type){
 

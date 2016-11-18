@@ -49,7 +49,7 @@ public class MJDriver {
 
           // and parse
          Node ast_root =(Node) parser.parse().value;
-	System.out.println("parsing is successful");
+	//System.out.println("parsing is successful");
 
           // print ast to file
 	//parser.dump_stack();
@@ -79,7 +79,7 @@ public class MJDriver {
 	  ast_root.accept(typeChecker);
 	 System.out.println("Error present ? "+ typeChecker.getError());
           }catch(Exception e){
-System.out.println("error is caught"+e);
+	System.out.println("error is caught"+e);
 	e.printStackTrace();
 		System.out.println(e.getMessage());//print message and continue 
 		//added for testing AVR generation	  	
@@ -94,7 +94,7 @@ System.out.println("error is caught"+e);
           System.out.println("Printing Atmel assembly to " + filename + ".s");
 	  }else{
 	     //Printing errors
-	     typeChecker.getErrorMessage();
+	     System.out.println(typeChecker.getErrorMessage());
     	     System.out.println("Atmel assembly code will not be generated as we've typeError");
 	  
 	  }

@@ -167,7 +167,7 @@ main_class ::=
           {:
           // end of class
 
-   		System.out.println(" main");
+   		//System.out.println(" main");
 						
 		RESULT = new BlockStatement(ex.line,ex.pos,list);
 
@@ -183,7 +183,7 @@ main_class ::=
 								if(lst1!=null){						
 								list.addAll(lst1);	
 								}
-								System.out.println("statement "+op2);
+								//System.out.println("statement "+op2);
 if(op2!=null){
 								list.add(op2);
 }
@@ -248,7 +248,7 @@ if(op2!=null){
 					{:
 					//LinkedList _args = new LinkedList<IExp>();
 					//_args.add(0,e2);
-					System.out.println("method call from method");
+					//System.out.println("method call from method");
 					RESULT = new CallStatement(name.line,name.pos,e1,name.lexeme,_args);
 					:};
 
@@ -295,20 +295,20 @@ if(op2!=null){
 
 
 					| LPAREN BYTE:op RPAREN LPAREN operation:e RPAREN  
- 					{:      System.out.println("op to byte operation");
+ 					{:     // System.out.println("op to byte operation");
 
 
 						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
 
 					| LPAREN BYTE:op RPAREN  INT_LITERAL:ex
- 					{:      System.out.println("op to byte operation");
+ 					{:      //System.out.println("op to byte operation");
 					IntLiteral e =  new IntLiteral(ex.line,ex.pos,ex.lexeme,ex.value);
 
 						RESULT = new ByteCast(op.line, op.pos,e);
 					:}
 					| LPAREN BYTE:op RPAREN  ID:ex
- 					{:      System.out.println("op to byte operation");
+ 					{:      //System.out.println("op to byte operation");
 					IdLiteral e =  new IdLiteral(ex.line,ex.pos,ex+"");
 
 						RESULT = new ByteCast(op.line, op.pos,e);

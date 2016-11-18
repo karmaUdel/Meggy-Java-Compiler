@@ -67,7 +67,7 @@ public class Type
     }
     
     if(this==VOID)
-{	System.out.println("void");
+{	//System.out.println("void");
 	return "VOID";
  }   
 /*

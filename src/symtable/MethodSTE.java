@@ -45,7 +45,7 @@ public class MethodSTE extends STE {
 		var = new VarSTE(formal.getName(),formal.getType(),1);
 	else*/
 	VarSTE var = new VarSTE(name,type,offset);
-	System.out.println(name+ " "+ type);	
+	//System.out.println(name+ " "+ type);	
 	mScope.insert(var);	
 	
     	
