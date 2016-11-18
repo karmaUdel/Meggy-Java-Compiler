@@ -56,7 +56,7 @@ return Type.VOID;
     {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("plus exp");
+	//System.out.println("plus exp");
 
     }
 
@@ -65,7 +65,7 @@ return Type.VOID;
     {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("minus exp");
+	//System.out.println("minus exp");
     }
 
   @Override 
@@ -73,13 +73,13 @@ return Type.VOID;
     {
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("mul exp");
+	//System.out.println("mul exp");
     }
 
   @Override 
    public void inAndExp(AndExp node)
     {
-	System.out.println("and exp");
+	//System.out.println("and exp");
 	
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
@@ -91,7 +91,7 @@ return Type.VOID;
 	
 	checkExp(node.getLExp());
 	checkExp(node.getRExp());
-	System.out.println("lt exp");
+	//System.out.println("lt exp");
     }
 
   @Override 
@@ -99,7 +99,7 @@ return Type.VOID;
     {
 	
 	checkExp(node.getExp());
-	System.out.println("not exp");
+	//System.out.println("not exp");
     }
 
 
@@ -108,7 +108,7 @@ return Type.VOID;
     {
 	
 	checkExp(node);
-	System.out.println("true exp");
+	//System.out.println("true exp");
     }
 
  @Override 
@@ -116,7 +116,7 @@ return Type.VOID;
     {
 	
 	checkExp(node);
-	System.out.println("false exp");
+	//System.out.println("false exp");
     }
 
  @Override
@@ -199,12 +199,12 @@ return Type.VOID;
 	public void inMethodDecl(MethodDecl methodDecl) {
 
 
-System.out.println("CurrentClass is "+this.currentClass);
+//System.out.println("CurrentClass is "+this.currentClass);
        
 	if(this.getFirstPass())
 {
 
-	System.out.println("First pass "+methodDecl.getName());
+	//System.out.println("First pass "+methodDecl.getName());
         MethodSTE methodSTE;
         Formal formal;
         Iterator iterator = methodDecl.getFormals().iterator();
@@ -217,13 +217,13 @@ System.out.println("CurrentClass is "+this.currentClass);
 
         if (!this.isDuplicate(methodDecl.getName(), methodDecl.getLine(), methodDecl.getPos())) {
             methodSTE = new MethodSTE(methodDecl.getName(), sig, this.currentClass+ methodDecl.getName());
-        //   System.out.println(this.currentClass);
+        //   //System.out.println(this.currentClass);
 	//ClassSTE ste= (ClassSTE) this.symTable.lookup(this.currentClass);
 	//ste.setMethodSTE(methodSTE);
 	}else{
 
-	System.out.println("Duplicate method declaration: " +  methodDecl.getName());
-	System.out.println("Cannot continue parsing ............");
+	//System.out.println("Duplicate method declaration: " +  methodDecl.getName());
+	//System.out.println("Cannot continue parsing ............");
 	System.exit(0);
 
 	    methodSTE = new MethodSTE(methodDecl.getName()+"*", sig, this.currentClass+ methodDecl.getName()+"*");
@@ -232,7 +232,7 @@ System.out.println("CurrentClass is "+this.currentClass);
 
 
        this.symTable.insert(methodSTE);
-System.out.println("MethodSTE "+methodSTE);
+//System.out.println("MethodSTE "+methodSTE);
        
         methodSTE.setVarSTE("this", Type.getClassType(this.currentClass),1);
         int i=0;
@@ -243,8 +243,8 @@ System.out.println("MethodSTE "+methodSTE);
 
 else{
 
-	System.out.println("Second pass "+methodDecl.getName());
-	System.out.println("Scope "+this.symTable.getCurrentScope().getScopeName());
+	//System.out.println("Second pass "+methodDecl.getName());
+	//System.out.println("Scope "+this.symTable.getCurrentScope().getScopeName());
 	this.symTable.pushScope( methodDecl.getName());
         
         	}
@@ -264,13 +264,13 @@ else{
 if(this.getFirstPass())
 {
 
-	System.out.println("First pass "+topClassDecl.getName());
+	//System.out.println("First pass "+topClassDecl.getName());
 
         if(!this.isDuplicate(topClassDecl.getName(), topClassDecl.getLine(), topClassDecl.getPos())){ 
 	        this.currentClass = topClassDecl.getName();
        	}else{			// if duplicate class is found add duplicare to it
-		System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
-	System.out.println("Cannot continue parsing ............");
+		//System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
+	//System.out.println("Cannot continue parsing ............");
 		this.currentClass = topClassDecl.getName()+"**"; 
 	}
 
@@ -278,7 +278,7 @@ if(this.getFirstPass())
 	this.symTable.pushScope(this.currentClass);//inside top class
 }
 else{
-	System.out.println("Second pass "+topClassDecl.getName());
+	//System.out.println("Second pass "+topClassDecl.getName());
 	this.currentClass = topClassDecl.getName();
 	this.symTable.pushScope(this.currentClass);//inside top class	
 }
@@ -292,11 +292,11 @@ else{
     }
 
     public void inMainClass(MainClass mainClass) {
-System.out.println("CurrentClass is "+this.currentClass);
+//System.out.println("CurrentClass is "+this.currentClass);
        
        if(this.getFirstPass())	
 {	
-	System.out.println("First pass "+mainClass.getName());
+	//System.out.println("First pass "+mainClass.getName());
 
  if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
 	        this.currentClass = mainClass.getName();
@@ -323,14 +323,14 @@ System.out.println("CurrentClass is "+this.currentClass);
     public void inCallStatement(CallStatement callStatement){
 	if(!this.getFirstPass()){
 
-	System.out.println("Second pass "+ callStatement.getId());
+	//System.out.println("Second pass "+ callStatement.getId());
 
 	Scope currentScope = this.symTable.getCurrentScope();
 	Scope global = this.symTable.getGlobalScope();
 	//MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
 	
 	IExp exp= callStatement.getExp(); // get operation part where call is operation.name(***);
-	System.out.println("Method call statement from class "+this.currentClass);
+	//System.out.println("Method call statement from class "+this.currentClass);
 	STE classSTE=null;
 	String classname;
 
@@ -354,23 +354,23 @@ System.out.println("CurrentClass is "+this.currentClass);
     	}
 
 	if(classSTE!=null)
-	{	System.out.println("*** " + methodName + " "+ classSTE.getName());
+	{	//System.out.println("*** " + methodName + " "+ classSTE.getName());
 		currentScope.setmEnclosing(classSTE); // currentMethod references some method
-		//System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
+		////System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
 	}
     }
 }
    public void inCallExp(CallExp callExp){
 	if(!this.getFirstPass()){
 
-	System.out.println("Second pass "+ callExp.getId());
+	//System.out.println("Second pass "+ callExp.getId());
 
 	Scope currentScope = this.symTable.getCurrentScope();
 	Scope global = this.symTable.getGlobalScope();
 	//MethodSTE currentMethod = (MethodSTE)this.symTable.lookup(this.symTable.getCurrentScope().getScopeName()); // get current method {currentScope--> scopename --> lookup STE 	
 	
 	IExp exp= callExp.getExp(); // get operation part where call is operation.name(***);
-	System.out.println("Method call statement from class "+this.currentClass);
+	//System.out.println("Method call statement from class "+this.currentClass);
 	STE classSTE=null;
 	String classname;
 
@@ -394,9 +394,9 @@ System.out.println("CurrentClass is "+this.currentClass);
     	}
 
 	if(classSTE!=null)
-	{	System.out.println("*** " + methodName + " "+ classSTE.getName());
+	{	//System.out.println("*** " + methodName + " "+ classSTE.getName());
 		currentScope.setmEnclosing(classSTE); // currentMethod references some method
-		//System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
+		////System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
 	}
     }
 }
@@ -415,14 +415,14 @@ System.out.println("CurrentClass is "+this.currentClass);
 	public void inProgram(Program node) {
 	if(this.firstpass==true)
 	{
-		System.out.println("------------------------First Pass Starts ---------------------------------");
+		//System.out.println("------------------------First Pass Starts ---------------------------------");
 	
 	}
 	}
 	public void outProgram(Program node) {
 	if(this.firstpass==true)
 	{
-		System.out.println("------------------------First Pass Ends ---------------------------------");
+		//System.out.println("------------------------First Pass Ends ---------------------------------");
 		this.firstpass=false;
 		this.visitProgram(node);
 	}

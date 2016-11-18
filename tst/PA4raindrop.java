@@ -45,4 +45,19 @@ class Cloud {
         return ((byte)(0+1) < y ) && (y < (byte)8);
     }
 
+    public boolean inb(byte x, byte y, byte point, int po, byte poi) {
+	if(x<y){Meggy.delay(1000);}
+        return ((byte)(0+1) < y ) && (y < (byte)8);
+    }
+
+    public boolean inbad(byte x, byte y, byte point, int po) {
+	if(x<y){Meggy.delay(1000);}
+        return ((byte)(0+1) < y ) && (y < (byte)8);
+    }
+
+    public boolean empty() {
+	//if(x<y){Meggy.delay(1000);}
+        return true;//((byte)(0+1) < y ) && (y < (byte)8);
+    }
+
 }

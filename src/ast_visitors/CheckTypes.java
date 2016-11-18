@@ -46,14 +46,14 @@ public class CheckTypes extends DepthFirstVisitor
    {
      if(this.lookup(node.getLExp()) != Type.BOOL.toString()) {
 	this.error=true;
-     //  System.out.println(
+     //  //System.out.println(
        errorMessage += "Invalid left operand type for operator && ["+
          node.getLExp().getLine()+" , "+  node.getLExp().getPos()+"]\n";
      }
 
      if(this.lookup(node.getRExp()) != Type.BOOL.toString()) {
 	this.error=true;       
-	//System.out.println(
+	////System.out.println(
          errorMessage +="Invalid right operand type for operator && ["+
          node.getRExp().getLine()+" , "+  node.getRExp().getPos()+"]\n";
      }
@@ -68,7 +68,7 @@ public class CheckTypes extends DepthFirstVisitor
 
      if(LType != RType) {
 	this.error=true;       
-	//System.out.println(
+	////System.out.println(
          errorMessage+="Different types for operator == ["+
          node.getLExp().getLine()+" , "+ node.getLExp().getPos()+"]\n";
      }
@@ -88,7 +88,7 @@ public class CheckTypes extends DepthFirstVisitor
      else
 {
 this.error=true;       
-	//System.out.println("types" +LType + RType);
+	////System.out.println("types" +LType + RType);
          errorMessage+="Different types for operator < ["+
          node.getLExp().getLine()+" , "+ node.getLExp().getPos()+"]\n";
 }
@@ -103,11 +103,11 @@ this.error=true;
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	System.out.println("+ is correct");
+	//System.out.println("+ is correct");
        } else {
 	this.error=true;       
 	           
-		//System.out.println(
+		////System.out.println(
                   errorMessage+= "Operands to + operator must be INT or BYTE ["+
                    node.getLExp().getLine()+" , "+ 
                    node.getLExp().getPos()+"]\n";
@@ -139,25 +139,25 @@ this.error=true;
 	
 	boolean breakFlag=false;
  	String methodName = node.getId();
-	System.out.println("Method name we are looking for is "+ methodName);
+	//System.out.println("Method name we are looking for is "+ methodName);
 	STE classSTE = null;
 	if(node.getExp() instanceof ThisLiteral){
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
 		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
-	System.out.println("Class is " + this.currentClass + classSTE);
+	//System.out.println("Class is " + this.currentClass + classSTE);
 	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
-	//System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
+	////System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
 	if(methodSTE!=null){
-	//System.out.println("methSTE is " + methodSTE);
+	////System.out.println("methSTE is " + methodSTE);
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
 	List<IExp> callParam = node.getArgs();
-//System.out.println("Size");
+////System.out.println("Size");
 	if(argsList.size()!=callParam.size()){
-//System.out.println("error");
+////System.out.println("error");
 		this.error=true;       
 	        breakFlag=true;
-		//System.out.println(
+		////System.out.println(
                   errorMessage+= "Required # of Args for methodCall "+node.getId()+" is # "+argsList.size()+
 		   " but found only #"+callParam.size() +" arguements ["+
                    node.getLine()+" , "+ 
@@ -167,29 +167,29 @@ this.error=true;
 	Iterator<Type> args=argsList.iterator();
 	Iterator<IExp> param=callParam.iterator();
 	int i=0;
-        //System.out.println(args + " " + param + " condition "+(args.hasNext()&&param.hasNext()&&!breakFlag));
+        ////System.out.println(args + " " + param + " condition "+(args.hasNext()&&param.hasNext()&&!breakFlag));
 	while(args.hasNext()&&param.hasNext()&&!breakFlag){
 		String rexpType="";
 		Type lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
       	 	IExp rexp = param.next();//this.mCurrentST.getExpType(node.getRExp());
 
 
-System.out.println("setting returntype "+this.mCurrentST.getExpType(rexp));
+//System.out.println("setting returntype "+this.mCurrentST.getExpType(rexp));
 		rexpType = this.mCurrentST.getExpType(rexp);
 
 if(rexpType==null){
-System.out.println("returntype before");
+//System.out.println("returntype before");
 rexpType = ((VarSTE)this.mCurrentST.lookup(""+rexp)).getType().toString();		
-System.out.println("returntype for CallExp "+rexpType);
+//System.out.println("returntype for CallExp "+rexpType);
 }
 i++;
 
 
-		//System.out.println(i+". rexpType is "+rexpType+ " && lexp is "+lexp+" are equal ? "+rexpType.equalsIgnoreCase(lexp.toString()));
+		////System.out.println(i+". rexpType is "+rexpType+ " && lexp is "+lexp+" are equal ? "+rexpType.equalsIgnoreCase(lexp.toString()));
 		if(!rexpType.equalsIgnoreCase(lexp.toString())){
 			this.error=true;       
-	           //System.out.println("*** inside while and error");	
-		//System.out.println(
+	           ////System.out.println("*** inside while and error");	
+		////System.out.println(
                   errorMessage+= "Args for methodCall "+node.getId()+" is not as expected, check argument # "+i+" ["+
                    node.getLine()+" , "+ 
                    node.getPos()+"]\n";
@@ -202,7 +202,7 @@ i++;
 	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
 		
 		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
-	System.out.println("CallExp return type is :: "+this.mCurrentST.getExpType(node));
+	//System.out.println("CallExp return type is :: "+this.mCurrentST.getExpType(node));
 	}
 }
 	else{
@@ -235,7 +235,7 @@ i++;
 	
 	boolean breakFlag=false;
  	String methodName = node.getId();
-	////System.out.println("Method name we are looking for is "+ methodName);
+	//////System.out.println("Method name we are looking for is "+ methodName);
 	STE classSTE = null;
 	if(node.getExp() instanceof ThisLiteral){
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
@@ -243,18 +243,18 @@ i++;
 		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
 	
 	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
-	//System.out.println("methSTE is " + methodSTE);
+	////System.out.println("methSTE is " + methodSTE);
 	if(methodSTE!=null){
-//System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
+////System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
 
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
 	List<IExp> callParam = node.getArgs();
-//System.out.println("Size");
+////System.out.println("Size");
 	if(argsList.size()!=callParam.size()){
-//System.out.println("error");
+////System.out.println("error");
 		this.error=true;       
 	        breakFlag=true;
-		////System.out.println(
+		//////System.out.println(
                   errorMessage+= "Required # of Args for methodCall "+node.getId()+" is # "+argsList.size()+
 		   " but found only #"+callParam.size() +" arguements ["+
                    node.getLine()+" , "+ 
@@ -264,7 +264,7 @@ i++;
 	Iterator<Type> args=argsList.iterator();
 	Iterator<IExp> param=callParam.iterator();
 	int i=0;
-        //System.out.println(args + " " + param + " condition "+(args.hasNext()&&param.hasNext()&&!breakFlag));
+        ////System.out.println(args + " " + param + " condition "+(args.hasNext()&&param.hasNext()&&!breakFlag));
 	while(args.hasNext()&&param.hasNext()&&!breakFlag){
 		String rexpType="";
 		Type lexp = args.next();//this.mCurrentST.getExpType(node.getLExp());
@@ -275,15 +275,15 @@ i++;
 		rexpType = this.mCurrentST.getExpType(rexp);
 
 if(rexpType==null){
-//System.out.println("we are broken "+rexp);
+////System.out.println("we are broken "+rexp);
 rexpType = ((VarSTE)this.mCurrentST.lookup(""+rexp)).getType().toString();	}	
 
 i++;
-		//System.out.println(i+". rexpType is "+rexpType+ " && lexp is "+lexp+" are equal ? "+rexpType.equalsIgnoreCase(lexp.toString()));
+		////System.out.println(i+". rexpType is "+rexpType+ " && lexp is "+lexp+" are equal ? "+rexpType.equalsIgnoreCase(lexp.toString()));
 		if(!rexpType.equalsIgnoreCase(lexp.toString())){
 			this.error=true;       
-	           //System.out.println("*** inside while and error");	
-		////System.out.println(
+	           ////System.out.println("*** inside while and error");	
+		//////System.out.println(
                   errorMessage+= "Args for methodCall "+node.getId()+" is not as expected, check argument # "+i+" ["+
                    node.getLine()+" , "+ 
                    node.getPos()+"]\n";
@@ -314,10 +314,10 @@ i++;
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	System.out.println("- is correct");
+	//System.out.println("- is correct");
        } else {
 	this.error=true;       
-	  //         //System.out.println(
+	  //         ////System.out.println(
             errorMessage +=      "Operands to - operator must be INT or BYTE ["+
                    node.getLExp().getLine()+" , "+ 
                    node.getLExp().getPos()+"]\n";
@@ -333,10 +333,10 @@ i++;
            ( rexpType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	System.out.println("* is correct");
+	//System.out.println("* is correct");
        } else {
 	this.error=true;       
-	           ////System.out.println(
+	           //////System.out.println(
                    errorMessage+="Operands to * operator must be BYTE ["+
                    node.getLExp().getLine()+" , "+ 
                    node.getLExp().getPos()+"]\n";
@@ -353,10 +353,10 @@ i++;
        if ((expType==Type.INT.toString())
           ){
            this.mCurrentST.setExpType(node, Type.INT);
-	System.out.println("UMin is correct");
+	//System.out.println("UMin is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to UMin operator must be INT ["+
                    node.getExp().getLine()+" , "+ 
                    node.getExp().getPos()+"]\n";
@@ -371,10 +371,10 @@ i++;
        if ((expType==Type.INT.toString()  || expType==Type.BYTE.toString())
           ){
            this.mCurrentST.setExpType(node, Type.BYTE);
-	//System.out.println("Byte is correct");
+	////System.out.println("Byte is correct");
        } else {
 	this.error=true;       
-//	           System.out.println(
+//	           //System.out.println(
  	errorMessage+=             "Operands to Byte operator must be INT or BYTE ["+
                    node.getExp().getLine()+" , "+ 
                    node.getExp().getPos()+"]\n";
@@ -389,10 +389,10 @@ i++;
        if ((expType==Type.BOOL.toString())
           ){
            this.mCurrentST.setExpType(node, Type.BOOL);
-	//System.out.println("NOT is correct");
+	////System.out.println("NOT is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to NOT operator must be BOOL ["+
                    node.getExp().getLine()+" , "+ 
                    node.getExp().getPos()+"]\n";
@@ -406,10 +406,10 @@ i++;
        if ((expType==Type.INT.toString())
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	System.out.println("MeggyDelay is correct");
+	//System.out.println("MeggyDelay is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to Delay operator must be INT ["+
                    node.getExp().getLine()+" , "+ 
                    node.getExp().getPos()+"]\n";
@@ -423,10 +423,10 @@ i++;
        if ((toneExpType.equalsIgnoreCase(Type.TONE.toString()))&&(durationExpType.equalsIgnoreCase(Type.INT.toString()))
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	System.out.println("ToneStart is correct");
+	//System.out.println("ToneStart is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to ToneStart operator must be TONE,INT ["+
                    node.getToneExp().getLine()+" , "+ 
                    node.getToneExp().getPos()+"]\n";
@@ -442,7 +442,7 @@ i++;
 
 
 	if(colorexpType==null){
-	//System.out.println("we are broken "+node.getColor());
+	////System.out.println("we are broken "+node.getColor());
 	colorexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getColor())).getType().toString();	}	
 
 
@@ -452,10 +452,10 @@ i++;
 	   (colorexpType == Type.COLOR.toString())
           ){
            this.mCurrentST.setExpType(node, Type.VOID);
-	System.out.println("SetPixel is correct");
+	//System.out.println("SetPixel is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to MeggySetPixel operator must be INT or BYTE,INT or BYTE & MeggyColor ["+
                    node.getXExp().getLine()+" , "+ 
                    node.getXExp().getPos()+"]\n";
@@ -466,15 +466,15 @@ i++;
    public void outMeggyCheckButton(MeggyCheckButton node)
    {
        String expType = this.lookup(node.getExp());
-  	System.out.println(expType);
+  	//System.out.println(expType);
 
        if (expType==Type.BUTTON.toString())
 	{
            this.mCurrentST.setExpType(node, Type.BOOL);
-	System.out.println("CheckButton is correct");
+	//System.out.println("CheckButton is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to MeggyCheckButton operator must be ButtonLiteral ["+
                    node.getExp().getLine()+" , "+ 
                    node.getExp().getPos()+"]\n";
@@ -493,10 +493,10 @@ i++;
            (rexpType==Type.INT.toString()  || rexpType==Type.BYTE.toString()) 
           ){
            this.mCurrentST.setExpType(node, Type.COLOR);
-	System.out.println("GetPixel is correct");
+	//System.out.println("GetPixel is correct");
        } else {
 	this.error=true;       
-	           //System.out.println(
+	           ////System.out.println(
                    errorMessage+="Operands to MeggyGetPixel operator must be INT or BYTE ["+
                    node.getXExp().getLine()+" , "+ 
                    node.getXExp().getPos()+"]\n";
@@ -508,7 +508,7 @@ i++;
         this.currentClass = topClassDecl.getName();
         this.mCurrentST.pushScope(this.currentClass);// find class and push the scope
 
-	System.out.println("in Top Decl");
+	//System.out.println("in Top Decl");
     } // this. class and push scope 
 
     public void outTopClassDecl(TopClassDecl topClassDecl) {
@@ -524,7 +524,7 @@ i++;
 	if(methodDecl.getExp() ==null && !this.getIType(methodDecl.getType()).toString().equalsIgnoreCase("VOID") )
 
 	 {
-	System.out.println(methodDecl.getType().toString());
+	//System.out.println(methodDecl.getType().toString());
 this.error = true;
 		    errorMessage+="Expected Return type is "+ this.getIType(methodDecl.getType()).toString() + "/ Return statement is missing  at ["+ methodDecl.getLine()+" , "+ methodDecl.getPos()+ "]\n";}
 
@@ -547,11 +547,11 @@ this.error = true;
         STE sTE = this.mCurrentST.lookup(newExp.getId());// search Class
         if (sTE == null) {
 	    this.error = true;
-            //System.out.println(
+            ////System.out.println(
 	    errorMessage+="Undeclared class type "+ newExp.getId()+" at ["+ newExp.getLine()+" , "+ newExp.getPos()+ "]\n";
         }
 
-	System.out.println("new Exp:" +sTE.getName());
+	//System.out.println("new Exp:" +sTE.getName());
         this.mCurrentST.setExpType(newExp, Type.getClassType(newExp.getId()));
     }
 
@@ -559,7 +559,7 @@ this.error = true;
     public void outThisExp(ThisLiteral thisLiteral) {
         if (this.currentClass == null) {
 	    this.error = true;
-            //System.out.println(
+            ////System.out.println(
 	    errorMessage+="This : CurrentClass is null at ["+thisLiteral.getLine()+" , "+thisLiteral.getPos()+"]\n";
         }
         this.mCurrentST.setExpType((Node)thisLiteral, Type.getClassType(this.currentClass));
@@ -570,7 +570,7 @@ public String lookup(IExp exp)
 {
 	 String expType = this.mCurrentST.getExpType(exp);
 	if(expType==null && exp!=null){
-	System.out.println("we are broken "+exp);
+	//System.out.println("we are broken "+exp);
 	try{
 	expType = ((VarSTE)this.mCurrentST.lookup(""+exp)).getType().toString();	
 	}catch(Exception e){
@@ -588,7 +588,7 @@ public String lookup(IExp exp)
 	return this.error;
   }
   public void getErrorMessage(){
-	System.out.println(this.errorMessage);
+	//System.out.println(this.errorMessage);
   }
   public Type getType (String type){
 

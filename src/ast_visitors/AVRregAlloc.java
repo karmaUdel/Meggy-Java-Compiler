@@ -105,12 +105,12 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(andExp.getRExp()!=null){
 		andExp.getRExp().accept((Visitor)this);
 		}
-		this.out.println("# And check expression");
-    		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r18");
-   		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r24");
-    		this.out.println("AND    r24, r18");
+		this.out.println("   # And check expression");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r18");
+   		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+    		this.out.println("   AND    r24, r18");
 
     	}
 	public void visitEqualExp(EqualExp equalExp) {
@@ -120,12 +120,12 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(equalExp.getRExp()!=null){
 		equalExp.getRExp().accept((Visitor)this);
 		}
-    		this.out.println("# equality check expression");
-    		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r18");
-   		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r24");
-    		this.out.println("cp    r24, r18");
+    		this.out.println("   # equality check expression");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r18");
+   		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+    		this.out.println("   cp    r24, r18");
 	}
 	public void visitLtExp(LtExp ltExp) {
 		if(ltExp.getLExp()!=null){
@@ -134,12 +134,12 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(ltExp.getRExp()!=null){
 		ltExp.getRExp().accept((Visitor)this);
 		}
-		this.out.println("# Less than check expression");
-    		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r18");
-   		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r24");
-    		this.out.println("cp    r24, r18");
+		this.out.println("   # Less than check expression");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r18");
+   		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+    		this.out.println("   cp    r24, r18");
 
     	}
 
@@ -148,10 +148,10 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(notExp.getExp()!=null){
 		notExp.getExp().accept((Visitor)this);
 		}
-    		this.out.println("# Not  expression");
-    		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r24");
-   		this.out.println("com    r24");
+    		this.out.println("   # Not  expression");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+   		this.out.println("   com    r24");
 	
     	}
 	
@@ -162,12 +162,12 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(plusExp.getRExp()!=null){
 		plusExp.getRExp().accept((Visitor)this);
 		}
-    		this.out.println("# load a two byte variable from base+offset");
-        	this.out.println("ldd    r25, r19");
-        	this.out.println("ldd    r24, r18");
-        	this.out.println("# push two byte expression onto stack");
-        	this.out.println("push   r25");
-    		this.out.println("push   r24");
+    		this.out.println("   # load a two byte variable from base+offset");
+        	this.out.println("   ldd    r25, r19");
+        	this.out.println("   ldd    r24, r18");
+        	this.out.println("   # push two byte expression onto stack");
+        	this.out.println("   push   r25");
+    		this.out.println("   push   r24");
 	}
 	public void visitMinusExp(MinusExp minusExp) {
 		if(minusExp.getLExp()!=null){
@@ -176,24 +176,24 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(minusExp.getRExp()!=null){
 		minusExp.getRExp().accept((Visitor)this);
 		}
-		this.out.println("");
-		this.out.println("# Do INT sub operation");
-    		this.out.println("sub    r24, r18");
-    		this.out.println("sbc    r25, r19");
-    		this.out.println("# push hi order byte first");
-    		this.out.println("# push two byte expression onto stack");
-    		this.out.println("push   r25");
-    		this.out.println("push   r24");
+		this.out.println("   ");
+		this.out.println("   # Do INT sub operation");
+    		this.out.println("   sub    r24, r18");
+    		this.out.println("   sbc    r25, r19");
+    		this.out.println("   # push hi order byte first");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   push   r25");
+    		this.out.println("   push   r24");
 
 	}
 	public void visitNegExp(NegExp negExp) {
 		if(negExp.getExp()!=null){
 			negExp.getExp().accept((Visitor)this);
 		}
-    		this.out.println("# Negate  expression");
-    		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r24");
-   		this.out.println("neg    r24");
+    		this.out.println("   # Negate  expression");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+   		this.out.println("   neg    r24");
 
     	}
 	public void visitMulExp(MulExp mulExp) {
@@ -203,14 +203,14 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(mulExp.getRExp()!=null){
 		mulExp.getRExp().accept((Visitor)this);
 		}
-		this.out.println("");
-		this.out.println("# Do MUL sub operation");
-    		this.out.println("muls    r24, r18");
-    		//this.out.println("MUL    r25, r19");
-    		this.out.println("# push hi order byte first");
-    		this.out.println("# push two byte expression onto stack");
-    		//this.out.println("push   r25");
-    		this.out.println("push   r24");
+		this.out.println("   ");
+		this.out.println("   # Do MUL sub operation");
+    		this.out.println("   muls    r24, r18");
+    		//this.out.println("   MUL    r25, r19");
+    		this.out.println("   # push hi order byte first");
+    		this.out.println("   # push two byte expression onto stack");
+    		//this.out.println("   push   r25");
+    		this.out.println("   push   r24");
 	}
 	public void visitMeggySetPixel(MeggySetPixel meggySetPixel) {
 
@@ -225,24 +225,24 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(meggySetPixel.getColor()!=null){
 		meggySetPixel.getColor().accept((Visitor)this);
 		}
-		this.out.println("");
-	    	this.out.println("# Code for MeggySetPixel");
-		this.out.println("pop    r20");
-	    	this.out.println("pop    r22");
-		this.out.println("pop    r24");
-		this.out.println("call   _Z6DrawPxhhh");
-		this.out.println("call   _Z12DisplaySlatev");
+		this.out.println("   ");
+	    	this.out.println("   # Code for MeggySetPixel");
+		this.out.println("   pop    r20");
+	    	this.out.println("   pop    r22");
+		this.out.println("   pop    r24");
+		this.out.println("   call   _Z6DrawPxhhh");
+		this.out.println("   call   _Z12DisplaySlatev");
 	}
 	public void visitMeggyDelay(MeggyDelay meggyDelay) {
 		if(meggyDelay.getExp()!=null){
 			meggyDelay.getExp().accept((Visitor)this);
-			this.out.println("");
-			this.out.println("### Meggy.delay() call");
-	    		this.out.println("# load delay parameter");
-    	    		this.out.println("# load a two byte expression off stack");
-    	    		this.out.println("pop    r24");
-    	    		this.out.println("pop    r25");
-    	    		this.out.println("call   _Z8delay_msj	");	
+			this.out.println("   ");
+			this.out.println("   ### Meggy.delay() call");
+	    		this.out.println("   # load delay parameter");
+    	    		this.out.println("   # load a two byte expression off stack");
+    	    		this.out.println("   pop    r24");
+    	    		this.out.println("   pop    r25");
+    	    		this.out.println("   call   _Z8delay_msj	");	
 		}
     	}
 	public void visitMeggyGetPixel(MeggyGetPixel meggyGetPixel) {
@@ -254,15 +254,15 @@ public class AVRregAlloc extends DepthFirstVisitor {
 			meggyGetPixel.getYExp().accept((Visitor)this);
 		}
 		   
-			this.out.println("");
-			this.out.println("### Meggy.getPixel(x,y) call");
-    			this.out.println("# load a one byte expression off stack");
-    			this.out.println("pop    r22");
-   			this.out.println(" # load a one byte expression off stack");
-    			this.out.println("pop    r24");
-    			this.out.println("call   _Z6ReadPxhh");
-    			this.out.println("# push one byte expression onto stack");
-    			this.out.println("push   r24 ");   	
+			this.out.println("   ");
+			this.out.println("   ### Meggy.getPixel(x,y) call");
+    			this.out.println("   # load a one byte expression off stack");
+    			this.out.println("   pop    r22");
+   			this.out.println("   # load a one byte expression off stack");
+    			this.out.println("   pop    r24");
+    			this.out.println("   call   _Z6ReadPxhh");
+    			this.out.println("   # push one byte expression onto stack");
+    			this.out.println("   push   r24 ");   	
 		
 	}
 	public void visitMeggyToneStart(MeggyToneStart meggyToneStart) {
@@ -275,13 +275,13 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(meggyToneStart.getDurationExp()!=null){
 		meggyToneStart.getDurationExp().accept((Visitor)this);
 		}
-		this.out.println("");
-	    	this.out.println("# Code for MeggySetPixel");
-	    	this.out.println("pop    r22");
-		this.out.println("pop    r23");
-		this.out.println("pop    r24");
-		this.out.println("pop    r25");
-		this.out.println("call   _Z10Tone_Startjj");
+		this.out.println("   ");
+	    	this.out.println("   # Code for MeggySetPixel");
+	    	this.out.println("   pop    r22");
+		this.out.println("   pop    r23");
+		this.out.println("   pop    r24");
+		this.out.println("   pop    r25");
+		this.out.println("   call   _Z10Tone_Startjj");
 	}
 
 	public void visitIfStatement(IfStatement ifStatement){
@@ -291,52 +291,52 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		branchThen=this.branchId++;
 		branchDone=this.branchId++;		
 		branchStart=this.branchId++;
-		this.out.println("");
-		this.out.println("## If statement");	
+		this.out.println("   ");
+		this.out.println("   ## If statement");	
 	    //some code
 		if (ifStatement.getExp() != null) {
             		ifStatement.getExp().accept((Visitor)this);
         	}
-		this.out.println("breq   MJ_L"+branchStart);
-		this.out.println("MJ_L"+(this.branchId++)+":");
-    		this.out.println("ldi    r24, 1");//true
+		this.out.println("   breq   MJ_L"+branchStart);
+		this.out.println("   MJ_L"+(this.branchId++)+":");
+    		this.out.println("   ldi    r24, 1");//true
 		branchTrue=this.branchId++;
-    		this.out.println("jmp    MJ_L"+branchTrue);
-		this.out.println("MJ_L"+branchStart+":");
-		this.out.println("MJ_L"+branchTrue+":");
-    		this.out.println("# push one byte expression onto stack");
-    		this.out.println("push   r24");
+    		this.out.println("   jmp    MJ_L"+branchTrue);
+		this.out.println("   MJ_L"+branchStart+":");
+		this.out.println("   MJ_L"+branchTrue+":");
+    		this.out.println("   # push one byte expression onto stack");
+    		this.out.println("   push   r24");
 
-    		this.out.println("# load condition and branch if false");
-    		this.out.println("# load a one byte expression off stack");
-    		this.out.println("pop    r24");
-    		this.out.println("#load zero into reg");
-    		this.out.println("ldi    r25, 0");
+    		this.out.println("   # load condition and branch if false");
+    		this.out.println("   # load a one byte expression off stack");
+    		this.out.println("   pop    r24");
+    		this.out.println("   #load zero into reg");
+    		this.out.println("   ldi    r25, 0");
 
-    		this.out.println("#use cp to set SREG");
-    		this.out.println("cp     r24, r25");
-    		this.out.println("#WANT breq MJ_L3");
-    		this.out.println("brne   MJ_L"+branchThen);
-    		this.out.println("jmp    MJ_L"+branchElse);
+    		this.out.println("   #use cp to set SREG");
+    		this.out.println("   cp     r24, r25");
+    		this.out.println("   #WANT breq MJ_L3");
+    		this.out.println("   brne   MJ_L"+branchThen);
+    		this.out.println("   jmp    MJ_L"+branchElse);
 
-    		this.out.println("# then label for if");
-		this.out.println("MJ_L"+branchThen+":");
+    		this.out.println("   # then label for if");
+		this.out.println("   MJ_L"+branchThen+":");
 
 		//some code
         	if (ifStatement.getThenStatement() != null) {
         	    ifStatement.getThenStatement().accept((Visitor)this);
         	}
-		this.out.println("");
-		this.out.println("#Else part");
-		this.out.println("MJ_L"+branchElse+":");
+		this.out.println("   ");
+		this.out.println("   #Else part");
+		this.out.println("   MJ_L"+branchElse+":");
 
 		//some code
 		if (ifStatement.getElseStatement() != null) {
 			ifStatement.getElseStatement().accept((Visitor)this);
         	}
-		this.out.println("");
-		this.out.println("#Done with if else statement ");
-		this.out.println("MJ_L"+branchDone+":");
+		this.out.println("   ");
+		this.out.println("   #Done with if else statement ");
+		this.out.println("   MJ_L"+branchDone+":");
 	}
 	public void visitWhileStatement(WhileStatement whileStatement){
 		int branchStart,branchThen,branchEnd;
@@ -345,26 +345,26 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		branchEnd =this.branchId++;	
 		if(whileStatement.getExp()!=null){
 			out.println("");
-			out.println("#### while statement");
-			out.println("MJ_L"+branchStart+":");
+			out.println("   #### while statement");
+			out.println("   MJ_L"+branchStart+":");
 			whileStatement.getExp().accept((Visitor)this); // check for true or false
 			out.println("");
-			out.println(" # if not(condition)");
-    			out.println("# load a one byte expression off stack");
-    			out.println("pop    r24");
-    			out.println("ldi    r25,0");
-    			out.println("cp     r24, r25");
-    			out.println("# WANT breq MJ_L"+branchEnd+"");
-    			out.println("brne   MJ_L"+branchThen);
-    			out.println("jmp    MJ_L"+branchEnd);
+			out.println("   # if not(condition)");
+    			out.println("   # load a one byte expression off stack");
+    			out.println("   pop    r24");
+    			out.println("   ldi    r25,0");
+    			out.println("   cp     r24, r25");
+    			out.println("   # WANT breq MJ_L"+branchEnd+"");
+    			out.println("   brne   MJ_L"+branchThen);
+    			out.println("   jmp    MJ_L"+branchEnd);
 		}
 		if(whileStatement.getStatement()!=null){
-			out.println("MJ_L"+branchThen+":");
+			out.println("   MJ_L"+branchThen+":");
 			whileStatement.getStatement().accept((Visitor)this);
 			out.println("");
-    			out.println("# jump to while test");
-    			out.println("jmp    MJ_L"+branchStart);  //branch check while cond 
-			out.println("MJ_L"+branchEnd+":");// branch exit
+    			out.println("   # jump to while test");
+    			out.println("   jmp    MJ_L"+branchStart);  //branch check while cond 
+			out.println("   MJ_L"+branchEnd+":");// branch exit
 		}
 	}
 
@@ -374,23 +374,23 @@ public class AVRregAlloc extends DepthFirstVisitor {
 			//visit expression
 			byteCast.getExp().accept((Visitor)this);
 			// convert int to byte
-			out.println("");
-    			out.println("# Casting int to byte by popping");
-    			out.println("# 2 bytes off stack and only pushing low order bits");
-        		out.println("# back on.  Low order bits are on top of stack.");
-        		out.println("pop    r24");
-        		out.println("pop    r25");
-        		out.println("push   r24");
+			this.out.println("");
+    			this.out.println("   # Casting int to byte by popping");
+    			this.out.println("   # 2 bytes off stack and only pushing low order bits");
+        		this.out.println("   # back on.  Low order bits are on top of stack.");
+        		this.out.println("   pop    r24");
+        		this.out.println("   pop    r25");
+        		this.out.println("   push   r24");
 		}
 	}
 	public void visitMeggyCheckButton(MeggyCheckButton meggyCheckButton){
 		if(meggyCheckButton.getExp()!=null){
-			out.println("");
-    			out.println("### MeggyCheckButton");
-    			out.println("call    _Z16CheckButtonsDownv");
+			this.out.println("");
+    			this.out.println("   ### MeggyCheckButton");
+    			this.out.println("   call    _Z16CheckButtonsDownv");
     			meggyCheckButton.getExp().accept((Visitor)this);
-			out.println("# if button value is zero, push 0 else push 1");
-   			out.println("tst    r24");
+			this.out.println("   # if button value is zero, push 0 else push 1");
+   			this.out.println("   tst    r24");
 	
 		}
 	
@@ -401,13 +401,13 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		//left --> right
 		
 		//# Load constant int intLiteral.getIntValue()
-		this.out.println("");
-		this.out.println("# interger value "+intLiteral.getIntValue());	    	
-		this.out.println("ldi    r24,lo8(" +intLiteral.getIntValue()+")");
-		this.out.println("ldi    r25,hi8("+intLiteral.getIntValue()+")");
+		this.out.println("   ");
+		this.out.println("   # interger value "+intLiteral.getIntValue());	    	
+		this.out.println("   ldi    r24,lo8(" +intLiteral.getIntValue()+")");
+		this.out.println("   ldi    r25,hi8("+intLiteral.getIntValue()+")");
 		//# push two byte expression onto stack
-		this.out.println("push   r25");
-		this.out.println("push   r24");
+		this.out.println("   push   r25");
+		this.out.println("   push   r24");
 	}
 	public void visitToneLiteral(ToneLiteral toneLiteral){
 		//int code 
@@ -415,36 +415,36 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		//left --> right
 		
 		//# Load constant int intLiteral.getIntValue()
-		this.out.println("");
-		this.out.println("# Tone_Literal value "+toneLiteral.getLexeme());	    	
-		this.out.println("ldi    r24,lo8(" +toneLiteral.getIntValue()+")");
-		this.out.println("ldi    r25,hi8("+toneLiteral.getIntValue()+")");
+		this.out.println("   ");
+		this.out.println("   # Tone_Literal value "+toneLiteral.getLexeme());	    	
+		this.out.println("   ldi    r24,lo8(" +toneLiteral.getIntValue()+")");
+		this.out.println("   ldi    r25,hi8("+toneLiteral.getIntValue()+")");
 		//# push two byte expression onto stack
-		this.out.println("push   r25");
-		this.out.println("push   r24");
+		this.out.println("   push   r25");
+		this.out.println("   push   r24");
 	}
 	public void visitColorLiteral(ColorLiteral colorLiteral){
 		//color code
 		//fetcch value from symbol table
-		this.out.println("");
-		this.out.println("# color value "+colorLiteral.getLexeme());	    	
-		this.out.println("ldi    r22,"+colorLiteral.getIntValue()); // add color value
-		this.out.println("push   r22");
+		this.out.println("   ");
+		this.out.println("   # color value "+colorLiteral.getLexeme());	    	
+		this.out.println("   ldi    r22,"+colorLiteral.getIntValue()); // add color value
+		this.out.println("   push   r22");
 	}
 	public void visitTrueLiteral(TrueLiteral trueLiteral){
-    		this.out.println("");
-		this.out.println("# True/1 expression");
-    		this.out.println("ldi    r22, 1");
-    		this.out.println("# push one byte expression onto stack");
-    		this.out.println("push   r22");
+    		this.out.println("   ");
+		this.out.println("   # True/1 expression");
+    		this.out.println("   ldi    r22, 1");
+    		this.out.println("   # push one byte expression onto stack");
+    		this.out.println("   push   r22");
 	
 	}
 	public void visitFalseLiteral(FalseLiteral falseLiteral){
-		this.out.println("");
-		this.out.println("# false/0 expression");
-    		this.out.println("ldi    r22, 0");
-    		this.out.println("# push one byte expression onto stack");
-    		this.out.println("push   r22");
+		this.out.println("   ");
+		this.out.println("   # false/0 expression");
+    		this.out.println("   ldi    r22, 0");
+    		this.out.println("   # push one byte expression onto stack");
+    		this.out.println("   push   r22");
 
 	}
 	public void visitButtonLiteral(ButtonLiteral buttonLiteral){
@@ -463,7 +463,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(buttonVal==32)
 			button="Right";
 		//System.out.println("Inside catch button:"+button);		
-		this.out.println("lds    r24,Button_"+button);
+		this.out.println("   lds    r24,Button_"+button);
 	}
 	public void visitTopClassDecl(TopClassDecl topClassDecl){
 		
@@ -481,33 +481,40 @@ public class AVRregAlloc extends DepthFirstVisitor {
 
 		System.out.println("method "+this.currentClass+methodDecl.getName());
 		//prologue
-	    	this.out.println(".text");
-		this.out.println(".global "+this.currentClass+methodDecl.getName());
-    		this.out.println(".type  "+this.currentClass+methodDecl.getName()+", @function");
+	    	this.out.println("   .text");
+		this.out.println("   .global "+this.currentClass+methodDecl.getName());
+    		this.out.println("   .type  "+this.currentClass+methodDecl.getName()+", @function");
 		this.out.println(this.currentClass+methodDecl.getName()+":");
-    		this.out.println("push   r29");
-    		this.out.println("push   r28");		
+    		this.out.println("   push   r29");
+    		this.out.println("   push   r28");		
 		this.out.println();
-    		this.out.println("# make space for locals and params");
-    		this.out.println("ldi    r30, 0");
+    		this.out.println("   # make space for locals and params");
+    		this.out.println("   ldi    r30, 0");
 		for (int i=0; i< methodDecl.getFormals().size(); i++) {   		
-			this.out.println("pop    r30");
-    			this.out.println("pop    r30");
+			this.out.println("   pop    r30");
+    			this.out.println("   pop    r30");
 		}
 		this.out.println();
 
-    		this.out.println("# Copy stack pointer to frame pointer");
-    		this.out.println("in     r28,__SP_L__");
-    		this.out.println("in     r29,__SP_H__");
+    		this.out.println("   # Copy stack pointer to frame pointer");
+    		this.out.println("   in     r28,__SP_L__");
+    		this.out.println("   in     r29,__SP_H__");
 		this.out.println();
 
-    		this.out.println("# save off parameters"); // need to generalize this
-    		this.out.println("std    Y + 2, r25");
-    		this.out.println("std    Y + 1, r24");
-    		this.out.println("std    Y + 3, r22");
-    		this.out.println("std    Y + 4, r20");
+    		this.out.println("   # save off parameters"); // need to generalize this
+    		this.out.println("   std    Y + 2, r25");
+    		this.out.println("   std    Y + 1, r24");
+		int j = 3;
+		int k = 0;
+    		for (int i=0; i< methodDecl.getFormals().size(); i++) {
+			 
+			if(this.getIType(methodDecl.getFormals().get(i).getType())==Type.INT){
+				this.out.println("   std    Y + "+(j++)+", r"+(22-(2*k)+1));
+			}
+			this.out.println("   std    Y + "+j+", r"+(22-(2*k))); 
+		}
 		this.out.println();
-		this.out.println("/* done with function "+this.currentClass+methodDecl.getName()+" prologue */");
+		this.out.println("   /* done with function "+this.currentClass+methodDecl.getName()+" prologue */");
 		this.out.println();
 
 		
@@ -519,52 +526,61 @@ public class AVRregAlloc extends DepthFirstVisitor {
 			}
 
 		}
-		
+		if(methodDecl.getExp()!=null){
+			methodDecl.getExp().accept((Visitor)this);
+		}
+	
 		this.out.println();
 		this.out.println();
 		//epilogue
-		this.out.println("/* epilogue start for "+this.currentClass+methodDecl.getName()+" */");
+		this.out.println("   /* epilogue start for "+this.currentClass+methodDecl.getName()+" */");
 		if(this.getIType(methodDecl.getType())!=Type.VOID){
-			this.out.println("# handle return value");
-    			this.out.println("# load a one byte expression off stack");
-    			this.out.println("pop    r24");
+			this.out.println("   # handle return value");
+    			this.out.println("   # load a one byte expression off stack");
+    			this.out.println("   pop    r24");
 		}else{
-    			this.out.println("# No return value");
+    			this.out.println("   # No return value");
 		}
 		this.out.println();
-		this.out.println("# pop space off stack for parameters and locals");
+		this.out.println("   # pop space off stack for parameters and locals");
 		for (int i=0; i< methodDecl.getFormals().size(); i++) {   		
-			this.out.println("pop    r30");
-    			this.out.println("pop    r30");
+			this.out.println("   pop    r30");
+    			this.out.println("   pop    r30");
 		}
 		this.out.println();
-    		this.out.println("# restoring the frame pointer");
-	    	this.out.println("pop    r28");
-    		this.out.println("pop    r29");
-    		this.out.println("ret");
-    		this.out.println(".size "+this.currentClass+methodDecl.getName()+", .-"+this.currentClass+methodDecl.getName());
+    		this.out.println("   # restoring the frame pointer");
+	    	this.out.println("   pop    r28");
+    		this.out.println("   pop    r29");
+    		this.out.println("   ret");
+    		this.out.println("   .size "+this.currentClass+methodDecl.getName()+", .-"+this.currentClass+methodDecl.getName());
 	}
 	
 	public void visitCallExp(CallExp call){
 		call.getExp().accept((Visitor)this);// thisLiteral or newExp
 		for (int i=0; i< call.getArgs().size();i++)
 			call.getArgs().get(i).accept((Visitor)this); //set All arguements
-    		this.out.println("#### function call");
+
+		//Somthing is missing here
+    		this.out.println("   #### function call");
 		this.out.println();
-    		this.out.println("# put parameter values into appropriate registers");
+    		this.out.println("   # put parameter values into appropriate registers");
 		for (int i=call.getArgs().size(); i> 0;i--){
-    			this.out.println("# load a one byte expression off stack");
-    			this.out.println("pop    r"+(24-(2*i)));
+    			this.out.println("   # load a one byte expression off stack");
+    			this.out.println("   pop    r"+(24-(2*i)));
 			this.out.println();
 		}
 		this.out.println();
-    		this.out.println("# receiver will be passed as first param");
-    		this.out.println("# load a two byte expression off stack");
-    		this.out.println("pop    r24");
-    		this.out.println("pop    r25");
+    		this.out.println("   # receiver will be passed as first param");
+    		this.out.println("   # load a two byte expression off stack");
+    		this.out.println("   pop    r24");
+    		this.out.println("   pop    r25");
 		this.out.println();
 		this.out.println();
-    		this.out.println("call    "+this.currentClass+call.getId());
+    		if(call.getExp() instanceof ThisLiteral){
+    			this.out.println("   call    "+this.currentClass+call.getId());
+		}else{
+    			this.out.println("   call    "+((NewExp)call.getExp()).getId()+call.getId());
+		}
 		this.out.println();
 		this.out.println();
 
@@ -574,51 +590,55 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		call.getExp().accept((Visitor)this);// thisLiteral or newExp
 		for (int i=0; i< call.getArgs().size();i++)
 			call.getArgs().get(i).accept((Visitor)this); //set All arguements
-    		this.out.println("#### function call");
+		//Somthing is missing here    		
+		this.out.println("   #### function call");
 		this.out.println();
-    		this.out.println("# put parameter values into appropriate registers");
+    		this.out.println("   # put parameter values into appropriate registers");
 		for (int i=call.getArgs().size(); i> 0;i--){
-    			this.out.println("# load a one byte expression off stack");
-    			this.out.println("pop    r"+(24-(2*i)));
+    			this.out.println("   # load a one byte expression off stack");
+    			this.out.println("   pop    r"+(24-(2*i)));
 			this.out.println();
 		}
 		this.out.println();
-    		this.out.println("# receiver will be passed as first param");
-    		this.out.println("# load a two byte expression off stack");
-    		this.out.println("pop    r24");
-    		this.out.println("pop    r25");
+    		this.out.println("   # receiver will be passed as first param");
+    		this.out.println("   # load a two byte expression off stack");
+    		this.out.println("   pop    r24");
+    		this.out.println("   pop    r25");
 		this.out.println();
 		this.out.println();
-
-    		this.out.println("call    "+this.currentClass+call.getId());
+		if(call.getExp() instanceof ThisLiteral){
+    			this.out.println("   call    "+this.currentClass+call.getId());
+		}else{
+    			this.out.println("   call    "+((NewExp)call.getExp()).getId()+call.getId());
+		}
 		this.out.println();
 		this.out.println();
 	}
 
 	public void visitThisLiteral(ThisLiteral thisLiteral){
 
-    		this.out.println("# loading the implicit this");
-	    	this.out.println("# load a two byte variable from base+offset");
-    		this.out.println("ldd    r31, Y + 2");
-    		this.out.println("ldd    r30, Y + 1");
+    		this.out.println("   # loading the implicit this");
+	    	this.out.println("   # load a two byte variable from base+offset");
+    		this.out.println("   ldd    r31, Y + 2");
+    		this.out.println("   ldd    r30, Y + 1");
 		this.out.println();
-    		this.out.println("# push two byte expression onto stack");
-    		this.out.println("push   r31");
-    		this.out.println("push   r30");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   push   r31");
+    		this.out.println("   push   r30");
 		this.out.println();
 	}
 
 	public void visitNewExp(NewExp newExp){
 
 		this.out.println();
-    		this.out.println("# NewExp");
-    		this.out.println("ldi    r24, lo8(0)");
-    		this.out.println("ldi    r25, hi8(0)");
+    		this.out.println("   # NewExp");
+    		this.out.println("   ldi    r24, lo8(0)");
+    		this.out.println("   ldi    r25, hi8(0)");
 		this.out.println();
-    		this.out.println("# push object address");
-    		this.out.println("# push two byte expression onto stack");
-    		this.out.println("push   r25");
-    		this.out.println("push   r24");
+    		this.out.println("   # push object address");
+    		this.out.println("   # push two byte expression onto stack");
+    		this.out.println("   push   r25");
+    		this.out.println("   push   r24");
 		this.out.println();
 
 	}
