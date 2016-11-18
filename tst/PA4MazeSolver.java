@@ -67,11 +67,11 @@ class Solver {
     }
     
     public boolean isDark(byte x, byte y) {
-        return (Meggy.getPixel(x, y) == Meggy.Color.DARK) && this.inBounds(x,y);
+        return this.inBounds(x,y) && (Meggy.getPixel(x, y) == Meggy.Color.DARK) ;
     }
     
     public boolean isBLUE(byte x, byte y) {
-        return (Meggy.getPixel(x, y) == Meggy.Color.BLUE) && this.inBounds(x,y);
+        return this.inBounds(x,y) && (Meggy.getPixel(x, y) == Meggy.Color.BLUE) ;
     }
     
     public void findTargetOrMove(byte nextX, byte nextY, byte targetX, byte targetY) {

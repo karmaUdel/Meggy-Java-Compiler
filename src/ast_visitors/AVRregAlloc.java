@@ -250,26 +250,6 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		this.out.println("   # MulExp");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r18");
-    		this.out.println("   # load a one byte expression off stack");
-    		this.out.println("   pop    r22");
-    		this.out.println("   # move one byte src into dest reg");
-    		this.out.println("   mov    r24, r18");	
-    		this.out.println("   # move one byte src into dest reg");			
-    		this.out.println("   mov    r26, r22");					
-	
-		this.out.println("   ");
-<<<<<<< Updated upstream
-		this.out.println("   # Do MUL sub operation");
-    		this.out.println("   muls    r24, r26");
-    		this.out.println("  push   r1");
-    		this.out.println("  push   r0");
-    		this.out.println("  eor    r0,r0");
-    		this.out.println("  eor    r1,r1");
-    		
-=======
-		this.out.println("   # MulExp");
-    		this.out.println("   # load a one byte expression off stack");
-    		this.out.println("   pop    r18");
 		this.out.println("   ");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r22");
@@ -294,7 +274,6 @@ public class AVRregAlloc extends DepthFirstVisitor {
 
 		this.out.println("   ");
 		
->>>>>>> Stashed changes
 	}
 	public void visitMeggySetPixel(MeggySetPixel meggySetPixel) {
 

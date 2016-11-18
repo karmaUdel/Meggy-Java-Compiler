@@ -16,11 +16,11 @@ digraph ASTGraph {
 6 -> 7
 8 [ label="ByteCast" ];
 6 -> 8
-9 [ label="IntLiteral\n7" ];
+9 [ label="IntLiteral\n3" ];
 8 -> 9
 10 [ label="ByteCast" ];
 6 -> 10
-11 [ label="IntLiteral\n3" ];
+11 [ label="IntLiteral\n7" ];
 10 -> 11
 12 [ label="MeggyDelay" ];
 5 -> 12
@@ -78,11 +78,11 @@ digraph ASTGraph {
 37 -> 38
 39 [ label="ThisLiteral\nthis" ];
 38 -> 39
-40 [ label="IdLiteral\ny" ];
+40 [ label="IdLiteral\nx" ];
 38 -> 40
 41 [ label="IdLiteral\ny" ];
 38 -> 41
-42 [ label="IdLiteral\nx" ];
+42 [ label="IdLiteral\ny" ];
 38 -> 42
 43 [ label="BlockStatement" ];
 37 -> 43
@@ -100,7 +100,7 @@ digraph ASTGraph {
 48 -> 49
 50 [ label="ThisLiteral\nthis" ];
 49 -> 50
-51 [ label="IdLiteral\ny" ];
+51 [ label="IdLiteral\nx" ];
 49 -> 51
 52 [ label="ByteCast" ];
 49 -> 52
@@ -112,7 +112,7 @@ digraph ASTGraph {
 53 -> 55
 56 [ label="IntLiteral\n1" ];
 55 -> 56
-57 [ label="IdLiteral\nx" ];
+57 [ label="IdLiteral\ny" ];
 49 -> 57
 58 [ label="BlockStatement" ];
 48 -> 58
@@ -142,18 +142,18 @@ digraph ASTGraph {
 43 -> 70
 71 [ label="ThisLiteral\nthis" ];
 70 -> 71
-72 [ label="ByteCast" ];
+72 [ label="IdLiteral\nx" ];
 70 -> 72
-73 [ label="MinusExp" ];
-72 -> 73
-74 [ label="IdLiteral\ny" ];
+73 [ label="ByteCast" ];
+70 -> 73
+74 [ label="MinusExp" ];
 73 -> 74
-75 [ label="ByteCast" ];
-73 -> 75
-76 [ label="IntLiteral\n1" ];
-75 -> 76
-77 [ label="IdLiteral\nx" ];
-70 -> 77
+75 [ label="IdLiteral\ny" ];
+74 -> 75
+76 [ label="ByteCast" ];
+74 -> 76
+77 [ label="IntLiteral\n1" ];
+76 -> 77
 78 [ label="BlockStatement" ];
 37 -> 78
 79 [ label="MethodDecl" ];
@@ -218,7 +218,7 @@ digraph ASTGraph {
 107 -> 108
 109 [ label="Formal" ];
 105 -> 109
-110 [ label="IntType" ];
+110 [ label="ByteType" ];
 109 -> 110
 111 [ label="Formal" ];
 105 -> 111
@@ -226,7 +226,7 @@ digraph ASTGraph {
 111 -> 112
 113 [ label="Formal" ];
 105 -> 113
-114 [ label="ByteType" ];
+114 [ label="IntType" ];
 113 -> 114
 115 [ label="Formal" ];
 105 -> 115
@@ -274,7 +274,7 @@ digraph ASTGraph {
 135 -> 136
 137 [ label="Formal" ];
 135 -> 137
-138 [ label="IntType" ];
+138 [ label="ByteType" ];
 137 -> 138
 139 [ label="Formal" ];
 135 -> 139
@@ -286,7 +286,7 @@ digraph ASTGraph {
 141 -> 142
 143 [ label="Formal" ];
 135 -> 143
-144 [ label="ByteType" ];
+144 [ label="IntType" ];
 143 -> 144
 145 [ label="IfStatement" ];
 135 -> 145
