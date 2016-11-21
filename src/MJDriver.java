@@ -75,9 +75,9 @@ public class MJDriver {
 	  CheckTypes typeChecker= new CheckTypes(globalST);      
 	  try{
 	  // perform type checking
-	 System.out.println("Error before typeChecking "+ typeChecker.getError());
+	 //System.out.println("Error before typeChecking "+ typeChecker.getError());
 	  ast_root.accept(typeChecker);
-	 System.out.println("Error present ? "+ typeChecker.getError());
+	 System.out.println("Type Error present ? "+ typeChecker.getError());
           }catch(Exception e){
 	System.out.println("error is caught"+e);
 	e.printStackTrace();
@@ -86,7 +86,7 @@ public class MJDriver {
 	  }
           
           // generate AVR code that evaluates the program
-	  if(!typeChecker.getError()){ //if error is false
+	  if(!typeChecker.getError() && !stVisitor.getError()){ //if error is false
           java.io.PrintStream avrsout =
               new java.io.PrintStream(
                       new java.io.FileOutputStream(filename + ".s"));
@@ -94,9 +94,9 @@ public class MJDriver {
           System.out.println("Printing Atmel assembly to " + filename + ".s");
 	  }else{
 	     //Printing errors
+	    
+    	     System.out.println("Atmel assembly code will not be generated as we've Error");
 	     System.out.println(typeChecker.getErrorMessage());
-    	     System.out.println("Atmel assembly code will not be generated as we've typeError");
-	  
 	  }
 
                 
@@ -155,7 +155,6 @@ public class MJDriver {
             System.exit(1);
        
         } catch (Exception e) {
-	System.err.println("some other error ");
             e.printStackTrace();
             System.exit(1);
         }  

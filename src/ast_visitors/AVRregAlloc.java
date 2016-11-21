@@ -175,7 +175,10 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("   # Not  expression");
     		this.out.println("   # load a one byte expression off stack");
     		this.out.println("   pop    r24");
-   		this.out.println("   com    r24");
+   		this.out.println("   ldi    r22,1 ");
+   		this.out.println("   eor    r24,r22 ");
+   		this.out.println("   # push one byte expression onto stack");
+   		this.out.println("   push   r24 ");
 		this.out.println("   ");
 	
     	}

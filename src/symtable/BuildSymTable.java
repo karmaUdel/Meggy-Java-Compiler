@@ -12,6 +12,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
 	private SymTable symTable; 
 	private String currentClass;
 	private boolean firstpass;
+	private boolean error;
   private static final Type BOOL = Type.BOOL;
   private static final Type INT = Type.INT;
   private static final Type BYTE = Type.BYTE;
@@ -27,6 +28,8 @@ public class BuildSymTable extends DepthFirstVisitor   {
     }
     public boolean getFirstPass()
 	{ return this.firstpass;}
+public boolean getError()
+	{ return this.error;}
 
  public Type getType(IType node){
    if(node instanceof BoolType){
@@ -220,16 +223,19 @@ return Type.VOID;
         //   //System.out.println(this.currentClass);
 	//ClassSTE ste= (ClassSTE) this.symTable.lookup(this.currentClass);
 	//ste.setMethodSTE(methodSTE);
+
 	}else{
 
 	//System.out.println("Duplicate method declaration: " +  methodDecl.getName());
 	//System.out.println("Cannot continue parsing ............");
-	System.exit(0);
+	
 
 	    methodSTE = new MethodSTE(methodDecl.getName()+"*", sig, this.currentClass+ methodDecl.getName()+"*");
 		//create duplicate methodSTE
 	}
-
+	
+	ClassSTE classSTE = (ClassSTE)this.symTable.getGlobalScope().lookup(this.currentClass);
+	methodSTE.getScope().setmEnclosing(classSTE);
 
        this.symTable.insert(methodSTE);
 //System.out.println("MethodSTE "+methodSTE);
@@ -271,7 +277,8 @@ if(this.getFirstPass())
        	}else{			// if duplicate class is found add duplicare to it
 		//System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
 	//System.out.println("Cannot continue parsing ............");
-		this.currentClass = topClassDecl.getName()+"**"; 
+		this.currentClass = topClassDecl.getName()+"**";
+		topClassDecl.setName(this.currentClass); 
 	}
 
   	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
@@ -288,6 +295,7 @@ else{
     public void outTopClassDecl(TopClassDecl topClassDecl) {
 
 //	if(!this.getFirstPass())
+	//System.out.println("topClassDecl.getName() "+this.currentClass);
         this.symTable.popScope();
     }
 
@@ -303,6 +311,7 @@ else{
        	}else{			// if duplicate class is found add duplicare to it
 		
 		//System.exit(0);
+
 		this.currentClass = mainClass.getName()+"**"; 
 	}
   	this.symTable.insert(new ClassSTE(this.currentClass, true, null) );
@@ -355,7 +364,7 @@ else{
 
 	if(classSTE!=null)
 	{	//System.out.println("*** " + methodName + " "+ classSTE.getName());
-		currentScope.setmEnclosing(classSTE); // currentMethod references some method
+		//currentScope.setmEnclosing(classSTE); // currentMethod references some method
 		////System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
 	}
     }
@@ -395,7 +404,7 @@ else{
 
 	if(classSTE!=null)
 	{	//System.out.println("*** " + methodName + " "+ classSTE.getName());
-		currentScope.setmEnclosing(classSTE); // currentMethod references some method
+		//currentScope.setmEnclosing(classSTE); // currentMethod references some method
 		////System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
 	}
     }
@@ -407,8 +416,10 @@ else{
     private boolean isDuplicate(String name, int line, int pos) {
 	if (this.symTable.lookupInnermost(name) != null) {
             System.err.println("[" +line+ "," +pos+ "] Duplicate name " + name);
-            return true;
+            this.error = true;
+   	    return true;
         }
+
         return false;
     }
 

@@ -58,6 +58,7 @@ public class SymTable {
 	else if( sTE instanceof ClassSTE)        
 	 {	ClassSTE c=(ClassSTE)sTE;
 		this.mScopeStack.push(c.getScope()); // if STE is method or Class then push scope
+
 	 }
 	else
 		System.out.println("No such scope is defined :"+ name);
@@ -66,7 +67,10 @@ public class SymTable {
 
     
     public void popScope() {
-        this.mScopeStack.pop();
+	if(!mScopeStack.empty()){
+
+        	this.mScopeStack.pop();
+	}
     }
 
     public void setExpType(Node node, Type type) {

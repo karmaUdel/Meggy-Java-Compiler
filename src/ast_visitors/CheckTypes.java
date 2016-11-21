@@ -232,7 +232,7 @@ i++;
 	else if(node.getExp() instanceof NewExp)
 */
 	
-	
+	STE methodSTE = null ;
 	boolean breakFlag=false;
  	String methodName = node.getId();
 	//////System.out.println("Method name we are looking for is "+ methodName);
@@ -241,10 +241,11 @@ i++;
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
 		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
+if(classSTE!=null)	
+methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
 	
-	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
 	////System.out.println("methSTE is " + methodSTE);
-	if(methodSTE!=null){
+	if(methodSTE!=null ){
 ////System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
 
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
