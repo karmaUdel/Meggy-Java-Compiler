@@ -86,7 +86,7 @@ terminal UMINUS;
 
 non terminal program;
 non terminal LinkedList<IClassDecl> otherClass;
-non terminal Integer exp;
+//non terminal Integer exp;
 non terminal IStatement statement;
 non terminal List statement_list;
 non terminal MainClass main_class;
@@ -95,13 +95,14 @@ non terminal BlockStatement block_statement;
 non terminal IExp operation;
 //non terminal IExp boolVal;
 //non terminal IExp rightSide;
-non terminal IExp op2;
+//non terminal IExp op2;
 //non terminal IStatement ifType;
 non terminal LinkedList<MethodDecl> methodDecl;
 non terminal LinkedList<Formal> formal;
 non terminal IType type;
 non terminal LinkedList<IExp> args;
 non terminal IExp returnStatement;
+non terminal LinkedList<VarDecl> varibleDecl;
 
 /* Declare precedence and associativity  here declaration */
 
@@ -243,14 +244,14 @@ if(op2!=null){
 					{: RESULT = new IfStatement(op.line,op.pos,e,e1,e2);
 						//System.out.printf("cond -> if booleanExp then stmt\n"); 
 					:}
-					//| operation:op  {::}
 					|operation:e1 DOT ID:name LPAREN args:_args RPAREN SEMI
 					{:
-					//LinkedList _args = new LinkedList<IExp>();
-					//_args.add(0,e2);
-					//System.out.println("method call from method");
 					RESULT = new CallStatement(name.line,name.pos,e1,name.lexeme,_args);
-					:};
+					:}
+					|ID:name ASSIGN operation:op SEMI
+					{:
+					RESULT = new AssignStatement(name.line,name.pos, name.lexeme,op);:}
+					;
 
 
 					operation ::= operation:e PLUS:op operation:e1 {:	
@@ -352,12 +353,18 @@ if(op2!=null){
 						;
 /*PA4 grammar starts here*/
 
-otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE methodDecl:methods RBRACE 
+otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE varibleDecl:var methodDecl:methods RBRACE 
 	       {:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
 		//System.out.println("before : class is "+_methodDecls+"  and statement list is "+methods );
+		if(var!=null){
+		_varDecls.addAll(var);
+		}
+		if(methods!=null){
 		_methodDecls.addAll(methods);
+		}
+		
 		//System.out.println(" class is "+name );		
 		LinkedList<IClassDecl> classDecl = new LinkedList<IClassDecl>();
 		TopClassDecl classdec = new TopClassDecl(op1.line,op1.pos,name+"",_varDecls,_methodDecls);
@@ -367,7 +374,27 @@ otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE methodDecl:methods RBRA
 		}			
 		RESULT = classDecl;		
 		:}
-		| {:
+		|otherClass:other CLASS:op1 ID:name EXTENDS ID:parent LBRACE varibleDecl:var methodDecl:methods RBRACE 
+	       {:
+		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
+		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
+		//System.out.println("before : class is "+_methodDecls+"  and statement list is "+methods );
+		if(var!=null){
+		_varDecls.addAll(var);
+		}
+		if(methods!=null){
+		_methodDecls.addAll(methods);
+		}
+		//System.out.println(" class is "+name );		
+		LinkedList<IClassDecl> classDecl = new LinkedList<IClassDecl>();
+		ChildClassDecl classdec = new ChildClassDecl(op1.line,op1.pos,name+"",parent+"",_varDecls,_methodDecls);
+		classDecl.add((IClassDecl)classdec);
+		if(other!=null){
+			classDecl.addAll(other);
+		}			
+		RESULT = classDecl;		
+		:}
+		 |{:
 		LinkedList<IClassDecl> classDecl = new LinkedList<IClassDecl>();
 		//LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
 		//_methodDecls.add(methods);
@@ -377,7 +404,7 @@ otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE methodDecl:methods RBRA
 		;
 
 //blockstatment has LBRACE RBRACE in it
-methodDecl ::=  methodDecl:methods PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE statement_list:block returnStatement:rstmt RBRACE
+methodDecl ::=  methodDecl:methods PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE varibleDecl:var statement_list:block returnStatement:rstmt RBRACE
 		{:
 		LinkedList<Formal> _formals = new LinkedList<Formal>();
 		_formals.addAll(param);
@@ -385,7 +412,9 @@ methodDecl ::=  methodDecl:methods PUBLIC:op type:typ ID:name LPAREN formal:para
     		LinkedList<IStatement> _statements = new LinkedList<IStatement>(); //--> blockstatement
 		//System.out.println(" method is "+name.lexeme );
 		_statements.addAll(block);
-
+		if(var!=null){
+		_varDecls.addAll(var);
+		}
 		MethodDecl method=new MethodDecl(op.line,op.pos,typ,name+"",_formals,_varDecls,_statements,rstmt);
 		LinkedList<MethodDecl> methodList = new LinkedList<MethodDecl>();
 		if (methods!=null)
@@ -466,4 +495,16 @@ RESULT = op; :}
 		  | {://System.out.println("no return type"); 
 RESULT=null;:}
 		 ;
-
+/* PA5 Grammar starts here */
+varibleDecl ::= varibleDecl:varList type:typ ID:name SEMI
+		{:
+		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();		
+		VarDecl var = new VarDecl(name.line,name.pos,typ,name.lexeme);
+		if(varList!=null)
+			_varDecls.addAll(varList);		
+		_varDecls.add(var);
+		RESULT = _varDecls;:}
+		|{:
+		RESULT =new LinkedList<VarDecl>();
+		:}
+		;
