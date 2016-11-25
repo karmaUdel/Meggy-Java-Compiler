@@ -466,11 +466,20 @@ formal::=	type:typ ID:name COMMA formal:list
 			//System.out.println(" inside empty parameter list is "+lst);
 		RESULT=lst;
 		:} 
+		| ID:typ ID:name
+		{:
+		LinkedList lst = new LinkedList<Formal>();
+		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
+		lst.add(formal);
+		RESULT=lst;
+		:}
 		;
+
 type ::= INT:op {:RESULT = new IntType(op.line,op.pos);:}|BOOLEAN:op{:RESULT = new BoolType(op.line,op.pos);:}|
 	BYTE:op{:RESULT = new ByteType(op.line,op.pos);:}|VOID:op{:RESULT = new VoidType(op.line,op.pos);:}|
 	MEGGYCOLOR:op{:RESULT = new ColorType(op.line,op.pos);:}|MEGGYBUTTON:op{:RESULT = new ButtonType(op.line,op.pos);:}
-	|MEGGYTONE:op{:RESULT = new ToneType(op.line,op.pos);:};
+	|MEGGYTONE:op{:RESULT = new ToneType(op.line,op.pos);:}
+	;
 
 args::= operation:op COMMA args:lst
 	{:
