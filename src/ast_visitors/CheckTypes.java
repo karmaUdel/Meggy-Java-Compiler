@@ -144,12 +144,17 @@ this.error=true;
 	if(node.getExp() instanceof ThisLiteral){
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
-		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
-	//System.out.println("Class is " + this.currentClass + classSTE);
+		classSTE = this.mCurrentST.getGlobalScope().lookup(((NewExp)node.getExp()).getId());
+
+
+	System.out.println("Class is " + this.currentClass + classSTE.getName());
+
 	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
+	System.out.println(methodSTE.getName());
+
 	////System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
 	if(methodSTE!=null){
-	////System.out.println("methSTE is " + methodSTE);
+	//System.out.println("methSTE is " + methodSTE);
 	List<Type> argsList = ((MethodSTE)methodSTE).getSignature().getFormals();
 	List<IExp> callParam = node.getArgs();
 ////System.out.println("Size");
@@ -545,7 +550,7 @@ this.error = true;
   public void outNewExp(NewExp newExp) {
 
 
-        STE sTE = this.mCurrentST.lookup(newExp.getId());// search Class
+        STE sTE = this.mCurrentST.getGlobalScope().lookup(newExp.getId());// search Class
         if (sTE == null) {
 	    this.error = true;
             ////System.out.println(

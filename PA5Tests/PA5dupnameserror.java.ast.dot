@@ -1,0 +1,117 @@
+digraph ASTGraph {
+0 [ label="Program" ];
+1 [ label="MainClass" ];
+0 -> 1
+2 [ label="BlockStatement" ];
+1 -> 2
+3 [ label="CallStatement" ];
+2 -> 3
+4 [ label="NewExp" ];
+3 -> 4
+5 [ label="TopClassDecl" ];
+0 -> 5
+6 [ label="VarDecl" ];
+5 -> 6
+7 [ label="ByteType" ];
+6 -> 7
+8 [ label="VarDecl" ];
+5 -> 8
+9 [ label="ByteType" ];
+8 -> 9
+10 [ label="VarDecl" ];
+5 -> 10
+11 [ label="IntType" ];
+10 -> 11
+12 [ label="VarDecl" ];
+5 -> 12
+13 [ label="ToneType" ];
+12 -> 13
+14 [ label="MethodDecl" ];
+5 -> 14
+15 [ label="IntType" ];
+14 -> 15
+16 [ label="VarDecl" ];
+14 -> 16
+17 [ label="ByteType" ];
+16 -> 17
+18 [ label="VarDecl" ];
+14 -> 18
+19 [ label="IntType" ];
+18 -> 19
+20 [ label="VarDecl" ];
+14 -> 20
+21 [ label="BoolType" ];
+20 -> 21
+22 [ label="IntLiteral\n5" ];
+14 -> 22
+23 [ label="MethodDecl" ];
+5 -> 23
+24 [ label="VoidType" ];
+23 -> 24
+25 [ label="Formal" ];
+23 -> 25
+26 [ label="IntType" ];
+25 -> 26
+27 [ label="VarDecl" ];
+23 -> 27
+28 [ label="ColorType" ];
+27 -> 28
+29 [ label="MeggySetPixel" ];
+23 -> 29
+30 [ label="ByteCast" ];
+29 -> 30
+31 [ label="MinusExp" ];
+30 -> 31
+32 [ label="CallExp" ];
+31 -> 32
+33 [ label="ThisLiteral\nthis" ];
+32 -> 33
+34 [ label="CallExp" ];
+31 -> 34
+35 [ label="ThisLiteral\nthis" ];
+34 -> 35
+36 [ label="ByteCast" ];
+29 -> 36
+37 [ label="IntLiteral\n0" ];
+36 -> 37
+38 [ label="ColorLiteral\nMeggy.Color.BLUE" ];
+29 -> 38
+39 [ label="TopClassDecl" ];
+0 -> 39
+40 [ label="VarDecl" ];
+39 -> 40
+41 [ label="IntType" ];
+40 -> 41
+42 [ label="VarDecl" ];
+39 -> 42
+43 [ label="ByteType" ];
+42 -> 43
+44 [ label="MethodDecl" ];
+39 -> 44
+45 [ label="IntType" ];
+44 -> 45
+46 [ label="IntLiteral\n5" ];
+44 -> 46
+47 [ label="MethodDecl" ];
+39 -> 47
+48 [ label="VoidType" ];
+47 -> 48
+49 [ label="MeggySetPixel" ];
+47 -> 49
+50 [ label="ByteCast" ];
+49 -> 50
+51 [ label="IntLiteral\n4" ];
+50 -> 51
+52 [ label="ByteCast" ];
+49 -> 52
+53 [ label="IntLiteral\n0" ];
+52 -> 53
+54 [ label="ColorLiteral\nMeggy.Color.ORANGE" ];
+49 -> 54
+55 [ label="CallStatement" ];
+47 -> 55
+56 [ label="NewExp" ];
+55 -> 56
+57 [ label="IntLiteral\n3" ];
+55 -> 57
+}

@@ -468,8 +468,13 @@ formal::=	type:typ ID:name COMMA formal:list
 		:} 
 		| ID:typ ID:name
 		{:
+
+		ClassType classType = new ClassType(typ.line,typ.pos,typ.lexeme);
+
 		LinkedList lst = new LinkedList<Formal>();
-		Formal formal= new Formal(name.line,name.pos,typ,name.lexeme);
+
+
+		Formal formal= new Formal(name.line,name.pos,classType,name.lexeme);
 		lst.add(formal);
 		RESULT=lst;
 		:}
