@@ -177,7 +177,7 @@ main_class ::=
 
 
 
-		statement_list ::=  statement_list:lst1 statement:op2 
+		statement_list ::=  statement:op2 statement_list:lst1 
 						{:
 						List list = new LinkedList<IStatement>();
 
@@ -196,7 +196,8 @@ if(op2!=null){
 								}
 
 								RESULT = list;:}
-								|{:LinkedList list = new LinkedList<IStatement>();
+								|
+					{:LinkedList list = new LinkedList<IStatement>();
 									RESULT = list;:}; 
 
 	
@@ -466,24 +467,13 @@ formal::=	type:typ ID:name COMMA formal:list
 			//System.out.println(" inside empty parameter list is "+lst);
 		RESULT=lst;
 		:} 
-		| ID:typ ID:name
-		{:
 
-		ClassType classType = new ClassType(typ.line,typ.pos,typ.lexeme);
-
-		LinkedList lst = new LinkedList<Formal>();
-
-
-		Formal formal= new Formal(name.line,name.pos,classType,name.lexeme);
-		lst.add(formal);
-		RESULT=lst;
-		:}
 		;
 
 type ::= INT:op {:RESULT = new IntType(op.line,op.pos);:}|BOOLEAN:op{:RESULT = new BoolType(op.line,op.pos);:}|
 	BYTE:op{:RESULT = new ByteType(op.line,op.pos);:}|VOID:op{:RESULT = new VoidType(op.line,op.pos);:}|
 	MEGGYCOLOR:op{:RESULT = new ColorType(op.line,op.pos);:}|MEGGYBUTTON:op{:RESULT = new ButtonType(op.line,op.pos);:}
-	|MEGGYTONE:op{:RESULT = new ToneType(op.line,op.pos);:}
+	|MEGGYTONE:op{:RESULT = new ToneType(op.line,op.pos);:} | ID
 	;
 
 args::= operation:op COMMA args:lst
