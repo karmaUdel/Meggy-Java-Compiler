@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.*;
 import symtable.*;
 
-public class MethodSTE extends STE {
+public class MethodSTE extends NamedScopeSTE {
     private Signature mSignature;
     private MethodDecl mNode;
     private Scope mScope ;
@@ -30,7 +30,7 @@ public class MethodSTE extends STE {
         return this.mScope;
     }
 	
-    public void setVarSTE(String name,Type type,int offset)//(MethodDecl methodDecl)
+    public void setVarSTE(String name,Type type,int offset,boolean param,boolean member)//(MethodDecl methodDecl)
 	{
 	/*LinkedList<Formal> parameters = methodDecl.getFormals();
 	if(parameters!=null){
@@ -44,7 +44,7 @@ public class MethodSTE extends STE {
 	if(formal.getName().equals("this"))
 		var = new VarSTE(formal.getName(),formal.getType(),1);
 	else*/
-	VarSTE var = new VarSTE(name,type,offset);
+	VarSTE var = new VarSTE(name,type,offset,param,member);
 	//System.out.println(name+ " "+ type);	
 	mScope.insert(var);	
 	
@@ -66,13 +66,24 @@ public class MethodSTE extends STE {
         LinkedList<VarSTE> linkedList =new LinkedList<VarSTE>();
         while (iterator.hasNext()) {
             STE varSTE = this.mScope.lookup(iterator.next()); //lookup returns STE
-            linkedList.add((VarSTE)varSTE); // we return VarSTE
+	    if(((VarSTE)varSTE).isParam())
+            	linkedList.add((VarSTE)varSTE); // we return VarSTE
         }
         return linkedList;
     }
 
     
-    
+    public LinkedList<VarSTE> getLocalList() {
+        LinkedList<VarSTE> linkedList = new LinkedList<VarSTE>();
+        Iterator iterator = this.mScope.getDeclOrder().iterator();
+        while (iterator.hasNext()) {
+            STE varSTE = this.mScope.lookup((String)iterator.next());
+            if (((VarSTE)varSTE).isMember()) continue;
+            linkedList.add((VarSTE)varSTE);
+        }
+        return linkedList;
+    }
+   
 
     public int outputDot(PrintStream printStream, int n) {
         int n2 = n;

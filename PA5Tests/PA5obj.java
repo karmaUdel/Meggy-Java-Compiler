@@ -15,15 +15,6 @@ class PA5obj {
     }
 }
 
-class C {
-    Ind oy;
-    public void setP(byte x, byte y, Meggy.Color c) {
-        Ind ox; ox = new Ind(); ox.put(x);
-                oy = new Ind(); oy.put(y);
-		Meggy.setPixel(ox.get(), oy.get(), c);    
-    }
-}
-
 class Ind{
     byte _i;
     public void put(byte i){
@@ -33,3 +24,13 @@ class Ind{
 	return _i;
     }
 }
+
+class C {
+    Ind oy;
+    public void setP(byte x, byte y, Meggy.Color c) {
+        Ind ox; ox = new Ind(); ox.put(x);
+                oy = new Ind(); oy.put(y);
+		Meggy.setPixel(ox.get(), oy.get(), c);    
+    }
+}
+

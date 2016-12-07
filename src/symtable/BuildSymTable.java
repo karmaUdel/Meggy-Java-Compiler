@@ -205,7 +205,7 @@ return Type.VOID;
 //System.out.println("CurrentClass is "+this.currentClass);
        
 	if(this.getFirstPass())
-{
+	{
 
 	//System.out.println("First pass "+methodDecl.getName());
         MethodSTE methodSTE;
@@ -240,20 +240,19 @@ return Type.VOID;
        this.symTable.insert(methodSTE);
 //System.out.println("MethodSTE "+methodSTE);
        
-        methodSTE.setVarSTE("this", Type.getClassType(this.currentClass),1);
+        methodSTE.setVarSTE("this", Type.getClassType(this.currentClass),1,false,false); //parameter = false, member_variable = false
         int i=0;
 	for (Formal formal2 : methodDecl.getFormals()) {
-          methodSTE.setVarSTE(formal2.getName(), this.getType(formal2.getType()), 3+i);
+          methodSTE.setVarSTE(formal2.getName(), this.getType(formal2.getType()), 3+i,true,false); //parameter = false, member_variable = false
           i++;
-	} }
-
-else{
+	} 
+	}else{
 
 	//System.out.println("Second pass "+methodDecl.getName());
 	//System.out.println("Scope "+this.symTable.getCurrentScope().getScopeName());
 	this.symTable.pushScope( methodDecl.getName());
         
-        	}
+        }
 
     }
 
@@ -267,54 +266,87 @@ else{
     public void inTopClassDecl(TopClassDecl topClassDecl) {
 
 	
-if(this.getFirstPass())
-{
+	if(this.getFirstPass())
+	{
+	
+		//System.out.println("First pass "+topClassDecl.getName());
 
-	//System.out.println("First pass "+topClassDecl.getName());
+	        if(!this.isDuplicate(topClassDecl.getName(), topClassDecl.getLine(), topClassDecl.getPos())){ 
+		        this.currentClass = topClassDecl.getName();
+       		}else{			// if duplicate class is found add duplicare to it
+			//System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
+			//System.out.println("Cannot continue parsing ............");
+			this.currentClass = topClassDecl.getName()+"**";
+			topClassDecl.setName(this.currentClass); 
+		}
 
-        if(!this.isDuplicate(topClassDecl.getName(), topClassDecl.getLine(), topClassDecl.getPos())){ 
-	        this.currentClass = topClassDecl.getName();
-       	}else{			// if duplicate class is found add duplicare to it
-		//System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
-	//System.out.println("Cannot continue parsing ............");
-		this.currentClass = topClassDecl.getName()+"**";
-		topClassDecl.setName(this.currentClass); 
+	  	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
+		this.symTable.pushScope(this.currentClass);//inside top class
+	}else{
+		//System.out.println("Second pass "+topClassDecl.getName());
+		this.currentClass = topClassDecl.getName();
+		this.symTable.pushScope(this.currentClass);//inside top class		
 	}
-
-  	this.symTable.insert(new ClassSTE(this.currentClass, false, null) );
-	this.symTable.pushScope(this.currentClass);//inside top class
-}
-else{
-	//System.out.println("Second pass "+topClassDecl.getName());
-	this.currentClass = topClassDecl.getName();
-	this.symTable.pushScope(this.currentClass);//inside top class	
-}
 
     }
 
     public void outTopClassDecl(TopClassDecl topClassDecl) {
 
-//	if(!this.getFirstPass())
+	//if(!this.getFirstPass())
 	//System.out.println("topClassDecl.getName() "+this.currentClass);
         this.symTable.popScope();
     }
+
+
+    public void inChildClassDecl(ChildClassDecl childClassDecl) {
+
+	
+	if(this.getFirstPass())
+	{
+	
+		//System.out.println("First pass "+topClassDecl.getName());
+
+	        if(!this.isDuplicate(childClassDecl.getName(), childClassDecl.getLine(), childClassDecl.getPos())){ 
+		        this.currentClass = childClassDecl.getName();
+       		}else{			// if duplicate class is found add duplicare to it
+			//System.out.println("Duplicate class declaration: " +  topClassDecl.getName());
+			//System.out.println("Cannot continue parsing ............");
+			this.currentClass = childClassDecl.getName()+"**";
+			childClassDecl.setName(this.currentClass); 
+		}
+
+	  	this.symTable.insert(new ClassSTE(this.currentClass, false, childClassDecl.getParent()) );
+		this.symTable.pushScope(this.currentClass);//inside top class
+	}else{
+		//System.out.println("Second pass "+topClassDecl.getName());
+		this.currentClass = childClassDecl.getName();
+		this.symTable.pushScope(this.currentClass);//inside top class		
+	}
+
+    }
+
+    public void outChildClassDecl(ChildClassDecl childClassDecl) {
+
+	//if(!this.getFirstPass())
+	//System.out.println("topClassDecl.getName() "+this.currentClass);
+        this.symTable.popScope();
+    }
+
 
     public void inMainClass(MainClass mainClass) {
 //System.out.println("CurrentClass is "+this.currentClass);
        
        if(this.getFirstPass())	
-{	
+	{	
 	//System.out.println("First pass "+mainClass.getName());
 
- if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
-	        this.currentClass = mainClass.getName();
-       	}else{			// if duplicate class is found add duplicare to it
-		
-		//System.exit(0);
-
-		this.currentClass = mainClass.getName()+"**"; 
-	}
-  	this.symTable.insert(new ClassSTE(this.currentClass, true, null) );
+		 if(!this.isDuplicate(mainClass.getName(), mainClass.getLine(), mainClass.getPos())){ 
+		        this.currentClass = mainClass.getName();
+	       	}else{			// if duplicate class is found add duplicare to it
+			//System.exit(0);
+			this.currentClass = mainClass.getName()+"**"; 
+		}
+	  	this.symTable.insert(new ClassSTE(this.currentClass, true, null) );
 		this.symTable.pushScope(mainClass.getName());//inside main class	
 
 	}else{
@@ -328,6 +360,7 @@ else{
 //	if(!this.getFirstPass())	
         	this.symTable.popScope();
     } 
+
 
     public void inCallStatement(CallStatement callStatement){
 	if(!this.getFirstPass()){
@@ -410,8 +443,22 @@ else{
     }
 }
 
+
+    public void inVarDecl(VarDecl varDecl){
+    
+	if(!this.getFirstPass()){
+		Scope currentScope = this.symTable.getCurrentScope();
+		VarSTE var = new VarSTE(varDecl.getName(),this.getType(varDecl.getType()),1,false,true); //1 needs to be set whatever offset value will be		
+		currentScope.insert(var);
+	}
+    }
+
+    public void outVarDecl(VarDecl varDecl){
+    }
+
     public void outCallStatement(CallStatement callStatement){
     }
+
 
     private boolean isDuplicate(String name, int line, int pos) {
 	if (this.symTable.lookupInnermost(name) != null) {

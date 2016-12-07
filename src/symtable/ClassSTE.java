@@ -4,7 +4,7 @@ import ast.node.TopClassDecl;
 import java.io.PrintStream;
 import symtable.*;
 
-public class ClassSTE extends STE {
+public class ClassSTE extends NamedScopeSTE {
     private boolean mMain;
     private String mSuperClass;
     private Scope mScope;
@@ -41,6 +41,19 @@ public class ClassSTE extends STE {
 		return (MethodSTE)mScope.lookup(method);	// lookup method
     }
 
+    public boolean isSuperOrExtends(ClassSTE classSTE) {
+        if (this.mName == classSTE.mName) {
+            return true; // is super class
+        }
+        if (this.mSuperClass == null) {
+            return false; // has no super class
+        }
+        ClassSTE superClass = (ClassSTE)this.mScope.lookup(this.mSuperClass); // superclass is present
+        if (superClass == null) {
+            System.out.println("Parent Class is not found for " +classSTE.getName());
+        }
+        return superClass.isSuperOrExtends(classSTE);
+    }
     
     public int outputDot(PrintStream printStream, int n) {
         int n2 = n++;
