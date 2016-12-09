@@ -4,7 +4,7 @@ import ast.node.TopClassDecl;
 import java.io.PrintStream;
 import symtable.*;
 
-public class ClassSTE extends NamedScopeSTE {
+public class ClassSTE extends STE {
     private boolean mMain;
     private String mSuperClass;
     private Scope mScope;
@@ -30,6 +30,13 @@ public class ClassSTE extends NamedScopeSTE {
         return this.mScope;
     }
 
+    public void setSuperClass(String superClass) {
+        this.mSuperClass = superClass;
+    }
+
+    public String getSuperClass() {
+        return this.mSuperClass;
+    }
 
     public void setMethodSTE(MethodSTE method)//TopClassDecl classDecl){
     {	

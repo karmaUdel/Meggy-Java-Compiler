@@ -314,12 +314,14 @@ return Type.VOID;
 			this.currentClass = childClassDecl.getName()+"**";
 			childClassDecl.setName(this.currentClass); 
 		}
-
-	  	this.symTable.insert(new ClassSTE(this.currentClass, false, childClassDecl.getParent()) );
+		ClassSTE childClass = new ClassSTE(this.currentClass, false, childClassDecl.getParent());
+	  	this.symTable.insert(childClass);
 		this.symTable.pushScope(this.currentClass);//inside top class
 	}else{
 		//System.out.println("Second pass "+topClassDecl.getName());
 		this.currentClass = childClassDecl.getName();
+		//we'll lookup this STE & parent STE and push parent'scope inside child's scope
+
 		this.symTable.pushScope(this.currentClass);//inside top class		
 	}
 
@@ -396,12 +398,39 @@ return Type.VOID;
     	}
 
 	if(classSTE!=null)
-	{	//System.out.println("*** " + methodName + " "+ classSTE.getName());
-		//currentScope.setmEnclosing(classSTE); // currentMethod references some method
-		////System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
-	}
-    }
+	{	
+		if( ((ClassSTE) classSTE).getMethodSTE(methodName)==null){
+			if (((ClassSTE)classSTE).getSuperClass()!=null){
+				ClassSTE superClassSTE = (ClassSTE)global.lookup(((ClassSTE)classSTE).getSuperClass());
+				System.out.println("\nmEnclosing will have Super Class to be added for current MethodSTE\n");
+				superClassSTE = this.getClassWhichContainsMethod(methodName, ((ClassSTE)classSTE),global); // get Class which contains the method name
+				if(superClassSTE == null){
+					System.out.println("Method "+methodName+" is not found inside class "+classSTE.getName());
+				}else{
+					// Super Class has method so set mEnclosing to superClass's Scope;
+					currentScope.setmEnclosing(superClassSTE);
+				}
+			}// end if classSTE.getSuperclass()!=null
+		}//end if classSTE.getMethodSTE(methodName)==null
+	}//end  if classSTE!=null 
+    }// end if !firstPass
 }
+
+    public ClassSTE getClassWhichContainsMethod(String methodName,ClassSTE classSTE,Scope global)
+   { 
+		if( classSTE.getMethodSTE(methodName)==null){   //if method is not found in class
+			if (classSTE.getSuperClass()!=null){	// if class has super class
+				classSTE = (ClassSTE)global.lookup(classSTE.getSuperClass());	// get Super classSTE
+				return this.getClassWhichContainsMethod(methodName, classSTE,global); // check methodName in SuperClass STE
+			}else{
+				return null;	// if method is not found and no super is found then method doesn't exist
+			}
+			
+		}else{
+			return classSTE;
+		}
+   }
+
    public void inCallExp(CallExp callExp){
 	if(!this.getFirstPass()){
 
@@ -424,7 +453,8 @@ return Type.VOID;
  
 	if(exp instanceof ThisLiteral){ //method from same class {this.name()}
 		//method in class which is called
-		classSTE = global.lookup(this.currentClass);
+		classname =  this.currentClass;
+		classSTE = global.lookup(classname);
 	}else{ // method from another class {new class().name()}
 		if(exp instanceof NewExp){
 		    //NewExp newExp = (NewExp) exp;
@@ -436,11 +466,23 @@ return Type.VOID;
     	}
 
 	if(classSTE!=null)
-	{	//System.out.println("*** " + methodName + " "+ classSTE.getName());
-		//currentScope.setmEnclosing(classSTE); // currentMethod references some method
-		////System.out.println("mEnclosing "+currentScope.getmEnclosingStr());	
-	}
-    }
+	{	
+		if(((ClassSTE) classSTE).getMethodSTE(methodName)==null){
+			if (((ClassSTE)classSTE).getSuperClass()!=null){
+				ClassSTE superClassSTE = (ClassSTE) global.lookup(((ClassSTE)classSTE).getSuperClass());
+				System.out.println("\nmEnclosing will have Super Class to be added for current MethodSTE\n");
+				superClassSTE = this.getClassWhichContainsMethod(methodName, ((ClassSTE)classSTE),global); // get Class which contains the method name
+				if(superClassSTE == null){
+					System.out.println("Method "+methodName+" is not found inside class "+classSTE.getName());
+				}else{
+					// Super Class has method so set mEnclosing to superClass's Scope;
+					currentScope.setmEnclosing(superClassSTE);
+				}
+			}// end if classSTE.getSuperclass()!=null
+		}//end if classSTE.getMethodSTE(methodName)==null
+	}//end  if classSTE!=null 
+        }// end if !firstPass
+    
 }
 
 

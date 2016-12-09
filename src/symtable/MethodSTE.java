@@ -5,7 +5,7 @@ import java.io.PrintStream;
 import java.util.*;
 import symtable.*;
 
-public class MethodSTE extends NamedScopeSTE {
+public class MethodSTE extends STE {
     private Signature mSignature;
     private MethodDecl mNode;
     private Scope mScope ;

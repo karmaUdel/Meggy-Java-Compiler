@@ -10,7 +10,7 @@ import meggy.Meggy;
 class PA5RunningExample {
 
     public static void main(String[] whatever){
-	    new C().foo(true);
+	    new E().foo(true);
     }
 }
 
@@ -24,4 +24,4 @@ class C {
 }
 
 class B {}
-   
+class E extends C{}   

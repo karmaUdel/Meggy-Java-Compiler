@@ -121,36 +121,41 @@ this.error=true;
 	// look scope
 	// look return parameters --done
 	// match all paramters passed or not -- done
-// get MethodSTE 
-// check reurn type of methodSTE
-// assign return type
 
-//try
-//{
-	/*if(node.getExp() instanceof ThisLiteral)
-	{
-	 
-	}
-	
-
-	else if(node.getExp() instanceof NewExp)
-*/
-	
-	
+	Scope global = this.mCurrentST.getGlobalScope();
 	boolean breakFlag=false;
  	String methodName = node.getId();
+	String className="";
 	//System.out.println("Method name we are looking for is "+ methodName);
 	STE classSTE = null;
 	if(node.getExp() instanceof ThisLiteral){
-	 	classSTE = this.mCurrentST.lookup(this.currentClass);
-	}else if(node.getExp() instanceof NewExp)
-		classSTE = this.mCurrentST.getGlobalScope().lookup(((NewExp)node.getExp()).getId());
+		className = this.currentClass;	 	
+		classSTE = this.mCurrentST.lookup(className);
+	}else if(node.getExp() instanceof NewExp){
+		className = ((NewExp)node.getExp()).getId();	
+		classSTE = this.mCurrentST.getGlobalScope().lookup(className);
+	}
+	//System.out.println("Class is " + this.currentClass + classSTE.getName());
+
+	STE methodSTE = null ;
+	if(classSTE!=null)	
+	{
+		methodSTE = ((ClassSTE)classSTE).getMethodSTE(methodName);
+		if(methodSTE == null){
+			if (((ClassSTE)classSTE).getSuperClass()!=null){
+				System.out.println("Entered mEnclosing logic, looking for SuperClass with method "+ methodName);				
+				ClassSTE SuperClassSTE = this.getClassWhichContainsMethod(methodName, ((ClassSTE) classSTE),global); // get Class which contains the method name
+				if(SuperClassSTE!=null){
+					methodSTE = SuperClassSTE.getMethodSTE(methodName);
+				}
+			}			
+		}
+		
+		
+	} // set mEnclosing Logic 
 
 
-	System.out.println("Class is " + this.currentClass + classSTE.getName());
 
-	STE methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
-	System.out.println(methodSTE.getName());
 
 	////System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
 	if(methodSTE!=null){
@@ -222,21 +227,7 @@ i++;
 	// look return parameters --done
 	// match all paramters passed or not -- done
        
-
-// get MethodSTE 
-// check reurn type of methodSTE
-// assign return type
-
-
-	/*if(node.getExp() instanceof ThisLiteral)
-	{
-	 
-	}
-	
-
-	else if(node.getExp() instanceof NewExp)
-*/
-	
+	Scope global = this.mCurrentST.getGlobalScope();
 	STE methodSTE = null ;
 	boolean breakFlag=false;
  	String methodName = node.getId();
@@ -246,9 +237,25 @@ i++;
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
 		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
-if(classSTE!=null)	
-methodSTE = ((ClassSTE)classSTE).getScope().lookup(methodName);
 	
+
+	if(classSTE!=null)	
+	{
+		methodSTE = ((ClassSTE)classSTE).getMethodSTE(methodName);
+		if(methodSTE == null){
+			if (((ClassSTE)classSTE).getSuperClass()!=null){
+				System.out.println("Entered mEnclosing logic, looking for SuperClass with method "+ methodName);				
+				ClassSTE SuperClassSTE = this.getClassWhichContainsMethod(methodName, ((ClassSTE) classSTE),global); // get Class which contains the method name
+				if(SuperClassSTE!=null){
+					methodSTE = SuperClassSTE.getMethodSTE(methodName);
+				}
+			}			
+		}
+		
+		
+	} // set mEnclosing Logic 
+
+
 	////System.out.println("methSTE is " + methodSTE);
 	if(methodSTE!=null ){
 ////System.out.println("METHOD NOT FOUND" + methodName + methodSTE);
@@ -649,5 +656,19 @@ public String lookup(IExp exp)
 
    return Type.VOID;
   }
+    public ClassSTE getClassWhichContainsMethod(String methodName,ClassSTE classSTE, Scope global)
+   { 
+		if( classSTE.getMethodSTE(methodName)==null){   //if method is not found in class
+			if (classSTE.getSuperClass()!=null){	// if class has super class
+				classSTE =(ClassSTE) global.lookup(classSTE.getSuperClass());	// get Super classSTE
+				return this.getClassWhichContainsMethod(methodName, classSTE,global); // check methodName in SuperClass STE
+			}else{
+				return null;	// if method is not found and no super is found then method doesn't exist
+			}
+			
+		}else{
+			return classSTE;
+		}
+   }
  
 }
