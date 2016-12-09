@@ -45,7 +45,7 @@ main:
    pop    r25
 
 
-   call    Efoo
+   call    Cfoo
 
 
 
@@ -84,6 +84,44 @@ Cfoo:
    std    Y + 3, r22
 
    /* done with function Cfoo prologue */
+
+   
+   # interger value 4
+   ldi    r24,lo8(4)
+   ldi    r25,hi8(4)
+   push   r25
+   push   r24
+
+   # Casting int to byte by popping
+   # 2 bytes off stack and only pushing low order bits
+   # back on.  Low order bits are on top of stack.
+   pop    r24
+   pop    r25
+   push   r24
+   
+   # interger value 0
+   ldi    r24,lo8(0)
+   ldi    r25,hi8(0)
+   push   r25
+   push   r24
+
+   # Casting int to byte by popping
+   # 2 bytes off stack and only pushing low order bits
+   # back on.  Low order bits are on top of stack.
+   pop    r24
+   pop    r25
+   push   r24
+   
+   # color value Meggy.Color.ORANGE
+   ldi    r22,2
+   push   r22
+   
+   # Code for MeggySetPixel
+   pop    r20
+   pop    r22
+   pop    r24
+   call   _Z6DrawPxhhh
+   call   _Z12DisplaySlatev
 
    
    # interger value 3

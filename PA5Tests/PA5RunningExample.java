@@ -19,6 +19,8 @@ class C {
     C c;
     public int foo( boolean p) {
         B b;
+        Meggy.setPixel((byte)(4),(byte)0, Meggy.Color.ORANGE);
+
         return 3;
     }
 }

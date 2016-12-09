@@ -36,6 +36,18 @@ digraph ASTGraph {
 13 -> 17
 18 [ label="ClassType" ];
 17 -> 18
-19 [ label="IntLiteral\n3" ];
+19 [ label="MeggySetPixel" ];
 13 -> 19
+20 [ label="ByteCast" ];
+19 -> 20
+21 [ label="IntLiteral\n4" ];
+20 -> 21
+22 [ label="ByteCast" ];
+19 -> 22
+23 [ label="IntLiteral\n0" ];
+22 -> 23
+24 [ label="ColorLiteral\nMeggy.Color.ORANGE" ];
+19 -> 24
+25 [ label="IntLiteral\n3" ];
+13 -> 25
 }

@@ -642,11 +642,39 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("   pop    r25");
 		this.out.println();
 		this.out.println();
-    		if(call.getExp() instanceof ThisLiteral){
-    			this.out.println("   call    "+this.currentClass+call.getId());
+		/*
+		* PA5 superClass method call
+		*/
+		String method = call.getId();
+		String className = "";
+		String methodCall = "";
+		Scope global = this.mCurrentST.getGlobalScope();
+		if(call.getExp() instanceof ThisLiteral){
+    			className = this.currentClass;
 		}else{
-    			this.out.println("   call    "+((NewExp)call.getExp()).getId()+call.getId());
+    			className = ((NewExp)call.getExp()).getId();
 		}
+		STE classSTE = this.mCurrentST.lookup(className);
+		
+		if(classSTE!=null)	
+		{
+			MethodSTE methodSTE = ((ClassSTE)classSTE).getMethodSTE(method);
+			if(methodSTE == null){
+				if (((ClassSTE)classSTE).getSuperClass()!=null){
+					System.out.println("Entered mEnclosing logic, looking for SuperClass with method "+ method);				
+					ClassSTE SuperClassSTE = this.getClassWhichContainsMethod(method,((ClassSTE) classSTE),global); // get Class which contains the method name
+					if(SuperClassSTE!=null){
+						methodCall = SuperClassSTE.getName()+method;
+					}
+				}			
+			}else{
+				methodCall = className+method;			
+			}
+		
+		
+		} // get mEnclosing Logic 
+
+		this.out.println("   call    "+methodCall);
 		this.out.println();
 		this.out.println();
 
@@ -672,11 +700,39 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("   pop    r25");
 		this.out.println();
 		this.out.println();
+		/*
+		* PA5 superClass method call
+		*/
+		String method = call.getId();
+		String className = "";
+		String methodCall = "";
+		Scope global = this.mCurrentST.getGlobalScope();
 		if(call.getExp() instanceof ThisLiteral){
-    			this.out.println("   call    "+this.currentClass+call.getId());
+    			className = this.currentClass;
 		}else{
-    			this.out.println("   call    "+((NewExp)call.getExp()).getId()+call.getId());
+    			className = ((NewExp)call.getExp()).getId();
 		}
+		STE classSTE = this.mCurrentST.lookup(className);
+		
+		if(classSTE!=null)	
+		{
+			MethodSTE methodSTE = ((ClassSTE)classSTE).getMethodSTE(method);
+			if(methodSTE == null){
+				if (((ClassSTE)classSTE).getSuperClass()!=null){
+					System.out.println("Entered mEnclosing logic, looking for SuperClass with method "+ method);				
+					ClassSTE SuperClassSTE = this.getClassWhichContainsMethod(method,((ClassSTE) classSTE),global); // get Class which contains the method name
+					if(SuperClassSTE!=null){
+						methodCall = SuperClassSTE.getName()+method;
+					}
+				}			
+			}else{
+				methodCall = className+method;			
+			}
+		
+		
+		} // get mEnclosing Logic 
+
+		this.out.println("   call    "+methodCall);
 		this.out.println();
 		this.out.println();
 	}
@@ -731,5 +787,18 @@ public class AVRregAlloc extends DepthFirstVisitor {
 
    	  return Type.VOID;
   }
-
+  public ClassSTE getClassWhichContainsMethod(String methodName,ClassSTE classSTE, Scope global)
+  { 
+ 	  if( classSTE.getMethodSTE(methodName)==null){   //if method is not found in class
+		if (classSTE.getSuperClass()!=null){	// if class has super class
+			classSTE =(ClassSTE) global.lookup(classSTE.getSuperClass());	// get Super classSTE
+			return this.getClassWhichContainsMethod(methodName, classSTE,global); // check methodName in SuperClass STE
+		}else{
+			return null;	// if method is not found and no super is found then method doesn't exist
+		}
+			
+	 }else{
+		return classSTE;
+	 }
+  }
 }
