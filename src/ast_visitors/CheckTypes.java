@@ -227,6 +227,8 @@ i++;
 	// look return parameters --done
 	// match all paramters passed or not -- done
        
+
+
 	Scope global = this.mCurrentST.getGlobalScope();
 	STE methodSTE = null ;
 	boolean breakFlag=false;
@@ -236,7 +238,7 @@ i++;
 	if(node.getExp() instanceof ThisLiteral){
 	 	classSTE = this.mCurrentST.lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
-		classSTE = this.mCurrentST.lookup(((NewExp)node.getExp()).getId());
+		classSTE = this.mCurrentST.getGlobalScope().lookup(((NewExp)node.getExp()).getId());
 	
 
 	if(classSTE!=null)	
