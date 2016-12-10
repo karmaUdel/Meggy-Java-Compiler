@@ -16,13 +16,14 @@ public class SymTable {
 
     public STE lookup(String name) {
         Scope scope = this.mScopeStack.peek();
-	//System.out.println("***SCOPE " + scope.getScopeName());
+	//System.out.println("***TopSCOPE " + scope.getScopeName());
         if(scope.lookup(name)==null)
 	{
 	if(scope.getmEnclosing()!=null){
 	//System.out.println("SCOPE is null and we are looking for " + name +"  inside mEnclosing which is  "+scope.getmEnclosing().getScopeName());
         //System.out.println("We found "+scope.getmEnclosing().lookup(name).getName());
-	return scope.getmEnclosing().lookup(name);}
+	return scope.getmEnclosing().lookup(name);
+	}
 	
 	}
 	//System.out.println("***scope.lookup(name) "+scope.lookup(name));
@@ -53,10 +54,13 @@ public class SymTable {
 	//System.out.println("STE in pushscope "+ sTE);
 	if(sTE instanceof MethodSTE)
 	 { MethodSTE m=(MethodSTE)sTE;
+
+		//System.out.println("push scope method " +m.getScope().getScopeName());
 		this.mScopeStack.push(m.getScope());
 	  }
 	else if( sTE instanceof ClassSTE)        
 	 {	ClassSTE c=(ClassSTE)sTE;
+		//System.out.println("push scope class " +c.getName());
 		this.mScopeStack.push(c.getScope()); // if STE is method or Class then push scope
 
 	 }

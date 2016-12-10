@@ -219,7 +219,7 @@ return Type.VOID;
         Signature sig = new Signature(this.getType(methodDecl.getType()), linkedList);//signature
 
         if (!this.isDuplicate(methodDecl.getName(), methodDecl.getLine(), methodDecl.getPos())) {
-            methodSTE = new MethodSTE(methodDecl.getName(), sig, this.currentClass+ methodDecl.getName());
+            methodSTE = new MethodSTE(methodDecl.getName(), sig,methodDecl.getName());
         //   //System.out.println(this.currentClass);
 	//ClassSTE ste= (ClassSTE) this.symTable.lookup(this.currentClass);
 	//ste.setMethodSTE(methodSTE);
@@ -234,7 +234,11 @@ return Type.VOID;
 		//create duplicate methodSTE
 	}
 	
+
 	ClassSTE classSTE = (ClassSTE)this.symTable.getGlobalScope().lookup(this.currentClass);
+
+ 	// System.out.println("enclosing class"  + classSTE.getName());
+
 	methodSTE.getScope().setmEnclosing(classSTE);
 
        this.symTable.insert(methodSTE);

@@ -34,19 +34,23 @@ public class Scope {
 
 
     public void setmEnclosing(STE sTE){
-	//System.out.println(" Let's set mEnclosing "+this.mEnclosing);
+	System.out.println(" Let's set mEnclosing "+this.mEnclosing);
 	if(this.mEnclosing!=null){
 		
 		this.mEnclosing.insert(sTE);
 	}else{
 	//System.out.println(" Let's create mEnclosing ");
-		this.mEnclosing = new Scope(null);
-		this.mEnclosing.insert(sTE);		
+
+		this.mEnclosing = ((ClassSTE)sTE).getScope();
+		//mEnclosing.setScopeName(sTE.getName());
+		//this.mEnclosing.insert(sTE);		
 	}
     }
     public Scope getmEnclosing(){
 	return this.mEnclosing;
     }
+
+
 
  public void setmEnclosingStr(String name){
 	if(this.mEnclosingStr!=null){
@@ -70,6 +74,7 @@ public class Scope {
         if (this.dictionary.containsKey(sTE.getName())) {
             System.out.println("Duplicate name " + sTE.getName());
         }else{
+		//System.out.println("inserting " +sTE.getName());
             this.dictionary.put(sTE.getName(), sTE);
             this.mDeclOrder.add(sTE.getName());
 	}
