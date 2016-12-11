@@ -132,24 +132,21 @@ this.error=true;
 	STE classSTE = null;
 	if(node.getExp() instanceof ThisLiteral){
 		className = this.currentClass;	 	
-		classSTE = this.mCurrentST.lookup(className);
+		classSTE = this.mCurrentST.getGlobalScope().lookup(className);
 	}else if(node.getExp() instanceof NewExp){
 		className = ((NewExp)node.getExp()).getId();	
 		classSTE = this.mCurrentST.getGlobalScope().lookup(className);
 	}
 	else 
 	 {
-	//System.out.println("id" + );
+
 
 	VarSTE var = (VarSTE)this.mCurrentST.lookup(node.getExp().toString());
-	//ClassType a =  var.getType();
-	System.out.println("call type " + var.getType().className);
 
-	//VarSTE expType = ((VarSTE)this.mCurrentST.lookup(node.getId())).getType().toString();
-	//System.out.println("var" + expType.toString());
+	//System.out.println("call type " + var.getType().className);
 
 		classSTE = this.mCurrentST.getGlobalScope().lookup(var.getType().className);
-		System.out.println("class NAME" + classSTE.getName());
+		//System.out.println("class NAME" + classSTE.getName());
 
 	}
 
@@ -251,6 +248,8 @@ i++;
 	// match all paramters passed or not -- done
        
 
+	
+
 
 	Scope global = this.mCurrentST.getGlobalScope();
 	STE methodSTE = null ;
@@ -259,10 +258,20 @@ i++;
 	//////System.out.println("Method name we are looking for is "+ methodName);
 	STE classSTE = null;
 	if(node.getExp() instanceof ThisLiteral){
-	 	classSTE = this.mCurrentST.lookup(this.currentClass);
+	//System.out.println("call Current Class " + this.currentClass);
+	 	classSTE = this.mCurrentST.getGlobalScope().lookup(this.currentClass);
 	}else if(node.getExp() instanceof NewExp)
 		classSTE = this.mCurrentST.getGlobalScope().lookup(((NewExp)node.getExp()).getId());
-	
+	else 
+	 {
+
+	VarSTE var = (VarSTE)this.mCurrentST.lookup(node.getExp().toString());
+
+
+		classSTE = this.mCurrentST.getGlobalScope().lookup(var.getType().className);
+		//System.out.println("call stmt NAME " + classSTE.getName());
+
+	}
 
 	if(classSTE!=null)	
 	{
