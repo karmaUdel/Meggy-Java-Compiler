@@ -76,6 +76,40 @@ public class CheckTypes extends DepthFirstVisitor
      this.mCurrentST.setExpType(node, Type.BOOL);
    }
   
+   public void outAssignStatement(AssignStatement node)
+   {
+	//System.out.println("Assignment Expression");
+	ClassSTE classSTE = (ClassSTE)this.mCurrentST.lookup(this.currentClass);
+	VarSTE var = (VarSTE)this.mCurrentST.lookup(node.getId());
+	if(var ==null){
+	  var = (VarSTE)classSTE.getScope().lookup(node.getId());
+	  String superClass = classSTE.getSuperClass();
+	  if( var == null && superClass!=null){
+		ClassSTE superClassSTE = (ClassSTE)this.mCurrentST.getGlobalScope().lookup(superClass);			
+		var = this.getVarSTE(superClassSTE,node.getId(),this.mCurrentST.getGlobalScope());//(VarSTE)classSTE.getSuperClass().lookup(node.getId());
+	  }
+	}
+	if(var!=null){
+	
+	String LType = var.getType().toString();
+	String RType = this.lookup(node.getExp());
+
+    	if(LType != RType) {
+		this.error=true;       
+		////System.out.println(
+        	 errorMessage+="Different types for operator Assignment ["+
+        	 node.getExp().getLine()+" , "+ node.getExp().getPos()+"]\n";
+     	}
+
+     	this.mCurrentST.setExpType(node,var.getType() );
+	}
+	else{
+		this.error=true;       
+         	errorMessage+="Variable "+node.getId()+ " is undecalared ["+
+         	node.getExp().getLine()+" , "+ node.getExp().getPos()+"]\n";
+ 
+	}
+   }
    public void outLtExp(LtExp node)
    {
 	String LType = this.lookup(node.getLExp());
@@ -227,7 +261,7 @@ i++;
 	}
 	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
 
-		System.out.println("return type" + ((MethodSTE)methodSTE).getSignature().getReturnType());		
+		//System.out.println("return type" + ((MethodSTE)methodSTE).getSignature().getReturnType());		
 
 		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
 	//System.out.println("CallExp return type is :: "+this.mCurrentST.getExpType(node));
@@ -479,6 +513,13 @@ i++;
                    node.getToneExp().getPos()+"]\n";
        }
    }
+    public void outToneExp(ToneLiteral toneLiteral) {
+        this.mCurrentST.setExpType((Node)toneLiteral, Type.TONE);
+    }
+
+    public void outToneType(ToneType toneType) {
+    }
+
    public void outMeggySetPixel(MeggySetPixel node)
    {
 
@@ -636,10 +677,31 @@ public String lookup(IExp exp)
 
 
 }
+    public void outColorExp(ColorLiteral colorLiteral) {
+        this.mCurrentST.setExpType((Node)colorLiteral, Type.COLOR);
+    }
 
+    public void outButtonExp(ButtonLiteral buttonLiteral) {
+        this.mCurrentST.setExpType((Node)buttonLiteral, Type.BUTTON);
+    }
+    public void outIdLiteral(IdLiteral idLiteral) {
+        STE sTE = this.mCurrentST.lookup(idLiteral.getLexeme());
+        if (sTE == null) {
+            this.error = true;
+	    errorMessage+="Undeclared variable " + idLiteral.getLexeme()+ " ["+idLiteral.getLine()+" , "+ idLiteral.getPos()+"]\n";
+        }
+        if (sTE instanceof VarSTE) {
+            VarSTE varSTE = (VarSTE)sTE;
+            this.mCurrentST.setExpType((Node)idLiteral, varSTE.getType());
+        }
+    }
   public boolean getError(){
 	return this.error;
   }
+  public void setError(boolean error){
+	this.error=error;
+  }
+
   public String getErrorMessage(){
 	return this.errorMessage;
   }
@@ -715,5 +777,21 @@ if(type.equalsIgnoreCase("CLASS"))
 			return classSTE;
 		}
    }
- 
+
+   public VarSTE getVarSTE(ClassSTE classSTE,String variable, Scope global)
+   { 	
+	
+		VarSTE var = (VarSTE) classSTE.getScope().lookup(variable);
+		if(var ==null){   //if method is not found in class
+			if (classSTE.getSuperClass()!=null){	// if class has super class
+				classSTE =(ClassSTE) global.lookup(classSTE.getSuperClass());	// get Super classSTE
+				return this.getVarSTE(classSTE, variable,global); // check methodName in SuperClass STE
+			}else{
+				return null;	// if method is not found and no super is found then method doesn't exist
+			}
+			
+		}else{
+			return var;
+		}
+   }
 }

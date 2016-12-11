@@ -10,7 +10,7 @@ import meggy.Meggy;
 class PA5RunningExample {
 
     public static void main(String[] whatever){
-	    new E().foo(true);
+	    new C().foo(true);
     }
 }
 
@@ -19,11 +19,14 @@ class C {
     C c;
     public int foo( boolean p) {
         B b;
-        Meggy.setPixel((byte)(4),(byte)0, Meggy.Color.ORANGE);
-
+	boolean bool ;
+	bool = p;
+	if(bool){
+        	Meggy.setPixel((byte)(4),(byte)0, Meggy.Color.ORANGE);
+	}
         return 3;
     }
 }
 
 class B {}
-class E extends C{}   
+//class E extends C{}   

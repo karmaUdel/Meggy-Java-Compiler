@@ -34,7 +34,7 @@ public class Scope {
 
 
     public void setmEnclosing(STE sTE){
-	System.out.println(" Let's set mEnclosing "+sTE.getName());
+	//System.out.println(" Let's set mEnclosing "+sTE.getName());
 
 	if(this.mEnclosing!=null){
 		

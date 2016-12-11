@@ -23,7 +23,7 @@ class Dot {
     Meggy.Color dotcolor;
     
     public void run() {
-        Meggy.Tone localvar;
+        //Meggy.Tone localvar;
         localvar = Meggy.Tone.C3;
             
         // initialize color
@@ -77,3 +77,7 @@ class Dot {
     }
 
 }
+
+//class dotRunner extends dot{
+
+//}

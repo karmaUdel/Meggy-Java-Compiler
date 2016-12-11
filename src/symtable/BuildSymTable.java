@@ -418,10 +418,10 @@ return null;
 		if( ((ClassSTE) classSTE).getMethodSTE(methodName)==null){
 			if (((ClassSTE)classSTE).getSuperClass()!=null){
 				ClassSTE superClassSTE = (ClassSTE)global.lookup(((ClassSTE)classSTE).getSuperClass());
-				System.out.println("\nmEnclosing will have Super Class to be added for current MethodSTE\n");
+				//System.out.println("\nmEnclosing will have Super Class to be added for current MethodSTE\n");
 				superClassSTE = this.getClassWhichContainsMethod(methodName, ((ClassSTE)classSTE),global); // get Class which contains the method name
 				if(superClassSTE == null){
-					System.out.println("Method "+methodName+" is not found inside class "+classSTE.getName());
+					//System.out.println("Method "+methodName+" is not found inside class "+classSTE.getName());
 				}else{
 					// Super Class has method so set mEnclosing to superClass's Scope;
 					currentScope.setmEnclosing(superClassSTE);
@@ -490,10 +490,10 @@ return null;
 		if(((ClassSTE) classSTE).getMethodSTE(methodName)==null){
 			if (((ClassSTE)classSTE).getSuperClass()!=null){
 				ClassSTE superClassSTE = (ClassSTE) global.lookup(((ClassSTE)classSTE).getSuperClass());
-				System.out.println("\nmEnclosing will have Super Class to be added for current MethodSTE\n");
+				//System.out.println("\nmEnclosing will have Super Class to be added for current MethodSTE\n");
 				superClassSTE = this.getClassWhichContainsMethod(methodName, ((ClassSTE)classSTE),global); // get Class which contains the method name
 				if(superClassSTE == null){
-					System.out.println("Method "+methodName+" is not found inside class "+classSTE.getName());
+					//System.out.println("Method "+methodName+" is not found inside class "+classSTE.getName());
 				}else{
 					// Super Class has method so set mEnclosing to superClass's Scope;
 					currentScope.setmEnclosing(superClassSTE);

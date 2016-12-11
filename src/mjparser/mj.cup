@@ -354,7 +354,7 @@ if(op2!=null){
 						;
 /*PA4 grammar starts here*/
 
-otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE varibleDecl:var methodDecl:methods RBRACE 
+otherClass ::= CLASS:op1 ID:name LBRACE varibleDecl:var methodDecl:methods RBRACE otherClass:other 
 	       {:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
@@ -375,7 +375,7 @@ otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE varibleDecl:var methodD
 		}			
 		RESULT = classDecl;		
 		:}
-		|otherClass:other CLASS:op1 ID:name EXTENDS ID:parent LBRACE varibleDecl:var methodDecl:methods RBRACE 
+		|CLASS:op1 ID:name EXTENDS ID:parent LBRACE varibleDecl:var methodDecl:methods RBRACE otherClass:other 
 	       {:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();
 		LinkedList<MethodDecl> _methodDecls = new LinkedList<MethodDecl>();
@@ -405,7 +405,7 @@ otherClass ::= otherClass:other CLASS:op1 ID:name LBRACE varibleDecl:var methodD
 		;
 
 //blockstatment has LBRACE RBRACE in it
-methodDecl ::=  methodDecl:methods PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE varibleDecl:var statement_list:block returnStatement:rstmt RBRACE
+methodDecl ::=  PUBLIC:op type:typ ID:name LPAREN formal:param RPAREN LBRACE varibleDecl:var statement_list:block returnStatement:rstmt RBRACE methodDecl:methods 
 		{:
 		LinkedList<Formal> _formals = new LinkedList<Formal>();
 		_formals.addAll(param);
@@ -491,7 +491,7 @@ RESULT = op; :}
 RESULT=null;:}
 		 ;
 /* PA5 Grammar starts here */
-varibleDecl ::= varibleDecl:varList type:typ ID:name SEMI
+varibleDecl ::= varibleDecl:varList type:typ ID:name SEMI  
 		{:
 		LinkedList<VarDecl> _varDecls = new LinkedList<VarDecl>();		
 		VarDecl var = new VarDecl(name.line,name.pos,typ,name.lexeme);

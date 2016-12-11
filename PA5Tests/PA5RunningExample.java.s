@@ -58,10 +58,6 @@ main:
 
 
 
-
-
-
-
    .text
    .global Cfoo
    .type  Cfoo, @function
@@ -85,6 +81,28 @@ Cfoo:
 
    /* done with function Cfoo prologue */
 
+   
+   ## If statement
+   breq   MJ_L3
+   MJ_L4:
+   ldi    r24, 1
+   jmp    MJ_L5
+   MJ_L3:
+   MJ_L5:
+   # push one byte expression onto stack
+   push   r24
+   # load condition and branch if false
+   # load a one byte expression off stack
+   pop    r24
+   #load zero into reg
+   ldi    r25, 0
+   #use cp to set SREG
+   cp     r24, r25
+   #WANT breq MJ_L3
+   brne   MJ_L1
+   jmp    MJ_L0
+   # then label for if
+   MJ_L1:
    
    # interger value 4
    ldi    r24,lo8(4)
@@ -122,6 +140,13 @@ Cfoo:
    pop    r24
    call   _Z6DrawPxhhh
    call   _Z12DisplaySlatev
+   
+   #Else part
+   MJ_L0:
+   
+   #Done with if else statement 
+   MJ_L2:
+
 
    
    # interger value 3
@@ -145,6 +170,8 @@ Cfoo:
    pop    r29
    ret
    .size Cfoo, .-Cfoo
+
+
 
 
 
