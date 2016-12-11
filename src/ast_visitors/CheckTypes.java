@@ -94,7 +94,8 @@ public class CheckTypes extends DepthFirstVisitor
 	String LType = var.getType().toString();
 	String RType = this.lookup(node.getExp());
 
-    	if(LType != RType) {
+	//System.out.println("L " + LType +  " R " + RType);
+    	if(!LType.equalsIgnoreCase(RType)) {
 		this.error=true;       
 		////System.out.println(
         	 errorMessage+="Different types for operator Assignment ["+
