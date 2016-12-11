@@ -118,6 +118,8 @@ this.error=true;
 
    public void outCallExp(CallExp node)
    {
+
+
 	// look scope
 	// look return parameters --done
 	// match all paramters passed or not -- done
@@ -135,7 +137,24 @@ this.error=true;
 		className = ((NewExp)node.getExp()).getId();	
 		classSTE = this.mCurrentST.getGlobalScope().lookup(className);
 	}
-	//System.out.println("Class is " + this.currentClass + classSTE.getName());
+	else 
+	 {
+	//System.out.println("id" + );
+
+	VarSTE var = (VarSTE)this.mCurrentST.lookup(node.getExp().toString());
+	//ClassType a =  var.getType();
+	System.out.println("call type " + var.getType().className);
+
+	//VarSTE expType = ((VarSTE)this.mCurrentST.lookup(node.getId())).getType().toString();
+	//System.out.println("var" + expType.toString());
+
+		classSTE = this.mCurrentST.getGlobalScope().lookup(var.getType().className);
+		System.out.println("class NAME" + classSTE.getName());
+
+	}
+
+
+	//System.out.println("Class is " + classSTE.getName());
 
 	STE methodSTE = null ;
 	if(classSTE!=null)	
@@ -210,7 +229,9 @@ i++;
 
 	}
 	if(!breakFlag){ // all arguement type matched so set return tpe for an expression	
-		
+
+		System.out.println("return type" + ((MethodSTE)methodSTE).getSignature().getReturnType());		
+
 		this.mCurrentST.setExpType(node,((MethodSTE)methodSTE).getSignature().getReturnType());
 	//System.out.println("CallExp return type is :: "+this.mCurrentST.getExpType(node));
 	}
@@ -222,6 +243,8 @@ i++;
                    node.getPos()+"]\n";  
 	}
    }
+
+
    public void outCallStatement(CallStatement node)
    {	// look scope
 	// look return parameters --done
@@ -460,6 +483,7 @@ i++;
 	////System.out.println("we are broken "+node.getColor());
 	colorexpType = ((VarSTE)this.mCurrentST.lookup(""+node.getColor())).getType().toString();	}	
 
+		
 
 
        if ((lexpType==Type.INT.toString()  || lexpType==Type.BYTE.toString()) &&
@@ -584,13 +608,18 @@ this.error = true;
 public String lookup(IExp exp)
 {
 	 String expType = this.mCurrentST.getExpType(exp);
+
 	if(expType==null && exp!=null){
 	//System.out.println("we are broken "+exp);
 	try{
-	expType = ((VarSTE)this.mCurrentST.lookup(""+exp)).getType().toString();	
+	
+	expType = ((VarSTE)this.mCurrentST.lookup(""+exp)).getType().toString();
+
 	}catch(Exception e){
+
 	//expType =  this.mCurrentST.setExpType()
 	}
+
 	}
 
 	return expType;
@@ -630,6 +659,11 @@ public String lookup(IExp exp)
     if(type.equalsIgnoreCase("BUTTON"))
     {
       return Type.BUTTON;
+    }
+
+if(type.equalsIgnoreCase("CLASS"))
+    {
+      return Type.CLASS;
     }
 
    return Type.VOID;

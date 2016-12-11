@@ -13,10 +13,11 @@ public class Type
   public static final Type BUTTON = new Type();
   public static final Type VOID = new Type();
   public static final Type TONE = new Type();
+  public static final Type CLASS = new Type();
   public static final HashMap<String, Type> classTypes = new HashMap();
   public final String className;
     
-  private Type(String className) {
+  public Type(String className) {
     if (className == null) {
            System.out.println("ClassName can't be null");
      }
@@ -65,13 +66,14 @@ public class Type
     {
       return "TONE";
     }
-    
+
     if(this==VOID)
 {	//System.out.println("void");
 	return "VOID";
  }   
 /*
 */
+
     return "class_"+this.className;
   }
   

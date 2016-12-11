@@ -20,6 +20,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
   private static final Type BUTTON = Type.BUTTON;
   private static final Type VOID = Type.VOID; 
   private static final Type TONE = Type.TONE;
+  private static final Type CLASS = Type.CLASS;
 
     public BuildSymTable() {
 	this.symTable= new SymTable();
@@ -31,10 +32,12 @@ public class BuildSymTable extends DepthFirstVisitor   {
 public boolean getError()
 	{ return this.error;}
 
+
  public Type getType(IType node){
-   if(node instanceof BoolType){
+
+   if(node instanceof BoolType)
 	return Type.BOOL;
-   }
+   
    if(node instanceof IntType)
 return Type.INT;
 
@@ -47,11 +50,20 @@ return Type.COLOR;
 if(node instanceof ButtonType)
 return Type.BUTTON;
 
-
 if(node instanceof ToneType)
  return Type.TONE;
 
-return Type.VOID;
+if(node instanceof VoidType)
+ return Type.VOID;
+
+if(node instanceof ClassType)
+{
+	ClassType a = (ClassType)node;
+	//System.out.println("className: " + a.getName());
+ return new Type(a.getName());
+}
+return null;
+
  }
     
   @Override 
@@ -467,7 +479,11 @@ return Type.VOID;
 		    //STE other = this.symTable.lookup(classname);
 		     //methodName = classname+"."+methodName; // method in other class which is called
 		}
+
+	
     	}
+
+	
 
 	if(classSTE!=null)
 	{	
@@ -494,8 +510,18 @@ return Type.VOID;
     
 	if(!this.getFirstPass()){
 		Scope currentScope = this.symTable.getCurrentScope();
-		VarSTE var = new VarSTE(varDecl.getName(),this.getType(varDecl.getType()),1,false,true); //1 needs to be set whatever offset value will be		
-		currentScope.insert(var);
+
+		Type varType = this.getType(varDecl.getType());
+		VarSTE var;
+
+		 var = new VarSTE(varDecl.getName(),varType,1,false,true); //1 needs to be set whatever offset value will be
+		//System.out.println("class type " + varType.toString());
+
+			currentScope.insert(var);
+		
+
+	
+
 	}
     }
 
