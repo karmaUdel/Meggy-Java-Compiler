@@ -10,6 +10,14 @@ public class Scope {
     private String mEnclosingStr=null;
     private List<String> mDeclOrder = new LinkedList<String>();
     private String scopeName;
+    private boolean error = false;
+
+    public boolean getError(){
+	return this.error;
+    }
+    public void setError(boolean error){
+	this.error = error;
+    }
     public Scope(Scope scope) {
 	//if(scope!=null) 
 	  //      this.mEnclosing = scope;
@@ -74,6 +82,7 @@ public class Scope {
 
         if (this.dictionary.containsKey(sTE.getName())) {
             System.out.println("Duplicate name " + sTE.getName());
+	    this.error=true;
         }else{
 		//System.out.println("inserting " +sTE.getName());
             this.dictionary.put(sTE.getName(), sTE);

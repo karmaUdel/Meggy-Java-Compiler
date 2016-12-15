@@ -13,6 +13,7 @@ public class BuildSymTable extends DepthFirstVisitor   {
 	private String currentClass;
 	private boolean firstpass;
 	private boolean error;
+	private static int offset = 3;
   private static final Type BOOL = Type.BOOL;
   private static final Type INT = Type.INT;
   private static final Type BYTE = Type.BYTE;
@@ -274,9 +275,12 @@ return null;
 
 
     public void outMethodDecl(MethodDecl methodDecl) {
-	if(!this.getFirstPass())
+	if(!this.getFirstPass()){
+		if(this.symTable.getCurrentScope().getError()){
+			this.error = true;
+		}
         	this.symTable.popScope();
-        
+        }
     }
 
     public void inTopClassDecl(TopClassDecl topClassDecl) {
@@ -310,6 +314,9 @@ return null;
 
 	//if(!this.getFirstPass())
 	//System.out.println("topClassDecl.getName() "+this.currentClass);
+		if(this.symTable.getCurrentScope().getError()){
+			this.error = true;
+		}
         this.symTable.popScope();
     }
 
@@ -347,6 +354,9 @@ return null;
 
 	//if(!this.getFirstPass())
 	//System.out.println("topClassDecl.getName() "+this.currentClass);
+		if(this.symTable.getCurrentScope().getError()){
+			this.error = true;
+		}
         this.symTable.popScope();
     }
 
@@ -375,7 +385,10 @@ return null;
     }
 
     public void outMainClass(MainClass mainClass) {
-//	if(!this.getFirstPass())	
+//	if(!this.getFirstPass())
+		if(this.symTable.getCurrentScope().getError()){
+			this.error = true;
+		}	
         	this.symTable.popScope();
     } 
 
@@ -514,11 +527,11 @@ return null;
 		Type varType = this.getType(varDecl.getType());
 		VarSTE var;
 
-		 var = new VarSTE(varDecl.getName(),varType,1,false,true); //1 needs to be set whatever offset value will be
+		 var = new VarSTE(varDecl.getName(),varType,offset,false,true); //1 needs to be set whatever offset value will be
 		//System.out.println("class type " + varType.toString());
 
 			currentScope.insert(var);
-		
+		offset+=2;
 
 	
 

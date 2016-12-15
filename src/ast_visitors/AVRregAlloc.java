@@ -652,7 +652,18 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(call.getExp() instanceof ThisLiteral){
     			className = this.currentClass;
 		}else{
-    			className = ((NewExp)call.getExp()).getId();
+    			if(call.getExp() instanceof NewExp){
+    				className = ((NewExp)call.getExp()).getId();
+			}else{
+				// get class type then 
+				// extract class name 
+				// save class name
+				String variableName = ((IdLiteral)call.getExp()).getLexeme();
+				VarSTE var = (VarSTE) this.mCurrentST.lookup(variableName);
+				if(var !=null){
+					className = var.getType().toString().substring(6);// class_className				
+				}
+			}
 		}
 		STE classSTE = this.mCurrentST.lookup(className);
 		
@@ -710,7 +721,18 @@ public class AVRregAlloc extends DepthFirstVisitor {
 		if(call.getExp() instanceof ThisLiteral){
     			className = this.currentClass;
 		}else{
-    			className = ((NewExp)call.getExp()).getId();
+			if(call.getExp() instanceof NewExp){
+    				className = ((NewExp)call.getExp()).getId();
+			}else{
+				// get class type then 
+				// extract class name 
+				// save class name
+				String variableName = ((IdLiteral)call.getExp()).getLexeme();
+				VarSTE var = (VarSTE) this.mCurrentST.lookup(variableName);
+				if(var !=null){
+					className = var.getType().toString().substring(6);// class_className				
+				}
+			}	
 		}
 		STE classSTE = this.mCurrentST.lookup(className);
 		
@@ -757,6 +779,7 @@ public class AVRregAlloc extends DepthFirstVisitor {
     		this.out.println("   ldi    r24, lo8(0)");
     		this.out.println("   ldi    r25, hi8(0)");
 		this.out.println();
+		this.out.println("   call malloc");
     		this.out.println("   # push object address");
     		this.out.println("   # push two byte expression onto stack");
     		this.out.println("   push   r25");
